@@ -1,0 +1,12 @@
+node_modules/
+*/node_modules/
+apps/web/node_modules/
+.next/
+*/.next/
+apps/web/.next/
+*.node
+*.exe
+dist/
+build/
+.env*
+*.log

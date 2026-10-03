@@ -1,0 +1,11 @@
+================================================================================
+DEVGYAN INNOVATION - AI RESUME MEMORY STATE
+================================================================================
+BRAND: DEVGYAN INNOVATION (DG Badge)
+ADDRESS: Lohariya Sal Malla, Near Block Office, Haldwani, Nainital, Uttarakhand - 263139
+CONTACT: +91 73513 24716 | contact@example.com | Mon - Sat: 9:00 AM - 7:00 PM IST
+STACK: Next.js + NestJS + Go + PostgreSQL + Redis
+GITHUB: https://github.com/ntn9528146/ERP_dev.git
+STATUS: Top Contact Utility Bar + Live Search Finder + Interactive Mega Dropdowns added.
+NEXT STEP: Implement Module 01 - Student Management with interactive KYC & admission forms.
+================================================================================
