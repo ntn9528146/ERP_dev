@@ -1,12 +1,13 @@
 import './globals.css';
 import React from 'react';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { FloatingCTA } from '@/components/layout/FloatingCTA';
+import { Header } from '../components/layout/Header';
+import { Footer } from '../components/layout/Footer';
+import { FloatingCTA } from '../components/layout/FloatingCTA';
+import { TenantProvider } from '../context/TenantContext';
 
 export const metadata = {
-  title: 'DEVGYAN INNOVATION | Enterprise School & College ERP Platform',
-  description: 'Scalable campus automation, AI-ready student analytics, and secure administrative engines.',
+  title: 'DEVGYAN INNOVATION | Multi-Tenant Enterprise Education OS',
+  description: 'Scalable campus automation, role governance and secure question paper architecture.',
 };
 
 export default function RootLayout({
@@ -17,10 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-[#030712] min-h-screen flex flex-col text-white">
-        <Header />
-        <FloatingCTA />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <TenantProvider>
+          <Header />
+          <FloatingCTA />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </TenantProvider>
       </body>
     </html>
   );

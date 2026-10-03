@@ -1,0 +1,40 @@
+export const primarySubjects: Record<string, { code: string; name: string }[]> = {
+  'Class 1': [
+    { code: 'ENG-01', name: 'English Language & Story Reading' },
+    { code: 'HIN-01', name: 'Hindi (Rimjhim / Vasant Foundation)' },
+    { code: 'MAT-01', name: 'Mathematics Magic' },
+    { code: 'EVS-01', name: 'Environmental Studies (Looking Around)' },
+    { code: 'ART-01', name: 'Art & Creative Expression' },
+  ],
+  'Class 2': [
+    { code: 'ENG-02', name: 'English Language & Grammar' },
+    { code: 'HIN-02', name: 'Hindi Language & Creative Writing' },
+    { code: 'MAT-02', name: 'Mathematics & Mental Ability' },
+    { code: 'EVS-02', name: 'Environmental Studies' },
+    { code: 'ICT-02', name: 'Introductory Computers & Digital Literacy' },
+  ],
+  'Class 3': [
+    { code: 'MAT-03', name: 'Mathematics' },
+    { code: 'EVS-03', name: 'Environmental Studies (EVS) / Science' },
+    { code: 'ENG-03', name: 'English Language & Literature' },
+    { code: 'HIN-03', name: 'Hindi (हिंदी साहित्य व व्याकरण)' },
+    { code: 'SST-03', name: 'Social Science (Classes 3-5)' },
+    { code: 'CS-03', name: 'Computer Science Fundamentals' },
+  ],
+  'Class 4': [
+    { code: 'MAT-04', name: 'Mathematics & Practical Calculations' },
+    { code: 'EVS-04', name: 'Science & Environmental Explorations' },
+    { code: 'ENG-04', name: 'English Reader & Structured Writing' },
+    { code: 'HIN-04', name: 'Hindi Vyakaran & Comprehension' },
+    { code: 'SST-04', name: 'Social Studies & Community Life' },
+    { code: 'CS-04', name: 'Computer Applications & Typing' },
+  ],
+  'Class 5': [
+    { code: 'MAT-05', name: 'Mathematics Advanced Foundations' },
+    { code: 'SCI-05', name: 'General Science & Life Around Us' },
+    { code: 'ENG-05', name: 'English Core Language Skills' },
+    { code: 'HIN-05', name: 'Hindi Sahitya & Vyakaran' },
+    { code: 'SST-05', name: 'Social Science & Heritage' },
+    { code: 'CS-05', name: 'Computers & Coding Concepts' },
+  ],
+};
