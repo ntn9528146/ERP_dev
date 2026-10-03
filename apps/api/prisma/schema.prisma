@@ -1,0 +1,67 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  DEVELOPER
+  PRINCIPAL
+  VICE_PRINCIPAL
+  TEACHER
+  STUDENT
+  PARENT
+}
+
+model TenantSchool {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  badge       String
+  location    String
+  activePlan  String   @default("Enterprise 2026-27")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       User[]
+  tokens      SecretInvitationToken[]
+  students    Student[]
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String
+  fullName     String
+  role         Role          @default(TEACHER)
+  department   String?
+  tenantId     String
+  tenant       TenantSchool  @relation(fields: [tenantId], references: [id])
+  createdAt    DateTime      @default(now())
+}
+
+model SecretInvitationToken {
+  id          String        @id @default(uuid())
+  tokenCode   String        @unique
+  designatedRole Role       @default(TEACHER)
+  isBurned    Boolean       @default(false)
+  issuedBy    String
+  tenantId    String
+  tenant      TenantSchool  @relation(fields: [tenantId], references: [id])
+  createdAt   DateTime      @default(now())
+}
+
+model Student {
+  id           String        @id @default(uuid())
+  studentCode  String        @unique
+  fullName     String
+  grade        String
+  section      String
+  guardianPhone String
+  tenantId     String
+  tenant       TenantSchool  @relation(fields: [tenantId], references: [id])
+  createdAt    DateTime      @default(now())
+}
