@@ -1,16 +1,21 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useTenant } from '../context/TenantContext';
 
 export default function FloatingActions() {
   const pathname = usePathname();
   const { isAuthenticated, currentUser } = useTenant();
+  const [mounted, setMounted] = useState(false);
 
-  // STRICT RULE 5:
-  // 1. Agar koi bhi user logged in hai (chahe Admin ho ya Teacher), ye bar PERMANENTLY GAYAB rahega.
-  // 2. Sirf landing page ("/") par unauthenticated public visitors ko attraction ke liye dikhega.
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  // STRICT RULE: Agar user logged in hai ya pathname "/" nahi hai, to KABHI NAHI DIKHEGA
   if (isAuthenticated || !!currentUser || pathname !== '/') {
     return null;
   }
