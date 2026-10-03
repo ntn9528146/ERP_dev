@@ -35,7 +35,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#030712] text-white flex flex-col relative">
       
-      {/* 1. TOP BAR */}
+      {/* 1. TOP HEADER & TENANT BAR */}
       <header className="border-b border-gray-800 bg-[#030712]/95 backdrop-blur sticky top-0 z-40">
         <div className="bg-[#020617] border-b border-gray-800/80 px-6 py-1.5 flex flex-wrap justify-between items-center text-[11px] font-mono">
           <div className="flex items-center gap-3">
@@ -88,7 +88,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* 2. MAIN NAVIGATION BAR WITH "ERP MODULES ▾" DROPDOWN */}
+        {/* 2. MAIN NAVIGATION */}
         <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-black text-base shadow-lg shadow-cyan-500/20">
@@ -109,7 +109,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               Home
             </Link>
 
-            {/* Comprehensive "ERP Modules ▾" Menu for Principal, Coordinator & Developer */}
+            {/* ERP Modules Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setModulesDropdownOpen(!modulesDropdownOpen)}
@@ -171,86 +171,104 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {/* 3. MAIN CONTENT BODY */}
+      {/* 3. MAIN CONTENT */}
       <main className="flex-1">
         {children}
       </main>
 
-      {/* 4. BLOOMBYTE-STYLE ENTERPRISE FOOTER WITH COMPLETE INTERNAL LINKS & CONTACT INFO */}
-      <footer className="border-t border-gray-800/80 bg-[#020617] text-white pt-12 pb-8 px-6 mt-16 font-sans">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 border-b border-gray-800/60 pb-10 text-xs">
+      {/* 4. EXACT FOOTER (MATCHING USER SCREENSHOT COLUMNS) */}
+      <footer className="border-t border-gray-900 bg-[#020617] text-gray-300 pt-12 pb-8 px-6 mt-16 font-sans">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-gray-900 text-xs">
           
-          {/* Brand Info */}
-          <div className="md:col-span-2 space-y-3">
+          {/* Brand Intro Column */}
+          <div className="space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-black text-sm">
                 DG
               </div>
-              <span className="font-extrabold text-base tracking-tight">DEVGYAN INNOVATION</span>
+              <span className="font-extrabold text-base tracking-tight text-white">DEVGYAN INNOVATION</span>
             </div>
-            <p className="text-gray-400 text-xs leading-relaxed max-w-sm">
-              DevGyan is an enterprise-grade cloud ERP platform perfectly tailored for CBSE K-12 institutions. Multi-tenant isolation, real-time APAAR sync, and zero-trust data governance.
+            <p className="text-gray-400 text-xs leading-relaxed max-w-xs">
+              Enterprise K-12 Institutional Management Platform with strict multi-tenant boundary, CBSE curriculum engine and biometric cloud sync.
             </p>
-            <div className="text-[11px] font-mono text-cyan-400">
-              Campus Tenant Active: <span className="text-white">{activeSchool.name}</span>
+            <div className="text-[11px] font-mono text-cyan-400 pt-1">
+              Haldwani • Nainital District • Uttarakhand
             </div>
           </div>
 
-          {/* Products & Portals */}
-          <div className="space-y-2.5">
-            <h4 className="font-bold text-white uppercase font-mono text-[11px] tracking-wider text-cyan-400">
-              Institutional Portals
+          {/* Column 1: ACADEMIC CORE */}
+          <div className="space-y-3">
+            <h4 className="font-bold text-white uppercase text-xs tracking-wider flex items-center gap-2">
+              <span className="w-1 h-3.5 bg-cyan-400 rounded-sm inline-block"></span>
+              ACADEMIC CORE
             </h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><Link href="/student-management" className="hover:text-white transition-colors">Student Management SIS</Link></li>
-              <li><Link href="/staff-management" className="hover:text-white transition-colors">Staff & Payroll Ledger</Link></li>
-              <li><Link href="/exam-management" className="hover:text-white transition-colors">Exam & Marks Controller</Link></li>
-              <li><Link href="/inventory-management" className="hover:text-white transition-colors">Fixed Asset & Inventory</Link></li>
-              <li><Link href="/admin/cockpit" className="hover:text-white transition-colors">Root Security Cockpit</Link></li>
+            <ul className="space-y-2 text-gray-400 text-xs">
+              <li><Link href="/student-management" className="hover:text-cyan-400 transition-colors">Student Management</Link></li>
+              <li><Link href="/staff-management" className="hover:text-cyan-400 transition-colors">Staff Management</Link></li>
+              <li><Link href="/library-management" className="hover:text-cyan-400 transition-colors">Library Management</Link></li>
+              <li><Link href="/staff-management" className="hover:text-cyan-400 transition-colors">Staff & Payroll</Link></li>
+              <li><Link href="/fee-management" className="hover:text-cyan-400 transition-colors">Fee Management</Link></li>
+              <li><Link href="/exam-management" className="hover:text-cyan-400 transition-colors">Exam Management</Link></li>
             </ul>
           </div>
 
-          {/* ERP Features (BloomByte Style) */}
-          <div className="space-y-2.5">
-            <h4 className="font-bold text-white uppercase font-mono text-[11px] tracking-wider text-emerald-400">
-              CBSE ERP Features
+          {/* Column 2: OPERATIONS & LIVING */}
+          <div className="space-y-3">
+            <h4 className="font-bold text-white uppercase text-xs tracking-wider flex items-center gap-2">
+              <span className="w-1 h-3.5 bg-blue-500 rounded-sm inline-block"></span>
+              OPERATIONS & LIVING
             </h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><Link href="/student-management" className="hover:text-white transition-colors">4-Tab Student Dossier</Link></li>
-              <li><Link href="/cbse-studio" className="hover:text-white transition-colors">Skill Subjects (IT 402, AI 417)</Link></li>
-              <li><Link href="/cbse-studio" className="hover:text-white transition-colors">Sr Sec Streams (CS 083, Yoga)</Link></li>
-              <li><Link href="/exam-management" className="hover:text-white transition-colors">CBSE Bell Curve Grading</Link></li>
-              <li><Link href="/enquiry-crm" className="hover:text-white transition-colors">Enquiry CRM & Walk-ins</Link></li>
+            <ul className="space-y-2 text-gray-400 text-xs">
+              <li><Link href="/attendance-leave" className="hover:text-cyan-400 transition-colors">Attendance & Leave</Link></li>
+              <li><Link href="/admission-fee" className="hover:text-cyan-400 transition-colors">Admission & Fee</Link></li>
+              <li><Link href="/lms-studio" className="hover:text-cyan-400 transition-colors">Learning Management (LMS)</Link></li>
+              <li><Link href="/hostel-management" className="hover:text-cyan-400 transition-colors">Hostel Management</Link></li>
+              <li><Link href="/transport-gps" className="hover:text-cyan-400 transition-colors">Transport Fleet (GPS)</Link></li>
+              <li><Link href="/sms-alerts" className="hover:text-cyan-400 transition-colors">SMS & Email Alerts</Link></li>
             </ul>
           </div>
 
-          {/* Contact Us (Official Haldwani Center) */}
-          <div className="space-y-2.5">
-            <h4 className="font-bold text-white uppercase font-mono text-[11px] tracking-wider text-amber-400">
-              Contact & Support
+          {/* Column 3: PORTALS & GOVERNANCE */}
+          <div className="space-y-3">
+            <h4 className="font-bold text-white uppercase text-xs tracking-wider flex items-center gap-2">
+              <span className="w-1 h-3.5 bg-purple-500 rounded-sm inline-block"></span>
+              PORTALS & GOVERNANCE
             </h4>
-            <div className="space-y-1.5 text-gray-400 text-xs">
-              <p className="text-white font-medium">DevGyan Innovation Headquarters</p>
-              <p>Lohariya Sal Malla, Near Block Office,</p>
-              <p>Haldwani, Nainital, Uttarakhand - 263139</p>
-              <p className="text-cyan-400 font-mono pt-1">Tel: +91 73513 24716</p>
-              <p className="text-gray-400 font-mono">Email: contact@devgyaninnovation.com</p>
-            </div>
+            <ul className="space-y-2 text-gray-400 text-xs">
+              <li>
+                <Link href="/student-app" className="text-cyan-400 font-bold hover:underline flex items-center gap-1.5">
+                  <span>📱</span> Student App
+                </Link>
+              </li>
+              <li>
+                <Link href="/staff-app" className="text-cyan-400 font-bold hover:underline flex items-center gap-1.5">
+                  <span>📱</span> Staff App
+                </Link>
+              </li>
+              <li>
+                <Link href="/management-app" className="text-cyan-400 font-bold hover:underline flex items-center gap-1.5">
+                  <span>📱</span> Management App
+                </Link>
+              </li>
+              <li className="pt-1"><Link href="/inventory-management" className="hover:text-cyan-400 transition-colors">Inventory Management</Link></li>
+              <li><Link href="/exam-management" className="hover:text-cyan-400 transition-colors">Controller of Examination</Link></li>
+              <li><Link href="/enquiry-crm" className="hover:text-cyan-400 transition-colors">Enquiry Management CRM</Link></li>
+            </ul>
           </div>
 
         </div>
 
-        {/* Bottom copyright line */}
+        {/* Copyright Bar */}
         <div className="max-w-7xl mx-auto pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-gray-500 font-mono">
           <div>
             © 2026 DevGyan Innovation. Engineered by Nitin Tripathi. All Rights Reserved.
           </div>
           <div className="flex gap-4 mt-2 sm:mt-0">
-            <span className="hover:text-gray-300">CBSE Compliance Validated</span>
+            <span>CBSE NEP-2020 Validated</span>
             <span>•</span>
-            <span className="hover:text-gray-300">Serverless Neon PostgreSQL</span>
+            <span>Serverless Neon Cloud</span>
             <span>•</span>
-            <span className="hover:text-gray-300">Tier-4 Cloud Isolation</span>
+            <span>Multi-Tenant Vault Active</span>
           </div>
         </div>
       </footer>
