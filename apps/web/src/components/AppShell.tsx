@@ -21,6 +21,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   const isSuperAdmin = currentUser?.role === 'DEVELOPER' || currentUser?.role === 'SUPER_ADMIN';
 
+  // EXACT MAP TO YOUR EXISTING DIRECTORIES:
   const allErpModules = [
     { name: 'Student Mgmt', href: '/student-management', desc: '4-Tab Dossier & KYC' },
     { name: 'Staff Mgmt', href: '/staff-management', desc: 'Faculty, Admin & Support' },
@@ -29,7 +30,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     { name: 'Fee Management', href: '/fee-management', desc: 'Challan & Online Dues' },
     { name: 'Enquiry CRM', href: '/enquiry-crm', desc: 'Prospect Leads Funnel' },
     { name: 'CBSE Studio', href: '/cbse-studio', desc: 'Curriculum & Rubrics' },
-    { name: 'Transport GPS', href: '/transport-gps', desc: 'Bus Fleet & Routes' },
+    { name: 'LMS E-Learning', href: '/lms', desc: 'Digital Lessons & Studio' },
+    { name: 'Transport Fleet', href: '/transport-management', desc: 'Bus Fleet & Telematics' },
+    { name: 'Staff & Payroll', href: '/staff-payroll', desc: 'Salary & Allowances' },
   ];
 
   return (
@@ -176,11 +179,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      {/* 4. EXACT FOOTER (MATCHING USER SCREENSHOT COLUMNS) */}
+      {/* 4. EXACT FOOTER - MAPPED TO REAL DIRECTORIES */}
       <footer className="border-t border-gray-900 bg-[#020617] text-gray-300 pt-12 pb-8 px-6 mt-16 font-sans">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-gray-900 text-xs">
           
-          {/* Brand Intro Column */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-black text-sm">
@@ -206,7 +208,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <li><Link href="/student-management" className="hover:text-cyan-400 transition-colors">Student Management</Link></li>
               <li><Link href="/staff-management" className="hover:text-cyan-400 transition-colors">Staff Management</Link></li>
               <li><Link href="/library-management" className="hover:text-cyan-400 transition-colors">Library Management</Link></li>
-              <li><Link href="/staff-management" className="hover:text-cyan-400 transition-colors">Staff & Payroll</Link></li>
+              <li><Link href="/staff-payroll" className="hover:text-cyan-400 transition-colors">Staff & Payroll</Link></li>
               <li><Link href="/fee-management" className="hover:text-cyan-400 transition-colors">Fee Management</Link></li>
               <li><Link href="/exam-management" className="hover:text-cyan-400 transition-colors">Exam Management</Link></li>
             </ul>
@@ -220,11 +222,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </h4>
             <ul className="space-y-2 text-gray-400 text-xs">
               <li><Link href="/attendance-leave" className="hover:text-cyan-400 transition-colors">Attendance & Leave</Link></li>
-              <li><Link href="/admission-fee" className="hover:text-cyan-400 transition-colors">Admission & Fee</Link></li>
-              <li><Link href="/lms-studio" className="hover:text-cyan-400 transition-colors">Learning Management (LMS)</Link></li>
+              <li><Link href="/admission-enquiry" className="hover:text-cyan-400 transition-colors">Admission & Fee</Link></li>
+              <li><Link href="/lms" className="hover:text-cyan-400 transition-colors">Learning Management (LMS)</Link></li>
               <li><Link href="/hostel-management" className="hover:text-cyan-400 transition-colors">Hostel Management</Link></li>
-              <li><Link href="/transport-gps" className="hover:text-cyan-400 transition-colors">Transport Fleet (GPS)</Link></li>
-              <li><Link href="/sms-alerts" className="hover:text-cyan-400 transition-colors">SMS & Email Alerts</Link></li>
+              <li><Link href="/transport-management" className="hover:text-cyan-400 transition-colors">Transport Fleet (GPS)</Link></li>
+              <li><Link href="/alerts-notification" className="hover:text-cyan-400 transition-colors">SMS & Email Alerts</Link></li>
             </ul>
           </div>
 
@@ -251,14 +253,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 </Link>
               </li>
               <li className="pt-1"><Link href="/inventory-management" className="hover:text-cyan-400 transition-colors">Inventory Management</Link></li>
-              <li><Link href="/exam-management" className="hover:text-cyan-400 transition-colors">Controller of Examination</Link></li>
+              <li><Link href="/exam-controller" className="hover:text-cyan-400 transition-colors">Controller of Examination</Link></li>
               <li><Link href="/enquiry-crm" className="hover:text-cyan-400 transition-colors">Enquiry Management CRM</Link></li>
             </ul>
           </div>
 
         </div>
 
-        {/* Copyright Bar */}
         <div className="max-w-7xl mx-auto pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-gray-500 font-mono">
           <div>
             © 2026 DevGyan Innovation. Engineered by Nitin Tripathi. All Rights Reserved.
