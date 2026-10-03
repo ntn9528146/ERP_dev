@@ -76,6 +76,7 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
       'Computer Science (Code 083)',
       'Informatics Practices (Code 065)',
       'Physical Education (Code 048)',
+      'Yoga (Code 841)',
     ],
   },
   {
@@ -87,8 +88,10 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
       'Business Studies (Code 054)',
       'Economics (Code 030)',
       'Applied Mathematics (Code 241)',
+      'Computer Science (Code 083)',
       'Informatics Practices (Code 065)',
       'Physical Education (Code 048)',
+      'Yoga (Code 841)',
     ],
   },
   {
@@ -101,7 +104,9 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
       'Geography (Code 029)',
       'Economics (Code 030)',
       'Psychology (Code 037)',
+      'Computer Science (Code 083)',
       'Physical Education (Code 048)',
+      'Yoga (Code 841)',
     ],
   },
   {
@@ -116,6 +121,7 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
       'Computer Science (Code 083)',
       'Informatics Practices (Code 065)',
       'Physical Education (Code 048)',
+      'Yoga (Code 841)',
     ],
   },
   {
@@ -127,8 +133,10 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
       'Business Studies (Code 054)',
       'Economics (Code 030)',
       'Applied Mathematics (Code 241)',
+      'Computer Science (Code 083)',
       'Informatics Practices (Code 065)',
       'Physical Education (Code 048)',
+      'Yoga (Code 841)',
     ],
   },
   {
@@ -141,7 +149,9 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
       'Geography (Code 029)',
       'Economics (Code 030)',
       'Psychology (Code 037)',
+      'Computer Science (Code 083)',
       'Physical Education (Code 048)',
+      'Yoga (Code 841)',
     ],
   },
 ];
