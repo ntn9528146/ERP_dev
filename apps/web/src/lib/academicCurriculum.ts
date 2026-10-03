@@ -69,6 +69,8 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
     name: 'Class 11 (Science)',
     availableSubjects: [
       'English Core (Code 301)',
+      'Hindi Core (Code 302)',
+      'Hindi Elective (Code 002)',
       'Physics (Code 042)',
       'Chemistry (Code 043)',
       'Mathematics (Code 041)',
@@ -84,6 +86,8 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
     name: 'Class 11 (Commerce)',
     availableSubjects: [
       'English Core (Code 301)',
+      'Hindi Core (Code 302)',
+      'Hindi Elective (Code 002)',
       'Accountancy (Code 055)',
       'Business Studies (Code 054)',
       'Economics (Code 030)',
@@ -99,6 +103,8 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
     name: 'Class 11 (Humanities)',
     availableSubjects: [
       'English Core (Code 301)',
+      'Hindi Core (Code 302)',
+      'Hindi Elective (Code 002)',
       'History (Code 027)',
       'Political Science (Code 028)',
       'Geography (Code 029)',
@@ -114,6 +120,8 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
     name: 'Class 12 (Science)',
     availableSubjects: [
       'English Core (Code 301)',
+      'Hindi Core (Code 302)',
+      'Hindi Elective (Code 002)',
       'Physics (Code 042)',
       'Chemistry (Code 043)',
       'Mathematics (Code 041)',
@@ -129,6 +137,8 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
     name: 'Class 12 (Commerce)',
     availableSubjects: [
       'English Core (Code 301)',
+      'Hindi Core (Code 302)',
+      'Hindi Elective (Code 002)',
       'Accountancy (Code 055)',
       'Business Studies (Code 054)',
       'Economics (Code 030)',
@@ -144,6 +154,8 @@ export const ACADEMIC_CLASSES: ClassConfig[] = [
     name: 'Class 12 (Humanities)',
     availableSubjects: [
       'English Core (Code 301)',
+      'Hindi Core (Code 302)',
+      'Hindi Elective (Code 002)',
       'History (Code 027)',
       'Political Science (Code 028)',
       'Geography (Code 029)',
