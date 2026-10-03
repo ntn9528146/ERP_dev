@@ -8,19 +8,49 @@ generator client {
 }
 
 model Student {
-  id            String   @id @default(cuid())
-  studentCode   String   @unique
-  fullName      String
-  grade         String
-  section       String
-  rollNo        String
-  guardianName  String
-  guardianPhone String
-  guardianEmail String?
-  gender        String   @default("Not Specified")
-  bloodGroup    String?  @default("B+")
-  feeStatus     String   @default("Due")
-  tenantSchool  String   @default("Arden Progressive School (Haldwani)")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(cuid())
+  studentCode     String   @unique
+  admissionNo     String   @unique
+  apaarId         String?  // Automated Permanent Academic Account Registry / PEN ID
+  aadhaarNo       String?
+  fullName        String
+  dateOfBirth     String
+  gender          String
+  bloodGroup      String?  @default("B+")
+  category        String   @default("General") // GEN, OBC, SC, ST, EWS
+  nationality     String   @default("Indian")
+  
+  // Academic Class & Stream
+  grade           String   // Nursery to Class 12
+  stream          String?  @default("General") // PCM, PCB, Commerce, Arts
+  section         String   @default("A")
+  rollNo          String
+  academicSession String   @default("2026-27")
+  enrolledSubjects String[] // CBSE mapped subject titles
+
+  // Parent & Family Dossier
+  fatherName      String
+  fatherOccupation String?
+  motherName      String
+  motherOccupation String?
+  guardianPhone   String
+  guardianEmail   String?
+  familyAnnualIncome String?
+
+  // Residence & Logistics
+  residentialAddress String
+  city            String   @default("Haldwani")
+  district        String   @default("Nainital")
+  state           String   @default("Uttarakhand")
+  pincode         String   @default("263139")
+  transportMode   String   @default("Private / Self") // School Bus, Private, Walker
+  busStopName     String?
+  isHostelResident Boolean  @default(false)
+  hostelRoomNo    String?
+
+  // Compliance & Fees
+  feeStatus       String   @default("Due")
+  tenantSchool    String   @default("Arden Progressive School (Haldwani)")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
