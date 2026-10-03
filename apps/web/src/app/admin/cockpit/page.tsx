@@ -24,7 +24,7 @@ interface AuditToken {
 export default function AdminCockpitPage() {
   const { activeSchool, availableSchools, setActiveSchool, currentUser, isAuthenticated } = useTenant();
 
-  // Developer / Super Admin check
+  // Strict Developer / Super Admin check
   const isSuperAdmin = currentUser?.role === 'DEVELOPER' || currentUser?.role === 'SUPER_ADMIN' || currentUser?.email?.includes('nitin');
 
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
@@ -44,9 +44,40 @@ export default function AdminCockpitPage() {
     { name: 'Pooja Pandey', email: 'director@jaiarihant.edu', pass: 'Arihant@2026', dept: 'Management', role: 'DIRECTOR', status: 'Active', schoolId: 'jai-arihant' },
   ];
 
-  // Enforce Tenant Isolation
-  // Super Admin can switch between schools; school staff only sees their active school
-  const currentSchoolId = isSuperAdmin ? activeSchool.id : (currentUser?.schoolId || activeSchool.id);
+  // 1. STRICT CONFIDENTIALITY GUARD: Chahe Localhost ho ya Production, bina login ke 100% LOCKED
+  if (!isAuthenticated || !currentUser) {
+    return (
+      <div className="min-h-screen bg-[#030712] text-white flex items-center justify-center p-6">
+        <div className="max-w-md w-full bg-[#0B1120] border border-cyan-500/30 rounded-3xl p-8 text-center space-y-5 shadow-2xl shadow-cyan-950/50">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-3xl shadow-inner">
+            🔐
+          </div>
+          <div>
+            <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 bg-cyan-950/40 px-3 py-1 rounded-full border border-cyan-800/60">
+              CONFIDENTIAL VAULT ACCESS RESTRICTED
+            </span>
+            <h2 className="text-xl font-bold text-white mt-3">Authentication Required</h2>
+            <p className="text-xs text-gray-400 mt-2 leading-relaxed">
+              Institutional credentials, single-use audit tokens, and faculty records are strictly confidential. Please login with your authorized institutional role to proceed.
+            </p>
+          </div>
+          <div className="pt-2">
+            <a
+              href="/"
+              className="inline-block w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/25 transition-all"
+            >
+              Sign In / Enter Secret Code →
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. ISOLATION RULES (Jab user logged in ho)
+  // - Agar Developer/SuperAdmin hai: activeSchool ka data dekhega aur switcher milega
+  // - Agar Principal/VP/Teacher hai: Sirf aur sirf uske assign school ka data dikhega
+  const currentSchoolId = isSuperAdmin ? activeSchool.id : (currentUser.schoolId || activeSchool.id);
 
   const displayedAccounts = allAccounts.filter((acc) => acc.schoolId === currentSchoolId);
   const displayedTokens = tokens.filter((tok) => tok.tenant === currentSchoolId);
@@ -69,27 +100,6 @@ export default function AdminCockpitPage() {
     setTokens([newToken, ...tokens]);
   };
 
-  // Confidentiality Check: Restrict unauthenticated access in production
-  if (!isAuthenticated && process.env.NODE_ENV === 'production') {
-    return (
-      <div className="min-h-screen bg-[#030712] text-white flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-[#0B1120] border border-red-500/30 rounded-2xl p-6 text-center space-y-4">
-          <div className="text-3xl">🔒</div>
-          <h2 className="text-lg font-bold text-white">Confidential Feature - Login Required</h2>
-          <p className="text-xs text-gray-400">
-            This module contains confidential institutional credentials and is restricted to authorized personnel only.
-          </p>
-          <a
-            href="/"
-            className="inline-block px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-xs font-bold text-white"
-          >
-            Go to Home & Login
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-[#030712] text-white py-8 px-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -100,6 +110,9 @@ export default function AdminCockpitPage() {
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-800/50">
                 ROOT COCKPIT • {activeSchool.name.toUpperCase()}
+              </span>
+              <span className="text-xs text-gray-400 font-mono">
+                Logged in as: <strong className="text-cyan-300">{currentUser.name || currentUser.role}</strong> ({currentUser.role})
               </span>
             </div>
             <h1 className="text-2xl font-extrabold tracking-tight">Institutional Cloud Vault</h1>
@@ -124,7 +137,7 @@ export default function AdminCockpitPage() {
             </div>
           ) : (
             <div className="px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-800/50 text-cyan-300 text-xs font-mono">
-              Campus: <strong>{activeSchool.name}</strong>
+              Campus: <strong>{activeSchool.name}</strong> (Isolated)
             </div>
           )}
         </div>
@@ -218,10 +231,9 @@ export default function AdminCockpitPage() {
                     {tok.status}
                   </span>
                   
-                  {/* Copy Button */}
                   <button
                     onClick={() => handleCopy(tok.code)}
-                    className="px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 text-[11px] font-mono transition-all"
+                    className="px-2.5 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 text-[11px] font-mono transition-all"
                     title="Copy token"
                   >
                     {copiedToken === tok.code ? (
