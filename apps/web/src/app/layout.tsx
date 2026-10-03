@@ -1,13 +1,11 @@
 import './globals.css';
 import React from 'react';
-import { Header } from '../components/layout/Header';
-import { Footer } from '../components/layout/Footer';
-import { FloatingCTA } from '../components/layout/FloatingCTA';
 import { TenantProvider } from '../context/TenantContext';
+import AppShell from '../components/AppShell';
 
 export const metadata = {
-  title: 'DEVGYAN INNOVATION | Multi-Tenant Enterprise Education OS',
-  description: 'Scalable campus automation, role governance and secure question paper architecture.',
+  title: 'DevGyan Innovation - Enterprise School Cloud ERP',
+  description: 'Next-Gen Multi-Tenant CBSE K-12 Institutional Management Platform',
 };
 
 export default function RootLayout({
@@ -16,13 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-[#030712] min-h-screen flex flex-col text-white">
+    <html lang="en" className="dark">
+      <body className="bg-[#030712] text-white min-h-screen antialiased selection:bg-cyan-500 selection:text-black">
         <TenantProvider>
-          <Header />
-          <FloatingCTA />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <AppShell>{children}</AppShell>
         </TenantProvider>
       </body>
     </html>
