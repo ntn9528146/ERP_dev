@@ -8,7 +8,7 @@ export default function FloatingActions() {
   const pathname = usePathname();
   const { isAuthenticated } = useTenant();
 
-  // Strictly show ONLY on root homepage ("/") and ONLY when user is NOT logged in
+  // Show strictly on homepage "/" and hide immediately when logged in
   if (pathname !== '/' || isAuthenticated) {
     return null;
   }

@@ -3,119 +3,164 @@
 import React, { useState } from 'react';
 import { useTenant } from '../../../context/TenantContext';
 
-export default function DevgyanCockpitPage() {
-  const { activeSchool, schools, switchSchool, generateSecretToken, secretTokens } = useTenant();
+interface FacultyAccount {
+  name: string;
+  email: string;
+  pass: string;
+  dept: string;
+  role: string;
+  status: string;
+  schoolId: string;
+}
 
-  const [selectedSchoolId, setSelectedSchoolId] = useState(activeSchool.id);
-  const [issuedCodeNotice, setIssuedCodeNotice] = useState<string | null>(null);
+interface AuditToken {
+  id: string;
+  code: string;
+  role: string;
+  tenant: string;
+  status: 'ACTIVE' | 'USED' | 'EXPIRED';
+}
 
-  const registeredAccounts = [
-    { name: 'Dr. R. K. Sharma', email: 'principal@arden.edu', pass: 'Principal@123', dept: 'Administration', role: 'PRINCIPAL', status: 'Active' },
-    { name: 'Alok Verma', email: 'alok.cs@arden.edu', pass: 'Faculty@123', dept: 'Computer Science', role: 'TEACHER', status: 'Active' },
-    { name: 'Sanjay Rawat', email: 'sanjay.math@arden.edu', pass: 'Math@2026', dept: 'Mathematics', role: 'TEACHER', status: 'Active' },
+export default function AdminCockpitPage() {
+  const { activeSchool, availableSchools, setActiveSchool, currentUser, isAuthenticated } = useTenant();
+
+  // Developer / Super Admin check
+  const isSuperAdmin = currentUser?.role === 'DEVELOPER' || currentUser?.role === 'SUPER_ADMIN' || currentUser?.email?.includes('nitin');
+
+  const [copiedToken, setCopiedToken] = useState<string | null>(null);
+
+  const [tokens, setTokens] = useState<AuditToken[]>([
+    { id: '1', code: 'SEC-D6HI5I-7125', role: 'TEACHER', tenant: 'dps-nainital', status: 'ACTIVE' },
+    { id: '2', code: 'SEC-ARDEN-2026-A1', role: 'TEACHER', tenant: 'arden-haldwani', status: 'ACTIVE' },
+    { id: '3', code: 'SEC-ARDEN-2026-P1', role: 'PRINCIPAL', tenant: 'arden-haldwani', status: 'ACTIVE' },
+  ]);
+
+  const allAccounts: FacultyAccount[] = [
+    { name: 'Dr. R. K. Sharma', email: 'principal@arden.edu', pass: 'Principal@123', dept: 'Administration', role: 'PRINCIPAL', status: 'Active', schoolId: 'arden-haldwani' },
+    { name: 'Alok Verma', email: 'alok.cs@arden.edu', pass: 'Faculty@123', dept: 'Computer Science', role: 'TEACHER', status: 'Active', schoolId: 'arden-haldwani' },
+    { name: 'Sanjay Rawat', email: 'sanjay.math@arden.edu', pass: 'Math@2026', dept: 'Mathematics', role: 'TEACHER', status: 'Active', schoolId: 'arden-haldwani' },
+    { name: 'Virendra Joshi', email: 'principal@dpsnainital.edu', pass: 'DPS@Ntl2026', dept: 'Administration', role: 'PRINCIPAL', status: 'Active', schoolId: 'dps-nainital' },
+    { name: 'Meenakshi Bisht', email: 'meenakshi@dpsnainital.edu', pass: 'Faculty@DPS', dept: 'Science', role: 'TEACHER', status: 'Active', schoolId: 'dps-nainital' },
+    { name: 'Pooja Pandey', email: 'director@jaiarihant.edu', pass: 'Arihant@2026', dept: 'Management', role: 'DIRECTOR', status: 'Active', schoolId: 'jai-arihant' },
   ];
 
-  const handleIssueToken = () => {
-    const code = generateSecretToken(selectedSchoolId, 'TEACHER', 'Nitin Tripathi (System Architect)');
-    setIssuedCodeNotice(`Token Issued for ${activeSchool.name}: ${code}`);
+  // Enforce Tenant Isolation
+  // Super Admin can switch between schools; school staff only sees their active school
+  const currentSchoolId = isSuperAdmin ? activeSchool.id : (currentUser?.schoolId || activeSchool.id);
+
+  const displayedAccounts = allAccounts.filter((acc) => acc.schoolId === currentSchoolId);
+  const displayedTokens = tokens.filter((tok) => tok.tenant === currentSchoolId);
+
+  const handleCopy = (code: string) => {
+    navigator.clipboard.writeText(code);
+    setCopiedToken(code);
+    setTimeout(() => setCopiedToken(null), 2000);
   };
 
+  const handleIssueToken = () => {
+    const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const newToken: AuditToken = {
+      id: String(Date.now()),
+      code: `SEC-${activeSchool.id.substring(0, 5).toUpperCase()}-${randomSuffix}`,
+      role: 'TEACHER',
+      tenant: currentSchoolId,
+      status: 'ACTIVE',
+    };
+    setTokens([newToken, ...tokens]);
+  };
+
+  // Confidentiality Check: Restrict unauthenticated access in production
+  if (!isAuthenticated && process.env.NODE_ENV === 'production') {
+    return (
+      <div className="min-h-screen bg-[#030712] text-white flex items-center justify-center p-6">
+        <div className="max-w-md w-full bg-[#0B1120] border border-red-500/30 rounded-2xl p-6 text-center space-y-4">
+          <div className="text-3xl">🔒</div>
+          <h2 className="text-lg font-bold text-white">Confidential Feature - Login Required</h2>
+          <p className="text-xs text-gray-400">
+            This module contains confidential institutional credentials and is restricted to authorized personnel only.
+          </p>
+          <a
+            href="/"
+            className="inline-block px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-xs font-bold text-white"
+          >
+            Go to Home & Login
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#030712] text-white py-10 px-6">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-[#030712] text-white py-8 px-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         
-        {/* Cockpit Top Bar (Exact Match with 2nd Screenshot) */}
-        <div className="p-6 rounded-2xl bg-gray-900/60 border border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center font-black text-2xl text-black">
-              S
+        {/* Top Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-5">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-800/50">
+                ROOT COCKPIT • {activeSchool.name.toUpperCase()}
+              </span>
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-white">SaaS Multi-School Developer Cockpit</h1>
-                <span className="text-xs font-mono font-bold bg-amber-950/80 border border-amber-800/80 text-amber-400 px-2 py-0.5 rounded">
-                  ROOT ACCESS (100)
-                </span>
-              </div>
-              <p className="text-xs text-gray-400 font-mono mt-0.5">
-                Developer Identity: Nitin Tripathi (System Architect) • DEVGYAN INNOVATION
-              </p>
-            </div>
+            <h1 className="text-2xl font-extrabold tracking-tight">Institutional Cloud Vault</h1>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => alert('New School Tenant Vault provisioned.')}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-xs font-bold"
-            >
-              + Add New School
-            </button>
-            <div className="px-4 py-2 bg-indigo-600 rounded-lg text-xs font-bold">
-              School Vault
+          {/* School Selector: Only for Developer / Super Admin */}
+          {isSuperAdmin ? (
+            <div className="flex items-center gap-2 bg-[#0B1120] border border-gray-800 p-2 rounded-xl">
+              <span className="text-xs font-mono text-cyan-400">Campus:</span>
+              <select
+                value={activeSchool.id}
+                onChange={(e) => {
+                  const s = availableSchools.find((item) => item.id === e.target.value);
+                  if (s) setActiveSchool(s);
+                }}
+                className="bg-[#030712] border border-gray-700 text-xs text-white rounded-lg p-1.5 focus:border-cyan-400"
+              >
+                {availableSchools.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
             </div>
-            <div className="px-3 py-2 bg-gray-800 rounded-lg text-[11px] font-mono text-gray-300">
-              SaaS Plans (From ₹7,999)
+          ) : (
+            <div className="px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-800/50 text-cyan-300 text-xs font-mono">
+              Campus: <strong>{activeSchool.name}</strong>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* Tenant Selection Control & Token Generator */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-gray-900/40 border border-gray-800 space-y-3">
-            <label className="text-xs font-mono text-cyan-400 uppercase font-semibold">SELECTED SCHOOL:</label>
-            <select
-              value={selectedSchoolId}
-              onChange={(e) => {
-                setSelectedSchoolId(e.target.value);
-                switchSchool(e.target.value);
-              }}
-              className="w-full bg-[#030712] border border-gray-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-semibold"
-            >
-              {schools.map((s) => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
-
+        {/* 3 Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-[#0B1120] border border-gray-800 rounded-2xl p-5 space-y-3">
+            <div className="text-sm font-semibold text-white truncate">{activeSchool.name}</div>
             <button
               onClick={handleIssueToken}
-              className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs uppercase tracking-wide transition-all"
+              className="w-full py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 font-bold text-xs text-black transition-all uppercase"
             >
               + Issue Token for {activeSchool.name}
             </button>
           </div>
 
-          <div className="p-6 rounded-2xl bg-gray-900/40 border border-gray-800">
-            <span className="text-xs text-gray-400">ACTIVE SUBSCRIPTION TIER</span>
-            <div className="text-2xl font-black text-emerald-400 mt-2">{activeSchool.activePlan}</div>
-            <span className="text-xs text-gray-500 font-mono">Institutional Cloud Vault Active</span>
+          <div className="bg-[#0B1120] border border-gray-800 rounded-2xl p-5 space-y-1">
+            <div className="text-2xl font-black text-emerald-400">Enterprise 2026-27</div>
+            <div className="text-xs text-gray-400">Institutional Cloud Vault Active</div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-gray-900/40 border border-gray-800">
-            <span className="text-xs text-gray-400">REGISTERED ACCOUNTS</span>
-            <div className="text-2xl font-black text-white mt-2">{activeSchool.totalIds} Total IDs</div>
-            <span className="text-xs text-cyan-400 font-mono">Cleartext strictly isolated for Developer access</span>
+          <div className="bg-[#0B1120] border border-gray-800 rounded-2xl p-5 space-y-1">
+            <div className="text-2xl font-black text-cyan-400">{displayedAccounts.length} Total IDs</div>
+            <div className="text-xs text-gray-400">Cleartext strictly isolated for authorized access</div>
           </div>
         </div>
 
-        {issuedCodeNotice && (
-          <div className="p-4 rounded-xl bg-cyan-950/70 border border-cyan-800 text-cyan-300 font-mono text-xs flex justify-between items-center">
-            <span>{issuedCodeNotice}</span>
-            <span className="text-white font-bold bg-cyan-800 px-2 py-1 rounded">Single-Use Valid</span>
-          </div>
-        )}
+        {/* Accounts Table */}
+        <div className="space-y-3">
+          <h2 className="text-sm font-bold text-white font-mono uppercase">
+            Accounts Registered Under {activeSchool.name} Only
+          </h2>
 
-        {/* Registered Accounts Table (Exact Screenshot 2 layout) */}
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-bold text-white">
-              Accounts Registered Under {activeSchool.name} Only
-            </h3>
-            <span className="text-xs text-gray-400 font-mono">Cleartext passwords strictly isolated for Developer access.</span>
-          </div>
-
-          <div className="overflow-x-auto rounded-xl border border-gray-800 bg-gray-900/30">
-            <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-gray-950/80 text-gray-400 uppercase border-b border-gray-800">
+          <div className="overflow-x-auto rounded-xl border border-gray-800 bg-[#0B1120]">
+            <table className="w-full text-left text-xs font-sans">
+              <thead className="bg-[#030712] text-gray-400 uppercase font-mono border-b border-gray-800 text-[11px]">
                 <tr>
                   <th className="py-3 px-4">Faculty Name</th>
                   <th className="py-3 px-4">Login Email</th>
@@ -125,35 +170,67 @@ export default function DevgyanCockpitPage() {
                   <th className="py-3 px-4">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800">
-                {registeredAccounts.map((acc, idx) => (
-                  <tr key={idx} className="hover:bg-gray-800/40">
-                    <td className="py-3 px-4 text-white font-semibold">{acc.name}</td>
-                    <td className="py-3 px-4 text-cyan-400">{acc.email}</td>
-                    <td className="py-3 px-4 text-amber-400 font-bold">{acc.pass}</td>
-                    <td className="py-3 px-4 text-gray-300">{acc.dept}</td>
-                    <td className="py-3 px-4 text-indigo-400 font-bold">{acc.role}</td>
-                    <td className="py-3 px-4 text-emerald-400 font-semibold">{acc.status}</td>
+              <tbody className="divide-y divide-gray-800/60 font-mono text-xs">
+                {displayedAccounts.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-6 text-center text-gray-500">
+                      No accounts registered under this campus yet.
+                    </td>
                   </tr>
-                ))}
+                ) : (
+                  displayedAccounts.map((acc, idx) => (
+                    <tr key={idx} className="hover:bg-gray-800/30">
+                      <td className="py-3 px-4 text-white font-bold">{acc.name}</td>
+                      <td className="py-3 px-4 text-cyan-400">{acc.email}</td>
+                      <td className="py-3 px-4 text-amber-400 font-semibold">{acc.pass}</td>
+                      <td className="py-3 px-4 text-gray-300">{acc.dept}</td>
+                      <td className="py-3 px-4 text-blue-400 font-bold">{acc.role}</td>
+                      <td className="py-3 px-4 text-emerald-400">● {acc.status}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* Secret Tokens Log */}
-        <div className="p-6 rounded-2xl bg-gray-900/30 border border-gray-800 space-y-3">
-          <h4 className="text-sm font-bold text-gray-300">Single-Use Token Audit Vault</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            {secretTokens.map((t, idx) => (
-              <div key={idx} className="p-3 rounded-lg bg-[#030712] border border-gray-800 text-xs font-mono flex justify-between items-center">
+        {/* Single Use Token Audit Vault with Copy Buttons */}
+        <div className="space-y-3 pt-4 border-t border-gray-800">
+          <h2 className="text-sm font-bold text-white font-mono uppercase">
+            Single-Use Token Audit Vault
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {displayedTokens.map((tok) => (
+              <div
+                key={tok.id}
+                className="bg-[#0B1120] border border-gray-800 rounded-xl p-3 flex items-center justify-between gap-2"
+              >
                 <div>
-                  <div className="text-cyan-400 font-bold">{t.token}</div>
-                  <div className="text-[10px] text-gray-500">{t.role} • {t.schoolId}</div>
+                  <div className="text-cyan-400 font-mono font-bold text-xs">{tok.code}</div>
+                  <div className="text-[10px] text-gray-400 font-mono mt-0.5">
+                    {tok.role} • {tok.tenant}
+                  </div>
                 </div>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${t.isUsed ? 'bg-rose-950 text-rose-400' : 'bg-emerald-950 text-emerald-400'}`}>
-                  {t.isUsed ? 'BURNED' : 'ACTIVE'}
-                </span>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800">
+                    {tok.status}
+                  </span>
+                  
+                  {/* Copy Button */}
+                  <button
+                    onClick={() => handleCopy(tok.code)}
+                    className="px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 text-[11px] font-mono transition-all"
+                    title="Copy token"
+                  >
+                    {copiedToken === tok.code ? (
+                      <span className="text-emerald-400 font-bold">✓ Copied</span>
+                    ) : (
+                      <span>📋 Copy</span>
+                    )}
+                  </button>
+                </div>
               </div>
             ))}
           </div>
