@@ -6,10 +6,12 @@ import { useTenant } from '../context/TenantContext';
 
 export default function FloatingActions() {
   const pathname = usePathname();
-  const { isAuthenticated } = useTenant();
+  const { isAuthenticated, currentUser } = useTenant();
 
-  // Strict check: ONLY show on exact homepage ("/") AND only when NOT authenticated
-  if (pathname !== '/' || isAuthenticated) {
+  // STRICT RULE 5:
+  // 1. Agar koi bhi user logged in hai (chahe Admin ho ya Teacher), ye bar PERMANENTLY GAYAB rahega.
+  // 2. Sirf landing page ("/") par unauthenticated public visitors ko attraction ke liye dikhega.
+  if (isAuthenticated || !!currentUser || pathname !== '/') {
     return null;
   }
 
