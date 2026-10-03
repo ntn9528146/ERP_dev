@@ -22,63 +22,50 @@ interface AuditToken {
 }
 
 export default function AdminCockpitPage() {
-  const { activeSchool, availableSchools, setActiveSchool, currentUser, isAuthenticated } = useTenant();
+  const { activeSchool, availableSchools, addNewSchool, currentUser, isAuthenticated } = useTenant();
 
-  // Strict Developer / Super Admin check
-  const isSuperAdmin = currentUser?.role === 'DEVELOPER' || currentUser?.role === 'SUPER_ADMIN' || currentUser?.email?.includes('nitin');
-
+  const isSuperAdmin = currentUser?.role === 'DEVELOPER' || currentUser?.role === 'SUPER_ADMIN';
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
+
+  // New School Modal State
+  const [showAddSchoolModal, setShowAddSchoolModal] = useState(false);
+  const [newSchoolName, setNewSchoolName] = useState('');
+  const [newSchoolCode, setNewSchoolCode] = useState('');
+  const [newSchoolCity, setNewSchoolCity] = useState('Haldwani');
+  const [newSchoolDomain, setNewSchoolDomain] = useState('');
 
   const [tokens, setTokens] = useState<AuditToken[]>([
     { id: '1', code: 'SEC-D6HI5I-7125', role: 'TEACHER', tenant: 'dps-nainital', status: 'ACTIVE' },
     { id: '2', code: 'SEC-ARDEN-2026-A1', role: 'TEACHER', tenant: 'arden-haldwani', status: 'ACTIVE' },
     { id: '3', code: 'SEC-ARDEN-2026-P1', role: 'PRINCIPAL', tenant: 'arden-haldwani', status: 'ACTIVE' },
+    { id: '4', code: 'SEC-JAIS-2026-D1', role: 'DIRECTOR', tenant: 'jai-arihant', status: 'ACTIVE' },
   ]);
 
   const allAccounts: FacultyAccount[] = [
     { name: 'Dr. R. K. Sharma', email: 'principal@arden.edu', pass: 'Principal@123', dept: 'Administration', role: 'PRINCIPAL', status: 'Active', schoolId: 'arden-haldwani' },
     { name: 'Alok Verma', email: 'alok.cs@arden.edu', pass: 'Faculty@123', dept: 'Computer Science', role: 'TEACHER', status: 'Active', schoolId: 'arden-haldwani' },
-    { name: 'Sanjay Rawat', email: 'sanjay.math@arden.edu', pass: 'Math@2026', dept: 'Mathematics', role: 'TEACHER', status: 'Active', schoolId: 'arden-haldwani' },
     { name: 'Virendra Joshi', email: 'principal@dpsnainital.edu', pass: 'DPS@Ntl2026', dept: 'Administration', role: 'PRINCIPAL', status: 'Active', schoolId: 'dps-nainital' },
     { name: 'Meenakshi Bisht', email: 'meenakshi@dpsnainital.edu', pass: 'Faculty@DPS', dept: 'Science', role: 'TEACHER', status: 'Active', schoolId: 'dps-nainital' },
     { name: 'Pooja Pandey', email: 'director@jaiarihant.edu', pass: 'Arihant@2026', dept: 'Management', role: 'DIRECTOR', status: 'Active', schoolId: 'jai-arihant' },
   ];
 
-  // 1. STRICT CONFIDENTIALITY GUARD: Chahe Localhost ho ya Production, bina login ke 100% LOCKED
   if (!isAuthenticated || !currentUser) {
     return (
       <div className="min-h-screen bg-[#030712] text-white flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-[#0B1120] border border-cyan-500/30 rounded-3xl p-8 text-center space-y-5 shadow-2xl shadow-cyan-950/50">
-          <div className="w-16 h-16 mx-auto rounded-2xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-3xl shadow-inner">
-            🔐
-          </div>
-          <div>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 bg-cyan-950/40 px-3 py-1 rounded-full border border-cyan-800/60">
-              CONFIDENTIAL VAULT ACCESS RESTRICTED
-            </span>
-            <h2 className="text-xl font-bold text-white mt-3">Authentication Required</h2>
-            <p className="text-xs text-gray-400 mt-2 leading-relaxed">
-              Institutional credentials, single-use audit tokens, and faculty records are strictly confidential. Please login with your authorized institutional role to proceed.
-            </p>
-          </div>
-          <div className="pt-2">
-            <a
-              href="/"
-              className="inline-block w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/25 transition-all"
-            >
-              Sign In / Enter Secret Code →
-            </a>
-          </div>
+        <div className="max-w-md w-full bg-[#0B1120] border border-cyan-500/30 rounded-3xl p-8 text-center space-y-4">
+          <div className="text-3xl">🔒</div>
+          <h2 className="text-lg font-bold text-white">Confidential Vault Restricted</h2>
+          <p className="text-xs text-gray-400">Please authenticate to access institutional root cockpit.</p>
+          <a href="/login" className="inline-block px-5 py-2.5 rounded-xl bg-cyan-500 text-black font-bold text-xs">
+            Login Now →
+          </a>
         </div>
       </div>
     );
   }
 
-  // 2. ISOLATION RULES (Jab user logged in ho)
-  // - Agar Developer/SuperAdmin hai: activeSchool ka data dekhega aur switcher milega
-  // - Agar Principal/VP/Teacher hai: Sirf aur sirf uske assign school ka data dikhega
-  const currentSchoolId = isSuperAdmin ? activeSchool.id : (currentUser.schoolId || activeSchool.id);
-
+  // School isolation
+  const currentSchoolId = activeSchool.id;
   const displayedAccounts = allAccounts.filter((acc) => acc.schoolId === currentSchoolId);
   const displayedTokens = tokens.filter((tok) => tok.tenant === currentSchoolId);
 
@@ -92,12 +79,31 @@ export default function AdminCockpitPage() {
     const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
     const newToken: AuditToken = {
       id: String(Date.now()),
-      code: `SEC-${activeSchool.id.substring(0, 5).toUpperCase()}-${randomSuffix}`,
+      code: `SEC-${activeSchool.code}-${randomSuffix}`,
       role: 'TEACHER',
       tenant: currentSchoolId,
       status: 'ACTIVE',
     };
     setTokens([newToken, ...tokens]);
+  };
+
+  const handleCreateSchool = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSchoolName || !newSchoolCode) {
+      alert('School name and code are required!');
+      return;
+    }
+    const created = addNewSchool({
+      name: newSchoolName,
+      code: newSchoolCode.toUpperCase(),
+      city: newSchoolCity,
+      domain: newSchoolDomain || `${newSchoolCode.toLowerCase()}.edu`,
+    });
+    alert(`School "${created.name}" onboarded successfully into DevGyan Cloud!`);
+    setShowAddSchoolModal(false);
+    setNewSchoolName('');
+    setNewSchoolCode('');
+    setNewSchoolDomain('');
   };
 
   return (
@@ -112,33 +118,20 @@ export default function AdminCockpitPage() {
                 ROOT COCKPIT • {activeSchool.name.toUpperCase()}
               </span>
               <span className="text-xs text-gray-400 font-mono">
-                Logged in as: <strong className="text-cyan-300">{currentUser.name || currentUser.role}</strong> ({currentUser.role})
+                Operator: <strong className="text-cyan-300">{currentUser.name}</strong>
               </span>
             </div>
             <h1 className="text-2xl font-extrabold tracking-tight">Institutional Cloud Vault</h1>
           </div>
 
-          {/* School Selector: Only for Developer / Super Admin */}
-          {isSuperAdmin ? (
-            <div className="flex items-center gap-2 bg-[#0B1120] border border-gray-800 p-2 rounded-xl">
-              <span className="text-xs font-mono text-cyan-400">Campus:</span>
-              <select
-                value={activeSchool.id}
-                onChange={(e) => {
-                  const s = availableSchools.find((item) => item.id === e.target.value);
-                  if (s) setActiveSchool(s);
-                }}
-                className="bg-[#030712] border border-gray-700 text-xs text-white rounded-lg p-1.5 focus:border-cyan-400"
-              >
-                {availableSchools.map((s) => (
-                  <option key={s.id} value={s.id}>{s.name}</option>
-                ))}
-              </select>
-            </div>
-          ) : (
-            <div className="px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-800/50 text-cyan-300 text-xs font-mono">
-              Campus: <strong>{activeSchool.name}</strong> (Isolated)
-            </div>
+          {/* Action: Onboard New School Button (Super Admin Only) */}
+          {isSuperAdmin && (
+            <button
+              onClick={() => setShowAddSchoolModal(true)}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 transition-all flex items-center gap-1.5"
+            >
+              <span>+</span> Onboard New School / Campus
+            </button>
           )}
         </div>
 
@@ -150,18 +143,18 @@ export default function AdminCockpitPage() {
               onClick={handleIssueToken}
               className="w-full py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 font-bold text-xs text-black transition-all uppercase"
             >
-              + Issue Token for {activeSchool.name}
+              + Issue Token for {activeSchool.code}
             </button>
           </div>
 
           <div className="bg-[#0B1120] border border-gray-800 rounded-2xl p-5 space-y-1">
             <div className="text-2xl font-black text-emerald-400">Enterprise 2026-27</div>
-            <div className="text-xs text-gray-400">Institutional Cloud Vault Active</div>
+            <div className="text-xs text-gray-400">Institutional Cloud Vault Active ({availableSchools.length} Campuses)</div>
           </div>
 
           <div className="bg-[#0B1120] border border-gray-800 rounded-2xl p-5 space-y-1">
             <div className="text-2xl font-black text-cyan-400">{displayedAccounts.length} Total IDs</div>
-            <div className="text-xs text-gray-400">Cleartext strictly isolated for authorized access</div>
+            <div className="text-xs text-gray-400">Isolated credentials for {activeSchool.code}</div>
           </div>
         </div>
 
@@ -187,7 +180,7 @@ export default function AdminCockpitPage() {
                 {displayedAccounts.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-6 text-center text-gray-500">
-                      No accounts registered under this campus yet.
+                      No accounts registered under this campus yet. Issue a token to onboard faculty!
                     </td>
                   </tr>
                 ) : (
@@ -210,14 +203,14 @@ export default function AdminCockpitPage() {
         {/* Single Use Token Audit Vault with Copy Buttons */}
         <div className="space-y-3 pt-4 border-t border-gray-800">
           <h2 className="text-sm font-bold text-white font-mono uppercase">
-            Single-Use Token Audit Vault
+            Single-Use Token Audit Vault ({displayedTokens.length})
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {displayedTokens.map((tok) => (
               <div
                 key={tok.id}
-                className="bg-[#0B1120] border border-gray-800 rounded-xl p-3 flex items-center justify-between gap-2"
+                className="bg-[#0B1120] border border-gray-800 rounded-xl p-3 flex items-center justify-between gap-2 shadow"
               >
                 <div>
                   <div className="text-cyan-400 font-mono font-bold text-xs">{tok.code}</div>
@@ -234,19 +227,93 @@ export default function AdminCockpitPage() {
                   <button
                     onClick={() => handleCopy(tok.code)}
                     className="px-2.5 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 text-[11px] font-mono transition-all"
-                    title="Copy token"
                   >
-                    {copiedToken === tok.code ? (
-                      <span className="text-emerald-400 font-bold">✓ Copied</span>
-                    ) : (
-                      <span>📋 Copy</span>
-                    )}
+                    {copiedToken === tok.code ? <span className="text-emerald-400 font-bold">✓ Copied</span> : <span>📋 Copy</span>}
                   </button>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
+        {/* MODAL: ONBOARD NEW SCHOOL / CAMPUS */}
+        {showAddSchoolModal && (
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-[#0B1120] border border-gray-800 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+              <div className="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 className="text-base font-bold text-white">🏢 Onboard New School Campus</h3>
+                <button onClick={() => setShowAddSchoolModal(false)} className="text-gray-400 hover:text-white">✕</button>
+              </div>
+
+              <form onSubmit={handleCreateSchool} className="space-y-4 text-xs">
+                <div>
+                  <label className="block text-gray-300 font-semibold mb-1">Full School Name *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. St. Joseph College (Nainital)"
+                    value={newSchoolName}
+                    onChange={(e) => setNewSchoolName(e.target.value)}
+                    className="w-full bg-[#030712] border border-gray-800 rounded-lg p-2.5 text-white focus:border-cyan-400"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-gray-300 font-semibold mb-1">School Code (Acronym) *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. SJC"
+                      value={newSchoolCode}
+                      onChange={(e) => setNewSchoolCode(e.target.value)}
+                      className="w-full bg-[#030712] border border-gray-800 rounded-lg p-2.5 text-white uppercase font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-300 font-semibold mb-1">City / Location</label>
+                    <input
+                      type="text"
+                      value={newSchoolCity}
+                      onChange={(e) => setNewSchoolCity(e.target.value)}
+                      className="w-full bg-[#030712] border border-gray-800 rounded-lg p-2.5 text-white"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 font-semibold mb-1">Domain Prefix (for Auto-Login)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. sjcnainital.edu"
+                    value={newSchoolDomain}
+                    onChange={(e) => setNewSchoolDomain(e.target.value)}
+                    className="w-full bg-[#030712] border border-gray-800 rounded-lg p-2.5 text-white font-mono"
+                  />
+                  <span className="text-[10px] text-gray-500 font-mono mt-1 block">
+                    Staff entering emails with this domain will automatically route to this campus.
+                  </span>
+                </div>
+
+                <div className="flex justify-end gap-2 pt-2 border-t border-gray-800">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddSchoolModal(false)}
+                    className="px-4 py-2 rounded-lg bg-gray-800 text-gray-300"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-bold text-white shadow-lg"
+                  >
+                    Add Campus to ERP
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

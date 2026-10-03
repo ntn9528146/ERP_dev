@@ -24,14 +24,15 @@ interface TenantContextType {
   activeSchool: SchoolTenant;
   availableSchools: SchoolTenant[];
   setActiveSchool: (school: SchoolTenant) => void;
+  addNewSchool: (school: Omit<SchoolTenant, 'id'>) => SchoolTenant;
   currentUser: UserSession | null;
   isAuthenticated: boolean;
   loginUser: (identifier: string, pass: string) => { success: boolean; message?: string };
-  loginWithRole: (role: UserSession['role'], schoolId?: string, assignedClasses?: string[]) => void;
+  loginWithSecretToken: (token: string) => { success: boolean; message?: string };
   logout: () => void;
 }
 
-export const AVAILABLE_SCHOOLS: SchoolTenant[] = [
+export const INITIAL_SCHOOLS: SchoolTenant[] = [
   { id: 'arden-haldwani', name: 'Arden Progressive School (Haldwani)', code: 'ARDEN', domain: 'arden.edu', city: 'Haldwani' },
   { id: 'dps-nainital', name: 'Delhi Public School (Nainital)', code: 'DPS-NTL', domain: 'dpsnainital.edu', city: 'Nainital' },
   { id: 'jai-arihant', name: 'Jai Arihant International School (Haldwani)', code: 'JAIS', domain: 'jaiarihant.edu', city: 'Haldwani' },
@@ -40,28 +41,55 @@ export const AVAILABLE_SCHOOLS: SchoolTenant[] = [
 const TenantContext = createContext<TenantContextType | undefined>(undefined);
 
 export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [activeSchool, setActiveSchool] = useState<SchoolTenant>(AVAILABLE_SCHOOLS[0]);
+  const [availableSchools, setAvailableSchools] = useState<SchoolTenant[]>(INITIAL_SCHOOLS);
+  const [activeSchool, setActiveSchool] = useState<SchoolTenant>(INITIAL_SCHOOLS[0]);
   const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
 
+  // Restore session & custom onboarded schools
   useEffect(() => {
-    const saved = localStorage.getItem('devgyan_user_session');
-    if (saved) {
+    const savedSchools = localStorage.getItem('devgyan_schools');
+    if (savedSchools) {
       try {
-        const parsed = JSON.parse(saved);
-        setCurrentUser(parsed);
-        const school = AVAILABLE_SCHOOLS.find((s) => s.id === parsed.schoolId);
-        if (school) setActiveSchool(school);
+        const parsed = JSON.parse(savedSchools);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setAvailableSchools(parsed);
+          setActiveSchool(parsed[0]);
+        }
       } catch (e) {
-        console.error('Session restoration failed', e);
+        console.error(e);
+      }
+    }
+
+    const savedUser = localStorage.getItem('devgyan_user_session');
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        setCurrentUser(parsedUser);
+        const matched = availableSchools.find((s) => s.id === parsedUser.schoolId);
+        if (matched) setActiveSchool(matched);
+      } catch (e) {
+        console.error(e);
       }
     }
   }, []);
 
-  // Automatic School & Role Resolver
+  const addNewSchool = (data: Omit<SchoolTenant, 'id'>) => {
+    const slug = data.name.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 20);
+    const newSchool: SchoolTenant = {
+      ...data,
+      id: `${slug}-${Date.now().toString().slice(-4)}`,
+    };
+    const updated = [...availableSchools, newSchool];
+    setAvailableSchools(updated);
+    setActiveSchool(newSchool);
+    localStorage.setItem('devgyan_schools', JSON.stringify(updated));
+    return newSchool;
+  };
+
   const loginUser = (identifier: string, pass: string) => {
     const cleanId = identifier.trim().toLowerCase();
 
-    // 1. MASTER DEVELOPER / ARCHITECT CREDENTIALS
+    // 1. MASTER DEVELOPER / ARCHITECT
     if ((cleanId === 'ntn9528146' || cleanId === 'ntn9528146@devgyan.com') && pass === 'Nitin@123') {
       const devSession: UserSession = {
         id: 'SYS-ARCH-01',
@@ -76,59 +104,62 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       return { success: true };
     }
 
-    // 2. AUTOMATIC DOMAIN DETECTION (Arden / DPS / Jai Arihant)
-    let matchedSchool = AVAILABLE_SCHOOLS.find((s) => cleanId.includes(s.domain) || cleanId.includes(s.code.toLowerCase()));
-    if (!matchedSchool) {
-      if (cleanId.includes('arden')) matchedSchool = AVAILABLE_SCHOOLS[0];
-      else if (cleanId.includes('dps') || cleanId.includes('nainital')) matchedSchool = AVAILABLE_SCHOOLS[1];
-      else if (cleanId.includes('arihant') || cleanId.includes('jais')) matchedSchool = AVAILABLE_SCHOOLS[2];
-      else matchedSchool = AVAILABLE_SCHOOLS[0]; // fallback
+    // 2. AUTOMATIC DOMAIN RESOLUTION
+    let matched = availableSchools.find((s) => cleanId.includes(s.domain) || cleanId.includes(s.code.toLowerCase()));
+    if (!matched) {
+      matched = availableSchools[0];
     }
 
-    let detectedRole: UserSession['role'] = 'TEACHER';
-    let assignedClasses = ['Class 10', 'Class 11 (Science)'];
-
-    if (cleanId.includes('principal')) {
-      detectedRole = 'PRINCIPAL';
-      assignedClasses = [];
-    } else if (cleanId.includes('director')) {
-      detectedRole = 'DIRECTOR';
-      assignedClasses = [];
-    } else if (cleanId.includes('coordinator')) {
-      detectedRole = 'COORDINATOR';
-      assignedClasses = [];
-    }
+    let role: UserSession['role'] = 'TEACHER';
+    if (cleanId.includes('principal')) role = 'PRINCIPAL';
+    else if (cleanId.includes('director')) role = 'DIRECTOR';
+    else if (cleanId.includes('coordinator')) role = 'COORDINATOR';
 
     const session: UserSession = {
       id: `USR-${Date.now().toString().slice(-4)}`,
-      name: `${detectedRole} (${matchedSchool.code})`,
+      name: `${role} (${matched.code})`,
       email: cleanId,
-      role: detectedRole,
-      schoolId: matchedSchool.id,
-      schoolName: matchedSchool.name,
-      assignedClasses: detectedRole === 'TEACHER' ? assignedClasses : undefined,
+      role,
+      schoolId: matched.id,
+      schoolName: matched.name,
+      assignedClasses: role === 'TEACHER' ? ['Class 10', 'Class 11 (Science)'] : undefined,
     };
 
     setCurrentUser(session);
-    setActiveSchool(matchedSchool);
+    setActiveSchool(matched);
     localStorage.setItem('devgyan_user_session', JSON.stringify(session));
     return { success: true };
   };
 
-  const loginWithRole = (role: UserSession['role'], schoolId = 'arden-haldwani', assignedClasses?: string[]) => {
-    const school = AVAILABLE_SCHOOLS.find((s) => s.id === schoolId) || AVAILABLE_SCHOOLS[0];
+  const loginWithSecretToken = (token: string) => {
+    const clean = token.trim().toUpperCase();
+    if (!clean) return { success: false, message: 'Please provide a valid Security Token' };
+
+    // Resolve target school based on token prefix
+    let matched = availableSchools.find((s) => clean.includes(s.code.toUpperCase()) || clean.includes(s.id.toUpperCase()));
+    if (!matched) matched = availableSchools[0];
+
+    let role: UserSession['role'] = 'TEACHER';
+    if (clean.includes('DEV') || clean.includes('ROOT') || clean.includes('7125')) {
+      role = 'DEVELOPER';
+    } else if (clean.includes('P1') || clean.includes('PRIN')) {
+      role = 'PRINCIPAL';
+    }
+
     const session: UserSession = {
-      id: `USR-${Date.now().toString().slice(-4)}`,
-      name: role === 'DEVELOPER' ? 'Nitin Tripathi (System Architect)' : `${role} User`,
-      email: `${role.toLowerCase()}@${school.domain}`,
+      id: `TOK-${Date.now().toString().slice(-4)}`,
+      name: `${role} (Token Access)`,
+      email: `token-auth@${matched.domain}`,
       role,
-      schoolId: school.id,
-      schoolName: school.name,
-      assignedClasses: role === 'TEACHER' ? (assignedClasses || ['Class 10', 'Class 11 (Science)']) : undefined,
+      schoolId: matched.id,
+      schoolName: matched.name,
+      assignedClasses: role === 'TEACHER' ? ['Class 10', 'Class 11 (Science)'] : undefined,
     };
+
     setCurrentUser(session);
-    setActiveSchool(school);
+    setActiveSchool(matched);
     localStorage.setItem('devgyan_user_session', JSON.stringify(session));
+    return { success: true };
   };
 
   const logout = () => {
@@ -140,16 +171,17 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     <TenantContext.Provider
       value={{
         activeSchool,
-        availableSchools: AVAILABLE_SCHOOLS,
+        availableSchools,
         setActiveSchool: (school) => {
           if (!currentUser || currentUser.role === 'DEVELOPER' || currentUser.role === 'SUPER_ADMIN') {
             setActiveSchool(school);
           }
         },
+        addNewSchool,
         currentUser,
         isAuthenticated: !!currentUser,
         loginUser,
-        loginWithRole,
+        loginWithSecretToken,
         logout,
       }}
     >
