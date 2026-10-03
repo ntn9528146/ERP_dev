@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Student {
+  id            String   @id @default(cuid())
+  studentCode   String   @unique
+  fullName      String
+  grade         String
+  section       String
+  rollNo        String
+  guardianName  String
+  guardianPhone String
+  guardianEmail String?
+  gender        String   @default("Not Specified")
+  bloodGroup    String?  @default("B+")
+  feeStatus     String   @default("Due")
+  tenantSchool  String   @default("Arden Progressive School (Haldwani)")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
