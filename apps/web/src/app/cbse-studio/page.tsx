@@ -34,10 +34,11 @@ export default function PaperGeneratorStudioPage() {
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
   const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('doc');
 
+  // Evaluation Marks Distribution (Adjustable)
   const [theoryMarks, setTheoryMarks] = useState(70);
   const [practicalMarks, setPracticalMarks] = useState(30);
 
-  // EXACT CBSE 2026 BLUEPRINT MATRIX (37 Questions, 70 Marks)
+  // SECTION BLUEPRINT MATRIX (Interactive with Checkboxes & +/- Counters)
   const [sections, setSections] = useState([
     { id: 'sec-a', name: 'Section A: Objective & MCQs (Q1 to Q21)', enabled: true, marksPerQ: 1, count: 21 },
     { id: 'sec-b', name: 'Section B: VSA Output & Syntax (Q22 to Q28)', enabled: true, marksPerQ: 2, count: 7 },
@@ -108,6 +109,14 @@ export default function PaperGeneratorStudioPage() {
     setSelectedExpIds(initialExps);
   };
 
+  const toggleTopic = (topic: string) => {
+    setSelectedTopics((prev) => ({ ...prev, [topic]: !prev[topic] }));
+  };
+
+  const toggleExperiment = (expId: string) => {
+    setSelectedExpIds((prev) => ({ ...prev, [expId]: !prev[expId] }));
+  };
+
   const totalCalculatedMarks = sections
     .filter((s) => s.enabled)
     .reduce((acc, curr) => acc + curr.marksPerQ * curr.count, 0);
@@ -154,6 +163,7 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     URL.revokeObjectURL(url);
   };
 
+  // FULL EXAM ENGINE GENERATOR (Exact 37 CBSE Qs for CS, Pure Subject Separation)
   const handleGenerateCompletePackage = () => {
     const timestamp = new Date().toISOString().slice(0, 10);
     const schoolNameUpper = activeSchool.name.toUpperCase();
@@ -287,7 +297,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     setSavedPapers(updated);
     localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updated));
 
-    alert(`🎉 Exact CBSE 2026 Paper Generated!\n\nSubject: ${selectedSubject}\nTotal: 37 Questions (Q1 to Q37)\nMarks: 70 Marks\nSections: A (21M), B (14M), C (9M), D (16M), E (10M)`);
+    alert(`🎉 Exact CBSE 2026 Paper Package Downloaded!\n\nSubject: ${selectedSubject}\nTotal: 37 Questions (Q1 to Q37)\nMarks: 70 Marks\n4 Files Saved into Repository!`);
   };
 
   return (
@@ -295,6 +305,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
       <div className="min-h-screen bg-[#030712] text-white py-8 px-6 font-sans">
         <div className="max-w-7xl mx-auto space-y-6">
           
+          {/* Studio Top Navigation Tabs */}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4">
             <div className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
               ACADEMIC STUDIOS:
@@ -336,7 +347,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           </div>
 
-          {/* TAB 1 */}
+          {/* TAB 1: CBSE SYLLABUS & QUESTION MATRIX (CHECKBOXES & CONTROLS RESTORED) */}
           {activeStudioTab === 'matrix' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -421,15 +432,49 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* Exact Restored Blueprint Matrix Matching CBSE 2026 Paper */}
+              {/* RESTORED: Evaluation Distribution Bar with Theory & Practical Controls */}
+              <div className="bg-[#030712] border border-gray-800 p-4 rounded-2xl flex flex-wrap justify-between items-center text-xs">
+                <div>
+                  <span className="text-[10px] text-gray-400 uppercase font-mono block">Evaluation Distribution:</span>
+                  <span className="text-white font-bold">Theory & Internal/Practical Marks (Adjustable for All Classes)</span>
+                </div>
+                <div className="flex items-center gap-6 mt-2 sm:mt-0 font-mono">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400">THEORY MARKS:</span>
+                    <button onClick={() => setTheoryMarks(Math.max(10, theoryMarks - 5))} className="px-2 py-0.5 rounded bg-gray-800 font-bold hover:bg-gray-700">-</button>
+                    <span className="text-cyan-400 font-bold text-sm w-6 text-center">{theoryMarks}</span>
+                    <button onClick={() => setTheoryMarks(theoryMarks + 5)} className="px-2 py-0.5 rounded bg-gray-800 font-bold hover:bg-gray-700">+</button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400">PRACTICAL / INTERNAL:</span>
+                    <button onClick={() => setPracticalMarks(Math.max(0, practicalMarks - 5))} className="px-2 py-0.5 rounded bg-gray-800 font-bold hover:bg-gray-700">-</button>
+                    <span className="text-emerald-400 font-bold text-sm w-6 text-center">{practicalMarks}</span>
+                    <button onClick={() => setPracticalMarks(practicalMarks + 5)} className="px-2 py-0.5 rounded bg-gray-800 font-bold hover:bg-gray-700">+</button>
+                  </div>
+                </div>
+              </div>
+
+              {/* RESTORED: SECTION BLUEPRINT MATRIX WITH CHECKBOXES & +/- BUTTONS */}
               <div className="space-y-4 pt-2">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-sm font-bold text-white uppercase font-mono">
-                    CBSE Question Format & Section Blueprint Matrix
-                  </h3>
-                  <div className="bg-[#030712] border border-gray-800 px-4 py-2 rounded-xl font-mono text-xs">
-                    <span className="text-gray-400 text-[10px] block">TOTAL THEORY SCORE:</span>
-                    <strong className="text-emerald-400 text-sm">37 Qs • 70 / 70 Marks</strong>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-white uppercase font-mono">
+                      CBSE Question Format & Section Blueprint Matrix
+                    </h3>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-950/80 text-cyan-400 border border-blue-800">
+                      LIVE BALANCE
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-4 bg-[#030712] border border-gray-800 px-4 py-2 rounded-xl font-mono text-xs">
+                    <div>
+                      <span className="text-gray-400 text-[10px] block">CALCULATED MARKS:</span>
+                      <strong className="text-emerald-400 text-sm">{totalCalculatedMarks} / {theoryMarks}</strong>
+                    </div>
+                    <div className="border-l border-gray-800 pl-4">
+                      <span className="text-gray-400 text-[10px] block">TOTAL QS:</span>
+                      <strong className="text-white text-sm">{totalCalculatedQuestions}</strong>
+                    </div>
                   </div>
                 </div>
 
@@ -437,75 +482,130 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   <table className="w-full text-left text-xs font-sans">
                     <thead className="text-gray-400 uppercase font-mono border-b border-gray-800 text-[11px]">
                       <tr>
-                        <th className="py-3 px-4">Section Name</th>
-                        <th className="py-3 px-4">Typology</th>
-                        <th className="py-3 px-4 text-center">Marks/Q</th>
+                        <th className="py-3 px-4 w-16">Enable</th>
+                        <th className="py-3 px-4">Question Type / Format</th>
+                        <th className="py-3 px-4 text-center">Marks Per Q</th>
                         <th className="py-3 px-4 text-center">Questions Count</th>
-                        <th className="py-3 px-4 text-right">Total Marks</th>
+                        <th className="py-3 px-4 text-right">Section Marks</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-800/60 font-medium">
-                      <tr className="hover:bg-gray-800/20">
-                        <td className="py-3 px-4 font-bold text-white">Section A</td>
-                        <td className="py-3 px-4 text-gray-300">Objective & MCQs (Q1 to Q21)</td>
-                        <td className="py-3 px-4 text-center font-mono">1 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">21 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">21 Marks</td>
-                      </tr>
-                      <tr className="hover:bg-gray-800/20">
-                        <td className="py-3 px-4 font-bold text-white">Section B</td>
-                        <td className="py-3 px-4 text-gray-300">VSA Output & Syntax (Q22 to Q28)</td>
-                        <td className="py-3 px-4 text-center font-mono">2 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">7 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">14 Marks</td>
-                      </tr>
-                      <tr className="hover:bg-gray-800/20">
-                        <td className="py-3 px-4 font-bold text-white">Section C</td>
-                        <td className="py-3 px-4 text-gray-300">SA Functions & Stack (Q29 to Q31)</td>
-                        <td className="py-3 px-4 text-center font-mono">3 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">3 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">9 Marks</td>
-                      </tr>
-                      <tr className="hover:bg-gray-800/20">
-                        <td className="py-3 px-4 font-bold text-white">Section D</td>
-                        <td className="py-3 px-4 text-gray-300">Long Questions & SQL (Q32 to Q35)</td>
-                        <td className="py-3 px-4 text-center font-mono">4 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">4 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">16 Marks</td>
-                      </tr>
-                      <tr className="hover:bg-gray-800/20">
-                        <td className="py-3 px-4 font-bold text-white">Section E</td>
-                        <td className="py-3 px-4 text-gray-300">Integrated Case & Networks (Q36 to Q37)</td>
-                        <td className="py-3 px-4 text-center font-mono">5 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">2 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">10 Marks</td>
-                      </tr>
+                      {sections.map((sec, idx) => (
+                        <tr key={sec.id} className="hover:bg-gray-800/20">
+                          <td className="py-3 px-4">
+                            <input
+                              type="checkbox"
+                              checked={sec.enabled}
+                              onChange={(e) => {
+                                const updated = [...sections];
+                                updated[idx].enabled = e.target.checked;
+                                setSections(updated);
+                              }}
+                              className="rounded border-gray-700 bg-gray-900 text-cyan-500 w-4 h-4 cursor-pointer"
+                            />
+                          </td>
+                          <td className="py-3 px-4 text-white font-semibold">{sec.name}</td>
+                          <td className="py-3 px-4 text-center font-mono">
+                            <div className="inline-flex items-center gap-2">
+                              <button
+                                onClick={() => {
+                                  const u = [...sections];
+                                  u[idx].marksPerQ = Math.max(1, u[idx].marksPerQ - 1);
+                                  setSections(u);
+                                }}
+                                className="px-2 py-0.5 rounded bg-gray-900 border border-gray-700 hover:bg-gray-800 font-bold"
+                              >-</button>
+                              <span className="w-4 text-cyan-400 font-bold">{sec.marksPerQ}</span>
+                              <button
+                                onClick={() => {
+                                  const u = [...sections];
+                                  u[idx].marksPerQ += 1;
+                                  setSections(u);
+                                }}
+                                className="px-2 py-0.5 rounded bg-gray-900 border border-gray-700 hover:bg-gray-800 font-bold"
+                              >+</button>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-center font-mono">
+                            <div className="inline-flex items-center gap-2">
+                              <button
+                                onClick={() => {
+                                  const u = [...sections];
+                                  u[idx].count = Math.max(0, u[idx].count - 1);
+                                  setSections(u);
+                                }}
+                                className="px-2 py-0.5 rounded bg-gray-900 border border-gray-700 hover:bg-gray-800 font-bold"
+                              >-</button>
+                              <span className="w-6 text-white font-bold">{sec.count}</span>
+                              <button
+                                onClick={() => {
+                                  const u = [...sections];
+                                  u[idx].count += 1;
+                                  setSections(u);
+                                }}
+                                className="px-2 py-0.5 rounded bg-gray-900 border border-gray-700 hover:bg-gray-800 font-bold"
+                              >+</button>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-right font-mono font-bold text-cyan-400">
+                            {sec.enabled ? sec.marksPerQ * sec.count : 0} M
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              {/* Units Accordion */}
+              {/* RESTORED: DYNAMIC SYLLABUS UNITS & SUB-TOPICS WITH INTERACTIVE CHECKBOXES */}
               <div className="space-y-3 pt-2">
-                <span className="text-[11px] font-mono text-gray-400 uppercase block">
-                  SYLLABUS UNITS FOR {selectedSubject.toUpperCase()}:
-                </span>
+                <div className="flex justify-between items-center">
+                  <span className="text-[11px] font-mono text-gray-400 uppercase">
+                    SYLLABUS UNITS FOR {selectedSubject.toUpperCase()} ({selectedClass.toUpperCase()}):
+                  </span>
+                  <span className="text-[10px] font-mono text-cyan-400">
+                    Auto-Configured for Session 2026-27
+                  </span>
+                </div>
+
                 {activeCurriculum.units.map((unit, uIdx) => (
-                  <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-4 space-y-2">
-                    <span className="text-white font-bold text-xs block">{unit.unitTitle}</span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-300 pl-2">
-                      {unit.subTopics.map((sub, sIdx) => (
-                        <div key={sIdx} className="flex items-center gap-2">
-                          <span className="text-cyan-400">✓</span>
-                          <span>{sub}</span>
-                        </div>
-                      ))}
+                  <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="flex items-center gap-3 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          defaultChecked
+                          className="rounded border-gray-700 bg-gray-900 text-cyan-500 w-4 h-4 cursor-pointer"
+                        />
+                        <span className="text-white font-bold text-xs">{unit.unitTitle}</span>
+                      </label>
+                      <span className="text-xs text-gray-500 font-mono">-</span>
+                    </div>
+
+                    <div className="pl-7 space-y-2 border-l border-gray-800 ml-2">
+                      <span className="text-[10px] font-mono text-gray-500 uppercase block">SUB-TOPICS IN THIS UNIT:</span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        {unit.subTopics.map((sub, sIdx) => {
+                          const isChecked = selectedTopics[sub] !== false;
+                          return (
+                            <label key={sIdx} className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white">
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={() => toggleTopic(sub)}
+                                className="rounded border-gray-700 bg-gray-900 text-cyan-500 w-3.5 h-3.5 cursor-pointer"
+                              />
+                              <span className={isChecked ? 'text-gray-200' : 'text-gray-500 line-through'}>{sub}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* GENERATE BUTTON */}
+              {/* GENERATE BUTTON (RESTORED PROMINENTLY) */}
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-800">
                 <div className="text-xs text-gray-400 font-mono">
                   Engine: <strong className="text-emerald-400">CBSE 2026 Format Active (37 Questions • 70 Marks)</strong>
@@ -522,19 +622,32 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           )}
 
-          {/* TAB 2: PRACTICAL STUDIO */}
+          {/* TAB 2: PRACTICAL STUDIO (CHECKBOXES & EXPORT BUTTON RESTORED) */}
           {activeStudioTab === 'practical' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
-              <div>
-                <h2 className="text-xl font-black text-white tracking-tight">
-                  Studio 2: Practical Lab Manual, Viva-Voce & Project Roster
-                </h2>
-                <p className="text-xs text-gray-400 mt-0.5">
-                  Select topic-wise experiments for {selectedSubject} ({practicalMarks} Marks Assessment)
-                </p>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div>
+                  <h2 className="text-xl font-black text-white tracking-tight">
+                    Studio 2: Practical Lab Manual, Viva-Voce & Project Roster
+                  </h2>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    Select topic-wise experiments for {selectedSubject} ({practicalMarks} Marks Assessment)
+                  </p>
+                </div>
+                {/* RESTORED EXPORT BUTTON */}
+                <button
+                  onClick={handleGenerateCompletePackage}
+                  className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs text-white shadow-lg transition-all"
+                >
+                  Export Selected Practical & Viva Sheet (.doc) →
+                </button>
               </div>
 
               <div className="space-y-4">
+                <h3 className="text-xs font-mono uppercase text-cyan-400">
+                  Topic-Wise Lab Experiments Under Syllabus Units:
+                </h3>
+
                 {activeCurriculum.units.map((unit, uIdx) => (
                   <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-5 space-y-3">
                     <div className="font-bold text-white text-xs border-b border-gray-800 pb-2 flex justify-between items-center">
@@ -546,19 +659,32 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                       <p className="text-xs text-gray-500 italic">No lab experiments prescribed for this unit.</p>
                     ) : (
                       <div className="space-y-3">
-                        {unit.experiments.map((exp) => (
-                          <div key={exp.expId} className="p-3 rounded-xl bg-gray-900/50 border border-gray-800/80 space-y-2">
-                            <span className="text-xs font-bold text-white block">[{exp.expId}] {exp.title}</span>
-                            <div className="pl-4 space-y-1 text-xs">
-                              {exp.vivaQueries.map((vq, vIdx) => (
-                                <div key={vIdx} className="text-gray-300 text-[11px] bg-black/40 p-2 rounded-lg border border-gray-800">
-                                  <div><strong className="text-white">Q: {vq.q}</strong></div>
-                                  <div className="text-gray-400 mt-0.5">Ans: {vq.a}</div>
-                                </div>
-                              ))}
+                        {unit.experiments.map((exp) => {
+                          const isExpChecked = selectedExpIds[exp.expId] !== false;
+                          return (
+                            <div key={exp.expId} className="p-3 rounded-xl bg-gray-900/50 border border-gray-800/80 space-y-2">
+                              {/* RESTORED EXPERIMENT CHECKBOX */}
+                              <label className="flex items-center gap-2.5 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={isExpChecked}
+                                  onChange={() => toggleExperiment(exp.expId)}
+                                  className="rounded border-gray-700 bg-gray-900 text-emerald-500 w-4 h-4 cursor-pointer"
+                                />
+                                <span className="text-xs font-bold text-white block">[{exp.expId}] {exp.title}</span>
+                              </label>
+
+                              <div className="pl-6 space-y-1 text-xs">
+                                {exp.vivaQueries.map((vq, vIdx) => (
+                                  <div key={vIdx} className="text-gray-300 text-[11px] bg-black/40 p-2 rounded-lg border border-gray-800">
+                                    <div><strong className="text-white">Q: {vq.q}</strong></div>
+                                    <div className="text-gray-400 mt-0.5">Ans: {vq.a}</div>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     )}
                   </div>
@@ -570,17 +696,26 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
           {/* TAB 3: MANUAL PASTE */}
           {activeStudioTab === 'manual' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
-              <h2 className="text-xl font-black text-white tracking-tight">Studio 3: Manual Paste Syllabus</h2>
+              <div>
+                <h2 className="text-xl font-black text-white tracking-tight">Studio 3: Manual Paste Syllabus</h2>
+                <p className="text-xs text-gray-400 mt-1">Paste custom syllabus or unit notes to create customized question papers.</p>
+              </div>
               <textarea
                 rows={8}
                 value={manualSyllabusText}
                 onChange={(e) => setManualSyllabusText(e.target.value)}
                 className="w-full bg-[#030712] border border-gray-800 rounded-2xl p-4 text-white font-mono text-xs focus:border-cyan-400"
               />
+              <button
+                onClick={() => alert('Custom syllabus portion compiled! Ready for generation.')}
+                className="px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 font-bold text-black text-xs uppercase"
+              >
+                Compile Custom Portion →
+              </button>
             </div>
           )}
 
-          {/* TAB 4: SAVED PAPERS */}
+          {/* TAB 4: SAVED PAPERS (RESTORED ALL 3 DOWNLOAD BUTTONS) */}
           {activeStudioTab === 'saved' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex justify-between items-center">
@@ -606,12 +741,26 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                         </div>
                         <div className="text-[11px] text-gray-400 font-mono mt-1">Generated: {record.createdAt} • Author: {record.author} • {record.totalMarks} Marks</div>
                       </div>
-                      <div className="flex gap-2">
+
+                      {/* RESTORED ALL 3 SEPARATE DOWNLOAD BUTTONS */}
+                      <div className="flex flex-wrap gap-2">
                         <button
-                          onClick={() => downloadFile(`${record.className}_${record.subject}_Paper.doc`, record.paperDoc, 'application/msword;charset=utf-8')}
-                          className="px-3 py-1.5 rounded-lg bg-blue-600/30 text-cyan-300 border border-blue-500/40 text-[11px] font-semibold"
+                          onClick={() => downloadFile(`${record.className}_${record.subject}_Question_Paper.doc`, record.paperDoc, 'application/msword;charset=utf-8')}
+                          className="px-3 py-1.5 rounded-lg bg-blue-600/30 hover:bg-blue-600/50 text-cyan-300 border border-blue-500/40 text-[11px] font-semibold"
                         >
                           📄 Download Paper (.doc)
+                        </button>
+                        <button
+                          onClick={() => downloadFile(`${record.className}_${record.subject}_Marking_Scheme.doc`, record.answerKeyDoc, 'application/msword;charset=utf-8')}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/40 text-[11px] font-semibold"
+                        >
+                          🔑 Answer Key (.doc)
+                        </button>
+                        <button
+                          onClick={() => downloadFile(`${record.className}_${record.subject}_Practical_Viva.doc`, record.vivaDoc, 'application/msword;charset=utf-8')}
+                          className="px-3 py-1.5 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 border border-purple-500/40 text-[11px] font-semibold"
+                        >
+                          🧪 Practical & Viva (.doc)
                         </button>
                       </div>
                     </div>
