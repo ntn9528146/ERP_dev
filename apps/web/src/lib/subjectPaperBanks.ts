@@ -11,192 +11,202 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   instructions: string[];
   totalMarks: number;
 } {
-  // 1. CLASS 12 COMPUTER SCIENCE (CODE 083) - EXACT 35 QUESTIONS (70 MARKS)
+  // CBSE CLASS 12 COMPUTER SCIENCE (CODE 083) - EXACT 37 QUESTIONS (70 MARKS)
   if (subjectName.includes('Computer Science') || subjectName.includes('083')) {
     const csQuestions: FullGeneratedQuestion[] = [
-      // SECTION A: Q1 - Q18 (1 Mark each)
+      // SECTION A: Q1 - Q21 (21 Questions x 1 Mark = 21 Marks)
       {
         qNum: 1, section: 'A', marks: 1,
-        text: 'State whether the following statement is True or False:\n"In Python, tuples are immutable while lists are mutable."',
-        answerKey: 'True. Tuple elements cannot be modified in place, whereas lists can be modified.'
+        text: 'State True or False:\nIn Python, data type of 74 is same as the data type of 74.0.',
+        answerKey: 'False. 74 is of int type while 74.0 is of float type.'
       },
       {
         qNum: 2, section: 'A', marks: 1,
-        text: 'Identify the valid identifier among the following options in Python:\n(A) 2nd_name    (B) _roll_no    (C) def    (D) total-marks',
-        answerKey: '(B) _roll_no is a valid identifier. Identifiers cannot start with digit, cannot contain hyphens, and cannot be reserved keywords.'
+        text: 'Identify the output of the following code snippet:\ns = "the Truth"\nprint(s.capitalize())\n(A) The truth    (B) THE TRUTH\n(C) The Truth    (D) the Truth',
+        answerKey: '(A) The truth. capitalize() capitalizes the first letter and converts the rest to lowercase.'
       },
       {
         qNum: 3, section: 'A', marks: 1,
-        text: 'What will be the output of the following Python expression?\n>>> print(16 // 3 + 4 ** 2 % 5)',
-        answerKey: 'Output: 6 (16 // 3 = 5, 4 ** 2 = 16, 16 % 5 = 1, 5 + 1 = 6)'
+        text: 'Which of the following expressions in Python evaluates to True?\n(A) 2 > 3 and 2 < 3    (B) 3 > 1 and 2\n(C) 3 > 1 and 3 > 2    (D) 3 > 1 and 3 < 2',
+        answerKey: '(C) 3 > 1 and 3 > 2 evaluates to True.'
       },
       {
         qNum: 4, section: 'A', marks: 1,
-        text: 'Given a tuple T = (10, 20, 30, 40, 50). What will be the output of print(T[1:4:2])?\n(A) (20, 40)    (B) (20, 30)    (C) (10, 30)    (D) (20, 30, 40)',
-        answerKey: '(A) (20, 40). Slice from index 1 to 3 with step 2 takes indices 1 and 3.'
+        text: "What is the output of the following code snippet?\ns = 'War and Peace by Leo Tolstoy'\nprint(s.partition('by'))\n(A) ('War and Peace ', 'by', ' Leo Tolstoy')\n(B) ['War and Peace ', 'by', ' Leo Tolstoy']\n(C) ('War and Peace ', ' Leo Tolstoy')\n(D) ['War and Peace ', ' Leo Tolstoy']",
+        answerKey: "(A) ('War and Peace ', 'by', ' Leo Tolstoy'). partition() splits string into a 3-element tuple."
       },
       {
         qNum: 5, section: 'A', marks: 1,
-        text: 'Which SQL clause is used to filter records produced by the GROUP BY clause?\n(A) WHERE    (B) HAVING    (C) ORDER BY    (D) DISTINCT',
-        answerKey: '(B) HAVING clause is used to filter aggregate groupings.'
+        text: 'What will be the output of the following statement?\nprint("PythonProgram"[-1:2:-2])',
+        answerKey: 'Output: "mrorP"'
       },
       {
         qNum: 6, section: 'A', marks: 1,
-        text: 'Which Python file mode opens a file for both reading and writing in binary format without truncating existing data?\n(A) "rb+"    (B) "wb+"    (C) "ab"    (D) "w+"',
-        answerKey: '(A) "rb+" opens for read/write in binary mode without truncation.'
+        text: "What will be the output of the following code snippet?\nt = tuple('tuple')\nt2 = t[2],\nt += t2\nprint(t)\n(A) ('tuple')             (B) ('tuple', 'p')\n(C) ('t', 'u', 'p', 'l', 'e', 'p')    (D) ('t', 'u', 'p', 'l', 'e')",
+        answerKey: "(C) ('t', 'u', 'p', 'l', 'e', 'p'). t is unpacked into individual characters and concatenated with ('p',)."
       },
       {
         qNum: 7, section: 'A', marks: 1,
-        text: 'In computer networks, expand the acronym VoIP.\n(A) Voice on Internet Protocol    (B) Voice over Internet Protocol\n(C) Video over Internet Packet    (D) Verified online IP',
-        answerKey: '(B) Voice over Internet Protocol.'
+        text: 'Which of the following statements is true about dictionaries in Python?\n(A) A dictionary is an example of sequence datatype.\n(B) A dictionary cannot have two elements with same key.\n(C) A dictionary cannot have two elements with same value.\n(D) The key and value of an element cannot be the same.',
+        answerKey: '(B) A dictionary cannot have two elements with same key.'
       },
       {
         qNum: 8, section: 'A', marks: 1,
-        text: 'Which function in Python returns the current position of the file pointer within an open file?\n(A) seek()    (B) tell()    (C) readpos()    (D) cursor()',
-        answerKey: '(B) tell() returns the byte offset position of file pointer.'
+        text: 'If L is a list with 6 elements, then which of the following statements will raise an exception?\n(A) L.pop(1)    (B) L.pop(6)    (C) L.insert(1, 6)    (D) L.insert(6, 1)',
+        answerKey: '(B) L.pop(6) raises IndexError because indices for a 6-element list range from 0 to 5.'
       },
       {
         qNum: 9, section: 'A', marks: 1,
-        text: 'What is the default delimiter used by the csv.writer() method in Python?\n(A) Semicolon (;)    (B) Comma (,)    (C) Tab (\\t)    (D) Space ( )',
-        answerKey: '(B) Comma (,) is the default CSV delimiter.'
+        text: "What will be the output of the following code?\ndef f1(a, b=1):\n    print(a + b, end='-')\nc = f1(1, 2)\nprint(c, sep='*')\n(A) 3-2    (B) 3-2*    (C) 3-None    (D) 3*None-",
+        answerKey: '(C) 3-None. f1 returns None implicitly which gets printed after "3-".'
       },
       {
         qNum: 10, section: 'A', marks: 1,
-        text: 'In relational database terminology, the degree of a table refers to:\n(A) Total number of rows    (B) Total number of columns\n(C) Primary keys count       (D) Foreign key relations',
-        answerKey: '(B) Degree is the number of attributes/columns in a relation.'
+        text: 'Consider the statement given below:\nf1 = open("pqr.dat", "____")\nWhich of the following is the correct file mode to open the file in read only binary mode?\n(A) a    (B) rb    (C) r+    (D) rb+',
+        answerKey: '(B) "rb" opens a binary file in read-only mode.'
       },
       {
         qNum: 11, section: 'A', marks: 1,
-        text: 'Which network switching technique breaks data streams into smaller variable-length packets before transmitting?\n(A) Circuit Switching    (B) Packet Switching    (C) Message Switching    (D) Fiber Switching',
-        answerKey: '(B) Packet Switching.'
+        text: 'State whether the following statement is True or False:\nIn Python, Logical errors can be handled using try...except...finally statement.',
+        answerKey: 'False. try...except handles runtime errors/exceptions, not logical flaws in code logic.'
       },
       {
         qNum: 12, section: 'A', marks: 1,
-        text: 'In Python, what is the data type of the object returned by the function pickle.load(file_object)?\n(A) String    (B) Bytes    (C) Original Python object type    (D) Integer',
-        answerKey: '(C) Original Python object hierarchy (e.g. dict, list, class).'
+        text: 'A table has two candidate keys, one of which is chosen as the primary key. How many alternate keys does this table have?\n(A) 0    (B) 1    (C) 2    (D) 3',
+        answerKey: '(B) 1 alternate key (Candidate Keys - Primary Key = 2 - 1 = 1).'
       },
       {
         qNum: 13, section: 'A', marks: 1,
-        text: 'Identify the SQL aggregate function that ignores NULL values except when applied with (*):\n(A) AVG()    (B) SUM()    (C) COUNT()    (D) MIN()',
-        answerKey: '(C) COUNT(*).'
+        text: 'Which of the following SQL command can change the degree of the existing relation?\n(A) DROP TABLE    (B) ALTER TABLE    (C) UPDATE...SET    (D) DELETE',
+        answerKey: '(B) ALTER TABLE (via ADD COLUMN or DROP COLUMN).'
       },
       {
         qNum: 14, section: 'A', marks: 1,
-        text: 'Which protocol is responsible for resolving a domain name into an IP address?\n(A) HTTP    (B) FTP    (C) DNS    (D) SMTP',
-        answerKey: '(C) Domain Name System (DNS).'
+        text: 'What will be the output of the query?\nSELECT MACHINE_ID, MACHINE_NAME FROM INVENTORY WHERE QUANTITY <= 100;\n(A) All columns of INVENTORY table with quantity greater than 100\n(B) ID and name of machines with quantity less than 100 from INVENTORY table\n(C) All columns of INVENTORY table with quantity greater than or equal to 100\n(D) ID and name of machines with quantity less than or equal to 100 from INVENTORY table.',
+        answerKey: '(D) ID and name of machines with quantity less than or equal to 100 from INVENTORY table.'
       },
       {
         qNum: 15, section: 'A', marks: 1,
-        text: 'What is the output of the following code snippet?\n>>> d = {"A": 1, "B": 2}\n>>> d["A"] += 5\n>>> print(d.get("A", 0))',
-        answerKey: 'Output: 6 (Value at key "A" becomes 1 + 5 = 6)'
+        text: 'A relation in MySQL database consists of 2 tuples and 3 attributes. If 2 attributes are deleted and 4 tuples are added, what will be the cardinality of the relation?\n(A) 4    (B) 5    (C) 6    (D) 7',
+        answerKey: '(C) 6. Cardinality is the number of tuples: initial 2 + 4 added = 6 tuples.'
       },
       {
         qNum: 16, section: 'A', marks: 1,
-        text: 'Which device operates at the Physical layer of OSI model to amplify weak electrical signals across long cables?\n(A) Switch    (B) Repeater    (C) Router    (D) Gateway',
-        answerKey: '(B) Repeater.'
+        text: 'Which aggregate function in SQL returns the smallest value from a column in a table?\n(A) MIN()    (B) MAX()    (C) SMALL()    (D) LOWER()',
+        answerKey: '(A) MIN().'
       },
       {
         qNum: 17, section: 'A', marks: 1,
-        text: 'Assertion (A): Global variables in Python can be modified inside a function without the "global" statement.\nReason (R): Modifying a variable without the global keyword creates a local variable with the same name.\n(A) Both (A) and (R) are true and (R) is correct explanation of (A).\n(B) Both (A) and (R) are true but (R) is not correct explanation.\n(C) (A) is true but (R) is false.\n(D) (A) is false but (R) is true.',
-        answerKey: '(D) Assertion (A) is false because global variables require "global" keyword to be modified, but (R) is true.'
+        text: 'With respect to computer networks, which of the following is the correct expanded form of RJ 45?\n(A) Radio Jockey 45    (B) Registered Jockey 45\n(C) Radio Jack 45      (D) Registered Jack 45',
+        answerKey: '(D) Registered Jack 45.'
       },
       {
         qNum: 18, section: 'A', marks: 1,
-        text: 'Assertion (A): Primary key attribute cannot accept duplicate or NULL values.\nReason (R): Entity integrity constraint ensures that each row in a relational table is uniquely identifiable.\n(A) Both (A) and (R) are true and (R) is the correct explanation of (A).\n(B) Both (A) and (R) are true but (R) is not the correct explanation of (A).\n(C) (A) is true but (R) is false.\n(D) (A) is false but (R) is true.',
-        answerKey: '(A) Both (A) and (R) are true and (R) correctly explains (A).'
+        text: 'Which network device serves as the entry and exit point of a network, as all data coming in or going out of a network must first pass through it in order to use routing paths?\n(A) Modem    (B) Gateway    (C) Switch    (D) Repeater',
+        answerKey: '(B) Gateway.'
+      },
+      {
+        qNum: 19, section: 'A', marks: 1,
+        text: 'Expand the term XML.\n(A) Extensible Markup Language    (B) Extended Media Link\n(C) External Markup Link           (D) Expressive Machine Language',
+        answerKey: '(A) Extensible Markup Language.'
+      },
+      {
+        qNum: 20, section: 'A', marks: 1,
+        text: "Assertion (A): [1, 2, 3] + '123' is an invalid expression in Python.\nReason (R): In Python, a list cannot be concatenated with a string.\n(A) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation for Assertion (A).\n(B) Both Assertion (A) and Reason (R) are true and Reason (R) is not the correct explanation for Assertion (A).\n(C) Assertion (A) is true, but Reason (R) is false.\n(D) Assertion (A) is false, but Reason (R) is true.",
+        answerKey: '(A) Both Assertion (A) and Reason (R) are true and (R) correctly explains (A).'
+      },
+      {
+        qNum: 21, section: 'A', marks: 1,
+        text: 'Assertion (A): The PRIMARY KEY constraint in SQL ensures that each value in the column(s) is unique and cannot be NULL.\nReason (R): Candidate keys are not eligible to become a primary key.\n(A) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation for Assertion (A).\n(B) Both Assertion (A) and Reason (R) are true and Reason (R) is not the correct explanation for Assertion (A).\n(C) Assertion (A) is true, but Reason (R) is false.\n(D) Assertion (A) is false, but Reason (R) is true.',
+        answerKey: '(C) Assertion (A) is true, but Reason (R) is false because candidate keys are eligible to be chosen as primary keys.'
       },
 
-      // SECTION B: Q19 - Q25 (2 Marks each)
-      {
-        qNum: 19, section: 'B', marks: 2,
-        text: 'Rewrite the following Python code after removing all syntax errors. Underline each correction:\n\ndef CheckNum(val):\n  if val % 2 = 0\n    print("Even")\n  else:\n    print "Odd"\nCheckNum(14)',
-        answerKey: 'Corrected Code:\ndef CheckNum(val):\n  if val % 2 == 0:  # Correction: == and colon :\n    print("Even")\n  else:\n    print("Odd")   # Correction: parentheses in print()'
-      },
-      {
-        qNum: 20, section: 'B', marks: 2,
-        text: 'Differentiate between the following file modes in Python with concise syntax:\n(a) "w" versus "a"\n(b) "r+" versus "w+"',
-        answerKey: '(a) "w" truncates existing content and writes from beginning; "a" appends data at the end without erasing.\n(b) "r+" reads and writes without truncation; "w+" truncates existing file to 0 bytes before writing/reading.'
-      },
-      {
-        qNum: 21, section: 'B', marks: 2,
-        text: 'Find and write the output of the following Python code:\n\ndef Change(P, Q=30):\n  P = P + Q\n  Q = P - Q\n  print(P, "#", Q)\n  return P\nA = 150\nB = 100\nB = Change(A, B)\nprint(A, "#", B)',
-        answerKey: 'Output:\n250 # 150\n150 # 250'
-      },
+      // SECTION B: Q22 - Q28 (7 Questions x 2 Marks = 14 Marks)
       {
         qNum: 22, section: 'B', marks: 2,
-        text: 'Differentiate between Star Topology and Bus Topology in Computer Networks. State one advantage of Star over Bus.',
-        answerKey: 'Star Topology connects all nodes to a central switch/hub; Bus connects nodes to a single backbone cable.\nAdvantage of Star: Fault in a single cable node does not bring down the entire network.'
+        text: 'What is the difference between default parameters and positional parameters in Python? Also give an example of a function header which uses both.',
+        answerKey: 'Positional parameters must be provided in exact argument order. Default parameters take a fallback value if omitted.\nExample: def Calc(p, r, t=2):'
       },
       {
         qNum: 23, section: 'B', marks: 2,
-        text: 'Write the SQL queries for the following requirements based on table STUDENT(RollNo, Name, Marks, Stream):\n(i) Display names of students whose Marks are in the range 80 to 95 inclusive.\n(ii) Display all student details ordered by Marks in descending order.',
-        answerKey: '(i) SELECT Name FROM STUDENT WHERE Marks BETWEEN 80 AND 95;\n(ii) SELECT * FROM STUDENT ORDER BY Marks DESC;'
+        text: 'Write a Python statement to perform the following tasks: (USE BUILT_IN FUNCTIONS/METHODS ONLY)\n(i) To create a new list L1 containing the elements of list L arranged in ascending order, without modifying list L.\n(ii) A statement to check whether the given character, ch is an alphabet or a number.',
+        answerKey: '(i) L1 = sorted(L)\n(ii) ch.isalnum()'
       },
       {
         qNum: 24, section: 'B', marks: 2,
-        text: 'What is the role of the seek(offset, from_what) function in Python? What do the values 0, 1, and 2 signify for the from_what argument?',
-        answerKey: 'seek() moves the file pointer to a designated byte position.\n0: Beginning of file, 1: Current file pointer position, 2: End of file.'
+        text: "Assuming that D1 is a dictionary in Python,\n(i) (a) Write a Python expression to check if the key 'RNO' is present in D1.\nOR\n(b) Write a Python expression to check if any key in D1 has a value 12.\n(ii) (a) Write a single statement using a BUILT_IN function to add the key:value pair 'RNo': 12, if the key 'RNo' is not present in D1. However, if 'RNo' is present, return its value.\nOR\n(b) Write a single statement to delete all the elements from D1.",
+        answerKey: "(i)(a) 'RNO' in D1  OR  (b) 12 in D1.values()\n(ii)(a) D1.setdefault('RNo', 12)  OR  (b) D1.clear()"
       },
       {
         qNum: 25, section: 'B', marks: 2,
-        text: 'Explain the concept of Web Browser cookies. Mention one security hazard associated with third-party tracking cookies.',
-        answerKey: 'Cookies are small text files stored on client browsers by web servers to remember sessions and user preferences.\nHazard: Cross-site tracking and session hijacking if cookies lack Secure/HttpOnly flags.'
+        text: "What possible output(s) from the given options will NOT be displayed when the following code is executed? Also, mention, for how many iterations the for loop will run?\n\nimport random\na = [1, 2, 3, 4, 5, 6]\nfor i in range(4):\n    j = random.randrange(i, 5)\n    print(a[j], end='-')\nprint()\n\nOptions: (A) 3-4-5-4-    (B) 2-2-4-5-    (C) 4-3-3-5-    (D) 5-1-2-4-",
+        answerKey: 'Output (D) will NOT be displayed because j cannot be 0 in subsequent iterations. The loop runs for 4 iterations.'
+      },
+      {
+        qNum: 26, section: 'B', marks: 2,
+        text: "The function given below is written to accept a string s as a parameter and return the number of vowels appearing in the string. The code has certain errors. Observe the code carefully and rewrite it after removing all logical and syntax errors. Underline all corrections:\n\ndef CountVowels(s):\n    c = 0\n    for ch in range(s):\n        if 'aeiouAEIOU' in ch:\n            c =+ 1\n    return (ch)",
+        answerKey: "def CountVowels(s):\n    c = 0\n    for ch in s:                 # Correction: 'in s' not range\n        if ch in 'aeiouAEIOU':     # Correction: 'ch in string'\n            c += 1               # Correction: '+='\n    return c                     # Correction: return c"
+      },
+      {
+        qNum: 27, section: 'B', marks: 2,
+        text: 'Ms. Zoya is creating a table W_STOCK with fields: W_Code CHAR(5) Primary Key, W_Description VARCHAR(20), B_Qty INTEGER, U_Price FLOAT.\n(i) Write SQL command to create table W_STOCK.\n(ii) Write SQL command to add column E_Date DATE to table W_STOCK.',
+        answerKey: '(i) CREATE TABLE W_STOCK(W_Code CHAR(5) PRIMARY KEY, W_Description VARCHAR(20), B_Qty INTEGER, U_Price FLOAT);\n(ii) ALTER TABLE W_STOCK ADD E_Date DATE;'
+      },
+      {
+        qNum: 28, section: 'B', marks: 2,
+        text: '(a) List one advantage and one disadvantage of Bus topology.\nOR\n(b) What is a protocol in computer networks? Which protocol is used to transmit hypertext across the web?',
+        answerKey: '(a) Advantage: Easy to install and requires minimal cabling. Disadvantage: Difficult to isolate faults; backbone failure stops whole network.\n(b) Set of rules governing data transmission. Protocol: HTTP / HTTPS.'
       },
 
-      // SECTION C: Q26 - Q30 (3 Marks each)
-      {
-        qNum: 26, section: 'C', marks: 3,
-        text: 'Write a Python function Count_Vowels_Consonants() that reads a text file named "DIARY.TXT" and counts and displays:\n(i) Total number of uppercase vowels (A, E, I, O, U)\n(ii) Total number of words starting with an alphabet character.',
-        answerKey: 'def Count_Vowels_Consonants():\n    v_count = 0\n    w_count = 0\n    with open("DIARY.TXT", "r") as f:\n        text = f.read()\n        for ch in text:\n            if ch in "AEIOU":\n                v_count += 1\n        words = text.split()\n        for w in words:\n            if w[0].isalpha():\n                w_count += 1\n    print("Uppercase Vowels:", v_count)\n    print("Words starting with alphabet:", w_count)'
-      },
-      {
-        qNum: 27, section: 'C', marks: 3,
-        text: 'Write a Python program implementing linear Stack data structure for a sports club with two functions:\n(i) Push_Player(ClubStack, PlayerName): Inserts PlayerName onto stack.\n(ii) Pop_Player(ClubStack): Removes and prints topmost player, or displays "Underflow" if stack is empty.',
-        answerKey: 'def Push_Player(ClubStack, PlayerName):\n    ClubStack.append(PlayerName)\n\ndef Pop_Player(ClubStack):\n    if len(ClubStack) == 0:\n        print("Underflow: Stack Empty")\n    else:\n        item = ClubStack.pop()\n        print("Popped Player:", item)'
-      },
-      {
-        qNum: 28, section: 'C', marks: 3,
-        text: 'Given table EMP(EmpNo, EName, Salary, DeptId, DOJ). Write SQL commands for:\n(i) Display DeptId and average salary for departments with more than 3 employees.\n(ii) Display maximum and minimum salary in DeptId 10.\n(iii) Increase salary of all employees who joined before "2020-01-01" by 10%.',
-        answerKey: '(i) SELECT DeptId, AVG(Salary) FROM EMP GROUP BY DeptId HAVING COUNT(*) > 3;\n(ii) SELECT MAX(Salary), MIN(Salary) FROM EMP WHERE DeptId = 10;\n(iii) UPDATE EMP SET Salary = Salary * 1.10 WHERE DOJ < "2020-01-01";'
-      },
+      // SECTION C: Q29 - Q31 (3 Questions x 3 Marks = 9 Marks)
       {
         qNum: 29, section: 'C', marks: 3,
-        text: 'A binary file "STUDENTS.DAT" contains records stored as dictionary objects: {"AdmNo": int, "Name": str, "Marks": float}.\nWrite a Python function Search_Student(adm_no) to search and display student details for a given admission number. If not found, display "Candidate Record Not Found".',
-        answerKey: 'import pickle\ndef Search_Student(adm_no):\n    found = False\n    with open("STUDENTS.DAT", "rb") as f:\n        try:\n            while True:\n                rec = pickle.load(f)\n                if rec["AdmNo"] == adm_no:\n                    print("Found Student:", rec)\n                    found = True\n                    break\n        except EOFError:\n            pass\n    if not found:\n        print("Candidate Record Not Found")'
+        text: 'Write a Python function that counts and returns the number of digits appearing in the text file "Space.txt".\nOR\nWrite a Python function that displays words where lowercase letter "e" appears at least twice in text file "Space.txt".',
+        answerKey: 'def CountDigits():\n    count = 0\n    with open("Space.txt", "r") as f:\n        for ch in f.read():\n            if ch.isdigit():\n                count += 1\n    return count'
       },
       {
         qNum: 30, section: 'C', marks: 3,
-        text: 'Write a function in Python that takes a list of integers and creates a Stack containing only elements that are multiples of 3 or 5, and displays the final Stack items in LIFO order.',
-        answerKey: 'def BuildMultiplesStack(num_list):\n    stk = []\n    for n in num_list:\n        if n % 3 == 0 or n % 5 == 0:\n            stk.append(n)\n    print("Stack elements in LIFO order:")\n    while stk:\n        print(stk.pop(), end=" ")'
+        text: 'A stack named FruitStack contains dictionary records: {\'Name\': str, \'Origin\': str, \'Price\': int, \'Expiry\': str}.\nWrite Python user-defined functions:\n(i) push_fruit(FruitStack, Fruit): Pushes record if Price < 100.\n(ii) pop_fruit(FruitStack): Pops and returns topmost record or displays "UNDERFLOW".\n(iii) display(FruitStack): Displays all elements or "EMPTY STACK".',
+        answerKey: 'def push_fruit(FruitStack, Fruit):\n    if Fruit["Price"] < 100:\n        FruitStack.append(Fruit)\n\ndef pop_fruit(FruitStack):\n    if not FruitStack:\n        print("UNDERFLOW")\n        return None\n    return FruitStack.pop()\n\ndef display(FruitStack):\n    if not FruitStack:\n        print("EMPTY STACK")\n    else:\n        for f in reversed(FruitStack):\n            print(f)'
+      },
+      {
+        qNum: 31, section: 'C', marks: 3,
+        text: 'Write the output of the following code:\n\ndef Exam2026(given):\n    new = []\n    for ch in given[1:-1]:\n        if ch.isupper():\n            new.reverse()\n        elif ch not in new:\n            new.append(ch)\n        elif ch in new:\n            new.pop()\n    print(new)\n\nExam2026("Gold-24Medals")',
+        answerKey: "Output: ['l', 'd', '-', '2', '4', 'e', 'd', 'a', 'l']"
       },
 
-      // SECTION D: Q31 - Q32 (5 Marks each)
+      // SECTION D: Q32 - Q35 (4 Questions x 4 Marks = 16 Marks)
       {
-        qNum: 31, section: 'D', marks: 5,
-        text: 'CASE STUDY - CAMPUS NETWORKING INFRASTRUCTURE:\nDevGyan International School has 4 distinct blocks in its Haldwani campus:\n- Admin Block: 110 Computers\n- Academic Wing: 75 Computers\n- CS & AI Labs: 160 Computers\n- Hostel Complex: 25 Computers\n\nDistances:\nAdmin to Academic: 60m | Admin to CS Labs: 90m | Academic to CS Labs: 45m | CS Labs to Hostel: 180m\n\nAnswer the following:\n(a) Suggest the most suitable block to install the Main Institutional Server with technical justification.\n(b) Suggest the optimal cable topology to connect all four blocks.\n(c) Where should a Repeater and a Switch be installed?\n(d) Suggest the best wired transmission medium to achieve 1 Gbps backbone bandwidth between Admin and CS Labs.\n(e) Which cloud video-conferencing protocol would allow seamless live classroom broadcasts across the campus?',
-        answerKey: '(a) CS & AI Labs Block because it contains the maximum number of computers (160), adhering to 80-20 server placement rule.\n(b) Star Topology connecting Admin, Academic Wing, and Hostel directly to the central CS Labs.\n(c) Switch should be installed in all blocks. Repeater should be placed between CS Labs and Hostel (distance 180m > 100m Ethernet limit).\n(d) Optical Fiber Cable (single-mode or multi-mode).\n(e) WebRTC / RTSP (Real-Time Streaming Protocol).'
+        qNum: 32, section: 'D', marks: 4,
+        text: 'Abhishek created table STOCK(Code, Type, Volume, Qty, Price). Write SQL queries to:\n(i) Display Type and maximum Price for each Type of milk.\n(ii) Increase Price by 0.5 where Type is "F".\n(iii) Display total stock value (sum of Qty * Price).\n(iv) Display records where Code starts with "A".',
+        answerKey: '(i) SELECT Type, MAX(Price) FROM STOCK GROUP BY Type;\n(ii) UPDATE STOCK SET Price = Price + 0.5 WHERE Type = "F";\n(iii) SELECT SUM(Qty * Price) FROM STOCK;\n(iv) SELECT * FROM STOCK WHERE Code LIKE "A%";'
       },
       {
-        qNum: 32, section: 'D', marks: 5,
-        text: 'Write a complete Python script to interface with MySQL database "SchoolDB" using mysql.connector module:\n(a) Connect to localhost MySQL server with user "root" and password "Nitin@123".\n(b) Take inputs for BookId, BookTitle, and Price from the console.\n(c) Insert the record into table "LIBRARY_BOOKS".\n(d) Commit the transaction to save changes.\n(e) Fetch and display all books with Price > 500 using cursor.fetchall().',
-        answerKey: 'import mysql.connector\n\ncon = mysql.connector.connect(\n    host="localhost",\n    user="root",\n    password="Nitin@123",\n    database="SchoolDB"\n)\ncur = con.cursor()\n\nb_id = int(input("Enter Book ID: "))\nb_title = input("Enter Title: ")\nb_price = float(input("Enter Price: "))\n\nsql = "INSERT INTO LIBRARY_BOOKS (BookId, BookTitle, Price) VALUES (%s, %s, %s)"\ncur.execute(sql, (b_id, b_title, b_price))\ncon.commit()\n\nprint("Records where Price > 500:")\ncur.execute("SELECT * FROM LIBRARY_BOOKS WHERE Price > 500")\nrows = cur.fetchall()\nfor r in rows:\n    print(r)\n\ncur.close()\ncon.close()'
+        qNum: 33, section: 'D', marks: 4,
+        text: 'A CSV file "States.csv" contains: [StateName, Capital, Population, Language].\nWrite a Python program that reads this file and appends all records where population > 10000000 into another CSV file "More.csv", skipping the header row.',
+        answerKey: 'import csv\n\nwith open("States.csv", "r") as fin, open("More.csv", "a", newline="") as fout:\n    reader = csv.reader(fin)\n    writer = csv.writer(fout)\n    next(reader)\n    for row in reader:\n        if row and int(row[2]) > 10000000:\n            writer.writerow(row)'
+      },
+      {
+        qNum: 34, section: 'D', marks: 4,
+        text: 'Consider tables CUSTOMERS(CID, CName, Phone) and LOANS(SNo, CID, LAmt, LDate, Terms, RoI). Write SQL queries for:\n(i) Count records in LOANS where RoI > 7.0.\n(ii) Names of customers whose LAmt > 1000000.\n(iii) CID, CName, Terms where LDate > "2024-12-31".\n(iv) Details of loans in descending order of RoI.',
+        answerKey: '(i) SELECT COUNT(*) FROM LOANS WHERE RoI > 7.0;\n(ii) SELECT CName FROM CUSTOMERS C, LOANS L WHERE C.CID = L.CID AND LAmt > 1000000;\n(iii) SELECT C.CID, CName, Terms FROM CUSTOMERS C, LOANS L WHERE C.CID = L.CID AND LDate > "2024-12-31";\n(iv) SELECT * FROM LOANS ORDER BY RoI DESC;'
+      },
+      {
+        qNum: 35, section: 'D', marks: 4,
+        text: 'Write a Python program connecting to MySQL database "SCHOOL" (User: admin, Pass: root, Host: localhost) to display student records from table "Account"(Stud_id, Sname, Class, Fees) where Fees < 5000.',
+        answerKey: 'import mysql.connector\n\ncon = mysql.connector.connect(host="localhost", user="admin", password="root", database="SCHOOL")\ncur = con.cursor()\ncur.execute("SELECT * FROM Account WHERE Fees < 5000")\nfor row in cur.fetchall():\n    print(row)\ncur.close()\ncon.close()'
       },
 
-      // SECTION E: Q33 - Q35 (4 Marks each)
+      // SECTION E: Q36 - Q37 (2 Questions x 5 Marks = 10 Marks)
       {
-        qNum: 33, section: 'E', marks: 4,
-        text: 'Consider the following relational tables:\nTable: TEACHER (TId, TName, Subject, Salary, SchoolCode)\nTable: SCHOOL (SchoolCode, SchoolName, City)\n\nWrite SQL queries for:\n(i) Display TName, Subject, and SchoolName for all teachers residing in "Haldwani".\n(ii) Display highest Salary paid in each SchoolCode.\n(iii) Display details of teachers whose Salary is greater than average teacher salary.\n(iv) Identify the Foreign Key attribute in table TEACHER.',
-        answerKey: '(i) SELECT T.TName, T.Subject, S.SchoolName FROM TEACHER T, SCHOOL S WHERE T.SchoolCode = S.SchoolCode AND S.City = "Haldwani";\n(ii) SELECT SchoolCode, MAX(Salary) FROM TEACHER GROUP BY SchoolCode;\n(iii) SELECT * FROM TEACHER WHERE Salary > (SELECT AVG(Salary) FROM TEACHER);\n(iv) SchoolCode is the Foreign Key linking to table SCHOOL.'
+        qNum: 36, section: 'E', marks: 5,
+        text: 'ICT organization NextStep stores data in binary file "RESOURCES.DAT" with record format: (RID, RName, RExpertise, Charges).\nWrite user-defined functions in Python:\n(i) Append(): Input Resource Person data and write tuple to RESOURCES.DAT.\n(ii) Update(): Increase Charges by 500 for each resource person in the file.',
+        answerKey: 'import pickle\n\ndef Append():\n    r_id = int(input("ID: "))\n    name = input("Name: ")\n    exp = input("Expertise: ")\n    chg = float(input("Charges: "))\n    with open("RESOURCES.DAT", "ab") as f:\n        pickle.dump((r_id, name, exp, chg), f)\n\ndef Update():\n    records = []\n    with open("RESOURCES.DAT", "rb") as f:\n        try:\n            while True:\n                records.append(pickle.load(f))\n        except EOFError:\n            pass\n    with open("RESOURCES.DAT", "wb") as f:\n        for r in records:\n            pickle.dump((r[0], r[1], r[2], r[3] + 500), f)'
       },
       {
-        qNum: 34, section: 'E', marks: 4,
-        text: 'A CSV file named "ITEMS.CSV" contains rows formatted as ItemCode, ItemName, StockQuantity, UnitPrice.\nWrite a Python function Manage_Inventory() that performs:\n(i) Reads the CSV file using csv.reader().\n(ii) Displays only those items where StockQuantity is less than 10 (Reorder alert).\n(iii) Computes and prints the total aggregate inventory valuation of all products.',
-        answerKey: 'import csv\n\ndef Manage_Inventory():\n    total_value = 0.0\n    with open("ITEMS.CSV", "r") as f:\n        reader = csv.reader(f)\n        print("Low Stock Items (< 10):")\n        for row in reader:\n            if row:\n                code, name, stock, price = row[0], row[1], int(row[2]), float(row[3])\n                if stock < 10:\n                    print(f"Alert: {code} - {name} (Stock: {stock})")\n                total_value += stock * price\n    print("Total Valuation: ₹", total_value)'
-      },
-      {
-        qNum: 35, section: 'E', marks: 4,
-        text: 'Write a Python program using binary file "FACULTY.DAT" containing dictionary records: {"FacId": str, "Name": str, "Dept": str, "Exp": int}.\nWrite a function Promote_Faculty() that:\n(a) Traverses all records and if Exp >= 10, prefixes "Senior Faculty - " to their Dept.\n(b) Writes updated records to a temporary file "TEMP.DAT" and replaces original file using os.remove() and os.rename().',
-        answerKey: 'import pickle, os\n\ndef Promote_Faculty():\n    fin = open("FACULTY.DAT", "rb")\n    fout = open("TEMP.DAT", "wb")\n    try:\n        while True:\n            rec = pickle.load(fin)\n            if rec["Exp"] >= 10:\n                rec["Dept"] = "Senior Faculty - " + rec["Dept"]\n            pickle.dump(rec, fout)\n    except EOFError:\n        pass\n    fin.close()\n    fout.close()\n    os.remove("FACULTY.DAT")\n    os.rename("TEMP.DAT", "FACULTY.DAT")\n    print("Promotions updated successfully.")'
+        qNum: 37, section: 'E', marks: 5,
+        text: 'CASE STUDY: Amritsar Campus Networking (Blocks: ADMIN, ACADEMIC, HOSTEL, SPORTS).\nComputers: ADMIN=25, ACADEMIC=600, HOSTEL=120, SPORTS=50.\nDistances: ADMIN to ACADEMIC=60m, ADMIN to HOSTEL=160m, ADMIN to SPORTS=80m, ACADEMIC to HOSTEL=40m, ACADEMIC to SPORTS=120m, HOSTEL to SPORTS=150m.\n\n(i) Suggest appropriate location of server with justification.\n(ii) Draw cable layout to connect all blocks.\n(iii) Name two wired media to connect computers within a block.\n(iv) Which communication medium is used by FM radio: Radio waves, Microwaves, or Infrared?\n(v) Full name of protocol for audio-visual communication OR place where repeater is needed.',
+        answerKey: '(i) ACADEMIC Block (contains maximum computers: 600, adhering to 80-20 rule).\n(ii) Star layout centered at ACADEMIC Block connecting ADMIN, HOSTEL, and SPORTS.\n(iii) Twisted Pair Cable (CAT 6) or Coaxial Cable.\n(iv) Radio Waves.\n(v) VoIP (Voice over Internet Protocol) OR Repeater between HOSTEL and SPORTS (150m > 100m Ethernet limit).'
       }
     ];
 
@@ -204,35 +214,22 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       questions: csQuestions,
       totalMarks: 70,
       instructions: [
-        'This question paper comprises 35 questions divided into 5 Sections: A, B, C, D, and E.',
-        'Section A comprises 18 Multiple Choice Questions (MCQs) of 1 mark each (Q1 to Q18).',
-        'Section B comprises 7 Very Short Answer (VSA) questions of 2 marks each (Q19 to Q25).',
-        'Section C comprises 5 Short Answer (SA) questions of 3 marks each (Q26 to Q30).',
-        'Section D comprises 2 Long Answer (LA) questions of 5 marks each (Q31 to Q32).',
-        'Section E comprises 3 Case-Based / Integrated questions of 4 marks each (Q33 to Q35).',
-        'All programming answers must adhere to Python 3.x syntax standard.'
+        'This question paper contains 37 questions divided into 5 Sections - A, B, C, D and E.',
+        'Section A consists of 21 questions (1 to 21). Each question carries 1 mark.',
+        'Section B consists of 7 questions (22 to 28). Each question carries 2 marks.',
+        'Section C consists of 3 questions (29 to 31). Each question carries 3 marks.',
+        'Section D consists of 4 questions (32 to 35). Each question carries 4 marks.',
+        'Section E consists of 2 questions (36 & 37). Each question carries 5 marks.',
+        'All programming questions are to be answered using Python Language only.',
+        'In case of MCQs, text of the correct answer should also be written.'
       ]
     };
   }
 
-  // 2. CLASS 12 PHYSICS (CODE 042) - PURE PHYSICS 33 QUESTIONS (70 MARKS)
-  const phyQuestions: FullGeneratedQuestion[] = [
-    { qNum: 1, section: 'A', marks: 1, text: 'An electric dipole of dipole moment p is oriented in uniform electric field E. What is potential energy when aligned parallel to E?\n(A) -pE    (B) +pE    (C) Zero    (D) 2pE', answerKey: '(A) -pE (U = -p·E = -pE cos 0° = -pE)' },
-    { qNum: 2, section: 'A', marks: 1, text: 'The electric flux through a Gaussian surface enclosing an electric dipole of charge ±q is:\n(A) q/ε₀    (B) 2q/ε₀    (C) Zero    (D) q/(2ε₀)', answerKey: '(C) Net charge enclosed = +q - q = 0, so Φ = 0.' },
-    { qNum: 3, section: 'A', marks: 1, text: 'In an AC series LCR circuit at resonance, inductive reactance X_L equals capacitive reactance X_C. The phase angle between V and I is:\n(A) π/2    (B) π    (C) 0    (D) π/4', answerKey: '(C) Zero phase angle at resonance (cos φ = 1).' },
-    { qNum: 4, section: 'A', marks: 1, text: 'Which electromagnetic wave has the highest frequency in the spectrum?\n(A) Microwaves    (B) Ultraviolet    (C) Gamma rays    (D) X-rays', answerKey: '(C) Gamma rays have highest frequency and shortest wavelength.' },
-    { qNum: 19, section: 'B', marks: 2, text: 'State Kirchhoff\'s Junction Rule and Loop Rule. On which fundamental conservation laws are they founded?', answerKey: 'Junction Rule (ΣI = 0) is based on Conservation of Charge.\nLoop Rule (ΣΔV = 0) is based on Conservation of Energy.' },
-    { qNum: 26, section: 'C', marks: 3, text: 'Derive resonant frequency formula f_r = 1 / (2π√(LC)) for an AC series LCR circuit and define Quality Factor Q.', answerKey: 'At resonance X_L = X_C ⇒ ωL = 1/(ωC) ⇒ ω = 1/√(LC) ⇒ f_r = 1/(2π√(LC)). Q = (ω_r L)/R.' },
-    { qNum: 31, section: 'D', marks: 5, text: 'State Gauss\'s Theorem. Use it to derive the electric field intensity at distance r from an infinitely long straight wire carrying uniform linear charge density λ.', answerKey: '∮E·dA = q/ε₀. For Gaussian cylinder: E · (2πrl) = (λl)/ε₀ ⇒ E = λ / (2πε₀r).' },
-    { qNum: 34, section: 'E', marks: 4, text: 'CASE STUDY: Moving Coil Galvanometer and Shunt Resistance in Laboratory Measurements.\n(i) What is the function of radial magnetic field? [1]\n(ii) How is galvanometer converted into ammeter? [1]\n(iii) Calculate shunt resistance to convert 10mA galvanometer into 1A ammeter. [2]', answerKey: '(i) Keeps torque maximum (τ = NIAB) for linear scale.\n(ii) Connect low shunt resistance in parallel.\n(iii) S = (I_g · G)/(I - I_g).' }
-  ];
-
+  // Fallback default
   return {
-    questions: phyQuestions,
+    questions: [],
     totalMarks: 70,
-    instructions: [
-      'This question paper contains questions strictly from CBSE Physics curriculum.',
-      'Sections A to E must be answered sequentially without calculator.'
-    ]
+    instructions: ['General CBSE exam instructions applicable.']
   };
 }

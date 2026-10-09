@@ -37,12 +37,13 @@ export default function PaperGeneratorStudioPage() {
   const [theoryMarks, setTheoryMarks] = useState(70);
   const [practicalMarks, setPracticalMarks] = useState(30);
 
+  // EXACT CBSE 2026 BLUEPRINT MATRIX (37 Questions, 70 Marks)
   const [sections, setSections] = useState([
-    { id: 'sec-a', name: 'Section A: MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 18 },
-    { id: 'sec-b', name: 'Section B: VSA (2 Marks each)', enabled: true, marksPerQ: 2, count: 7 },
-    { id: 'sec-c', name: 'Section C: SA (3 Marks each)', enabled: true, marksPerQ: 3, count: 5 },
-    { id: 'sec-d', name: 'Section D: LA (5 Marks each)', enabled: true, marksPerQ: 5, count: 2 },
-    { id: 'sec-e', name: 'Section E: Case Study (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
+    { id: 'sec-a', name: 'Section A: Objective & MCQs (Q1 to Q21)', enabled: true, marksPerQ: 1, count: 21 },
+    { id: 'sec-b', name: 'Section B: VSA Output & Syntax (Q22 to Q28)', enabled: true, marksPerQ: 2, count: 7 },
+    { id: 'sec-c', name: 'Section C: SA Functions & Stack (Q29 to Q31)', enabled: true, marksPerQ: 3, count: 3 },
+    { id: 'sec-d', name: 'Section D: Long Questions & SQL (Q32 to Q35)', enabled: true, marksPerQ: 4, count: 4 },
+    { id: 'sec-e', name: 'Section E: Integrated Case & Networks (Q36 to Q37)', enabled: true, marksPerQ: 5, count: 2 },
   ]);
 
   const [activeCurriculum, setActiveCurriculum] = useState<SubjectCurriculum>(
@@ -153,7 +154,6 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     URL.revokeObjectURL(url);
   };
 
-  // GENERATE PURE ERROR-FREE SUBJECT PAPER (NO CROSS-SUBJECT MIXING)
   const handleGenerateCompletePackage = () => {
     const timestamp = new Date().toISOString().slice(0, 10);
     const schoolNameUpper = activeSchool.name.toUpperCase();
@@ -163,14 +163,12 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const generatedData = generateExactSubjectPaper(selectedSubject, selectedClass);
     const allQs = generatedData.questions;
 
-    // Group questions by section
     const secA = allQs.filter(q => q.section === 'A');
     const secB = allQs.filter(q => q.section === 'B');
     const secC = allQs.filter(q => q.section === 'C');
     const secD = allQs.filter(q => q.section === 'D');
     const secE = allQs.filter(q => q.section === 'E');
 
-    // 1. PAPER HTML
     const paperHtml = `
 <div class="header-school">${schoolNameUpper}</div>
 <div class="header-meta">ACADEMIC SESSION 2026-27 • ${examPattern.toUpperCase()}<br/>
@@ -197,16 +195,15 @@ ${secB.map(q => `<div class="q-row"><span class="q-num">Q${q.qNum}.</span>${q.te
 <div class="section-title">SECTION C: SHORT ANSWER QUESTIONS (3 Marks Each)</div>
 ${secC.map(q => `<div class="q-row"><span class="q-num">Q${q.qNum}.</span>${q.text.replace(/\n/g, '<br/>')}<span class="marks-badge">[${q.marks}]</span></div>`).join('')}
 
-<div class="section-title">SECTION D: LONG ANSWER QUESTIONS (5 Marks Each)</div>
+<div class="section-title">SECTION D: LONG ANSWER QUESTIONS (4 Marks Each)</div>
 ${secD.map(q => `<div class="q-row"><span class="q-num">Q${q.qNum}.</span>${q.text.replace(/\n/g, '<br/>')}<span class="marks-badge">[${q.marks}]</span></div>`).join('')}
 
-<div class="section-title">SECTION E: CASE-BASED / INTEGRATED QUESTIONS (4 Marks Each)</div>
+<div class="section-title">SECTION E: CASE-BASED / INTEGRATED QUESTIONS (5 Marks Each)</div>
 ${secE.map(q => `<div class="q-row"><span class="q-num">Q${q.qNum}.</span>${q.text.replace(/\n/g, '<br/>')}<span class="marks-badge">[${q.marks}]</span></div>`).join('')}
 
 <div style="text-align: center; font-weight: bold; margin-top: 15pt;">*** END OF QUESTION PAPER • STRICT CBSE COMPLIANCE ***</div>
 `;
 
-    // 2. MARKING SCHEME HTML
     const answerKeyHtml = `
 <div class="header-school">${schoolNameUpper}</div>
 <div class="header-meta">CBSE SESSION 2026-27 • OFFICIAL STEPWISE MARKING SCHEME & ANSWER KEY<br/>
@@ -221,7 +218,6 @@ ${allQs.map(q => `
 `).join('')}
 `;
 
-    // 3. VIVA & PRACTICAL HTML
     const vivaHtml = `
 <div class="header-school">${schoolNameUpper}</div>
 <div class="header-meta">CBSE PRACTICAL & VIVA-VOCE EXAMINATION DOSSIER 2026-27<br/>
@@ -245,7 +241,6 @@ ${activeSelectedExperiments.flatMap((exp) => exp.vivaQueries).map((vq, idx) => `
 `).join('')}
 `;
 
-    // 4. BLUEPRINT MATRIX HTML
     const blueprintHtml = `
 <div class="header-school">${schoolNameUpper}</div>
 <div class="header-meta">OFFICIAL CBSE BLUEPRINT MATRIX (2026-27)<br/>
@@ -254,12 +249,12 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
 <table class="matrix-table">
   <tr><th>Section</th><th>Typology</th><th>Marks/Q</th><th>Count</th><th>Total</th></tr>
-  <tr><td><b>Section A</b></td><td>MCQs & Assertion-Reasoning</td><td>1 M</td><td>18</td><td>18 Marks</td></tr>
-  <tr><td><b>Section B</b></td><td>VSA (Outputs & Syntax Errors)</td><td>2 M</td><td>7</td><td>14 Marks</td></tr>
-  <tr><td><b>Section C</b></td><td>SA (Functions, Stacks, Binary Files)</td><td>3 M</td><td>5</td><td>15 Marks</td></tr>
-  <tr><td><b>Section D</b></td><td>LA (Case Study & SQL Connector)</td><td>5 M</td><td>2</td><td>10 Marks</td></tr>
-  <tr><td><b>Section E</b></td><td>Integrated (SQL Joins, CSV Operations)</td><td>4 M</td><td>3</td><td>12 Marks</td></tr>
-  <tr><th colspan="3">AGGREGATE THEORY SCORE</th><th>35 Qs</th><th>70 Marks</th></tr>
+  <tr><td><b>Section A</b></td><td>MCQs & Assertion-Reasoning (Q1 to Q21)</td><td>1 M</td><td>21</td><td>21 Marks</td></tr>
+  <tr><td><b>Section B</b></td><td>VSA Output & Syntax (Q22 to Q28)</td><td>2 M</td><td>7</td><td>14 Marks</td></tr>
+  <tr><td><b>Section C</b></td><td>SA Functions & Stack (Q29 to Q31)</td><td>3 M</td><td>3</td><td>9 Marks</td></tr>
+  <tr><td><b>Section D</b></td><td>LA SQL & Python Connector (Q32 to Q35)</td><td>4 M</td><td>4</td><td>16 Marks</td></tr>
+  <tr><td><b>Section E</b></td><td>Case Study & Networking (Q36 to Q37)</td><td>5 M</td><td>2</td><td>10 Marks</td></tr>
+  <tr><th colspan="3">AGGREGATE THEORY SCORE</th><th>37 Qs</th><th>70 Marks</th></tr>
 </table>
 `;
 
@@ -276,7 +271,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     downloadFile(`${safeCls}_${safeSub}_Practical_Viva_${timestamp}.${fileExt}`, vivaDoc, mime);
     downloadFile(`${safeCls}_${safeSub}_Blueprint_${timestamp}.${fileExt}`, blueprintDoc, mime);
 
-    // Save in Teacher's Vault
     const newRecord: SavedPaperRecord = {
       id: `PPR-${Date.now().toString().slice(-5)}`,
       title: `${selectedSubject} (${examPattern.split('(')[0].trim()})`,
@@ -293,7 +287,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     setSavedPapers(updated);
     localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updated));
 
-    alert(`🎉 100% Error-Free Paper Generated!\n\nSubject: ${selectedSubject}\nTotal: 35 Continuous Questions (Q1 to Q35)\nMarks: Exact 70 Marks\nZero Mixing: Zero Physics questions in Computer Science!`);
+    alert(`🎉 Exact CBSE 2026 Paper Generated!\n\nSubject: ${selectedSubject}\nTotal: 37 Questions (Q1 to Q37)\nMarks: 70 Marks\nSections: A (21M), B (14M), C (9M), D (16M), E (10M)`);
   };
 
   return (
@@ -301,7 +295,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
       <div className="min-h-screen bg-[#030712] text-white py-8 px-6 font-sans">
         <div className="max-w-7xl mx-auto space-y-6">
           
-          {/* Tabs Header */}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4">
             <div className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
               ACADEMIC STUDIOS:
@@ -343,7 +336,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           </div>
 
-          {/* TAB 1: CBSE QUESTION MATRIX */}
+          {/* TAB 1 */}
           {activeStudioTab === 'matrix' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -352,7 +345,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                     Mode 1: Official CBSE Curriculum & Dynamic Exam Engine
                   </h2>
                   <p className="text-xs text-gray-400 mt-0.5">
-                    Isolated Subject Architecture for {activeSchool.name} • Session 2026-27
+                    CBSE 2026 Examination Blueprint: 37 Questions • 70 Marks for {activeSchool.name}
                   </p>
                 </div>
 
@@ -428,7 +421,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* Section Blueprint */}
+              {/* Exact Restored Blueprint Matrix Matching CBSE 2026 Paper */}
               <div className="space-y-4 pt-2">
                 <div className="flex justify-between items-center">
                   <h3 className="text-sm font-bold text-white uppercase font-mono">
@@ -436,7 +429,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   </h3>
                   <div className="bg-[#030712] border border-gray-800 px-4 py-2 rounded-xl font-mono text-xs">
                     <span className="text-gray-400 text-[10px] block">TOTAL THEORY SCORE:</span>
-                    <strong className="text-emerald-400 text-sm">35 Qs • 70 / 70 Marks</strong>
+                    <strong className="text-emerald-400 text-sm">37 Qs • 70 / 70 Marks</strong>
                   </div>
                 </div>
 
@@ -454,38 +447,38 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                     <tbody className="divide-y divide-gray-800/60 font-medium">
                       <tr className="hover:bg-gray-800/20">
                         <td className="py-3 px-4 font-bold text-white">Section A</td>
-                        <td className="py-3 px-4 text-gray-300">MCQs & Assertion-Reasoning (Q1 to Q18)</td>
+                        <td className="py-3 px-4 text-gray-300">Objective & MCQs (Q1 to Q21)</td>
                         <td className="py-3 px-4 text-center font-mono">1 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">18 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">18 Marks</td>
+                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">21 Qs</td>
+                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">21 Marks</td>
                       </tr>
                       <tr className="hover:bg-gray-800/20">
                         <td className="py-3 px-4 font-bold text-white">Section B</td>
-                        <td className="py-3 px-4 text-gray-300">VSA - Output finding & Syntax (Q19 to Q25)</td>
+                        <td className="py-3 px-4 text-gray-300">VSA Output & Syntax (Q22 to Q28)</td>
                         <td className="py-3 px-4 text-center font-mono">2 M</td>
                         <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">7 Qs</td>
                         <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">14 Marks</td>
                       </tr>
                       <tr className="hover:bg-gray-800/20">
                         <td className="py-3 px-4 font-bold text-white">Section C</td>
-                        <td className="py-3 px-4 text-gray-300">SA - Functions, Stack, Binary/Text Files (Q26 to Q30)</td>
+                        <td className="py-3 px-4 text-gray-300">SA Functions & Stack (Q29 to Q31)</td>
                         <td className="py-3 px-4 text-center font-mono">3 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">5 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">15 Marks</td>
+                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">3 Qs</td>
+                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">9 Marks</td>
                       </tr>
                       <tr className="hover:bg-gray-800/20">
                         <td className="py-3 px-4 font-bold text-white">Section D</td>
-                        <td className="py-3 px-4 text-gray-300">LA - Campus Networking Case & SQL Connector (Q31 to Q32)</td>
-                        <td className="py-3 px-4 text-center font-mono">5 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">2 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">10 Marks</td>
+                        <td className="py-3 px-4 text-gray-300">Long Questions & SQL (Q32 to Q35)</td>
+                        <td className="py-3 px-4 text-center font-mono">4 M</td>
+                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">4 Qs</td>
+                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">16 Marks</td>
                       </tr>
                       <tr className="hover:bg-gray-800/20">
                         <td className="py-3 px-4 font-bold text-white">Section E</td>
-                        <td className="py-3 px-4 text-gray-300">Case-Based - SQL Joins, CSV & Pickle Ops (Q33 to Q35)</td>
-                        <td className="py-3 px-4 text-center font-mono">4 M</td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">3 Qs</td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">12 Marks</td>
+                        <td className="py-3 px-4 text-gray-300">Integrated Case & Networks (Q36 to Q37)</td>
+                        <td className="py-3 px-4 text-center font-mono">5 M</td>
+                        <td className="py-3 px-4 text-center font-mono font-bold text-cyan-400">2 Qs</td>
+                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">10 Marks</td>
                       </tr>
                     </tbody>
                   </table>
@@ -515,7 +508,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
               {/* GENERATE BUTTON */}
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-800">
                 <div className="text-xs text-gray-400 font-mono">
-                  Engine: <strong className="text-emerald-400">Strict Subject Isolation Active (Zero Mixed Questions)</strong>
+                  Engine: <strong className="text-emerald-400">CBSE 2026 Format Active (37 Questions • 70 Marks)</strong>
                 </div>
                 <button
                   onClick={handleGenerateCompletePackage}
@@ -537,7 +530,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   Studio 2: Practical Lab Manual, Viva-Voce & Project Roster
                 </h2>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  Select topic-wise experiments for {selectedSubject} ({practicalMarks} Marks CBSE Assessment)
+                  Select topic-wise experiments for {selectedSubject} ({practicalMarks} Marks Assessment)
                 </p>
               </div>
 
