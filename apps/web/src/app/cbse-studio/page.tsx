@@ -2,20 +2,39 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTenant } from '../../context/TenantContext';
-import { ALL_CBSE_CLASSES, DETAILED_SYLLABUS_2026_27, SubjectCurriculum } from '../../lib/academicCurriculum';
+import { ALL_CBSE_CLASSES, DETAILED_SYLLABUS_2026_27, SubjectCurriculum, PracticalExperiment } from '../../lib/academicCurriculum';
 import ConfidentialGuard from '../../components/ConfidentialGuard';
 
+interface SavedPaperRecord {
+  id: string;
+  title: string;
+  subject: string;
+  className: string;
+  pattern: string;
+  totalMarks: number;
+  createdAt: string;
+  author: string;
+  schoolName: string;
+  paperDoc: string;
+  answerKeyDoc: string;
+  vivaDoc: string;
+  blueprintDoc: string;
+}
+
 export default function PaperGeneratorStudioPage() {
-  const { activeSchool } = useTenant();
+  const { activeSchool, currentUser } = useTenant();
 
   // Active Main Studio Tab
-  const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'upload'>('matrix');
+  const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved'>('matrix');
 
   // Selectors State
   const [selectedClass, setSelectedClass] = useState('Class 12 (Science)');
   const [selectedSubject, setSelectedSubject] = useState('Physics (Code 042)');
   const [examPattern, setExamPattern] = useState('Pre-Board Examination (100% Syllabus)');
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
+
+  // Download File Format: Default is MS Word (.doc)
+  const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('doc');
 
   // Marks Distribution
   const [theoryMarks, setTheoryMarks] = useState(70);
@@ -35,25 +54,32 @@ export default function PaperGeneratorStudioPage() {
     DETAILED_SYLLABUS_2026_27['Physics (Code 042)']
   );
 
-  // Selected topics checkboxes state
   const [selectedTopics, setSelectedTopics] = useState<Record<string, boolean>>({});
+  const [selectedExpIds, setSelectedExpIds] = useState<Record<string, boolean>>({});
 
   // Tab 3 State: Manual Paste Syllabus
   const [manualSyllabusText, setManualSyllabusText] = useState(
     'Unit 1: Quantum Physics and Wave Mechanics\n- Wave-particle duality, De Broglie hypothesis\n- Heisenberg uncertainty principle'
   );
 
-  // Tab 4 State: Uploaded Papers
-  const [uploadedPapers, setUploadedPapers] = useState<string[]>([
-    'CBSE_Class12_Physics_2025_Set1_Official.pdf',
-    'Arden_PreBoard_Class10_Maths_2024.docx'
-  ]);
+  // Saved Papers Repository for the Teacher
+  const [savedPapers, setSavedPapers] = useState<SavedPaperRecord[]>([]);
 
-  // When selectedClass changes: automatically update subjects and curriculum units!
+  // Load saved papers from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem('devgyan_saved_papers_vault');
+    if (stored) {
+      try {
+        setSavedPapers(JSON.parse(stored));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+
   const currentClassConfig = ALL_CBSE_CLASSES.find((c) => c.name === selectedClass) || ALL_CBSE_CLASSES[13];
 
   useEffect(() => {
-    // If the currently selected subject doesn't belong to the newly selected class, pick the first available subject
     if (!currentClassConfig.availableSubjects.includes(selectedSubject)) {
       const firstSub = currentClassConfig.availableSubjects[0] || '';
       setSelectedSubject(firstSub);
@@ -63,7 +89,6 @@ export default function PaperGeneratorStudioPage() {
     }
   }, [selectedClass]);
 
-  // When selectedSubject changes: update units and default marks!
   const handleSubjectChange = (newSubject: string) => {
     setSelectedSubject(newSubject);
     updateCurriculumForSubject(newSubject);
@@ -72,25 +97,36 @@ export default function PaperGeneratorStudioPage() {
   const updateCurriculumForSubject = (subj: string) => {
     let curr = DETAILED_SYLLABUS_2026_27[subj];
 
-    // Fallback dynamic generator if exact key is not in pre-seeded map
     if (!curr) {
       curr = {
         name: subj,
-        code: subj.includes('(') ? subj.split('(')[1].replace(')', '') : 'CBSE',
-        theoryMarks: subj.includes('Yoga') || subj.includes('IT') || subj.includes('AI') ? 50 : 80,
-        practicalMarks: subj.includes('Yoga') || subj.includes('IT') || subj.includes('AI') ? 50 : 20,
+        code: subj.includes('Code') ? subj.split('Code')[1].replace(/[^0-9]/g, '') : 'CBSE',
+        theoryMarks: subj.includes('Yoga') || subj.includes('IT') || subj.includes('AI') ? 50 : 70,
+        practicalMarks: subj.includes('Yoga') || subj.includes('IT') || subj.includes('AI') ? 50 : 30,
         units: [
           {
-            unitTitle: `Unit 1: Foundations of ${subj}`,
-            subTopics: ['Fundamental Terminology & Concepts', 'Historical Overview & Scope', 'Core Analytical Principles']
+            unitTitle: `Unit 1: Theoretical Foundations of ${subj}`,
+            subTopics: ['Foundational Concepts & Principles', 'Standard Definitions & Law Formulations', 'Empirical Mathematical Methods'],
+            experiments: [
+              {
+                expId: 'GEN-EXP-01',
+                title: `Standard Laboratory Procedure for ${subj} Unit 1`,
+                unitRef: 'Unit 1',
+                vivaQueries: [{ q: 'What is the primary objective of this experiment?', a: 'To verify theoretical postulates through empirical measurement and error minimisation.' }]
+              }
+            ]
           },
           {
-            unitTitle: `Unit 2: Applied Competencies & Practice`,
-            subTopics: ['Problem Solving & Critical Analysis', 'Practical Implementation & Case Exercises']
-          },
-          {
-            unitTitle: `Unit 3: Advanced Topics & CBSE Case Studies`,
-            subTopics: ['High-Order Thinking (HOTS) Applications', 'Integrative Project Work & Viva Review']
+            unitTitle: `Unit 2: Applied Analysis & Computational Methods`,
+            subTopics: ['Numerical Computations & HOTS Problems', 'System Modeling & Analytical Methods'],
+            experiments: [
+              {
+                expId: 'GEN-EXP-02',
+                title: `Comparative Observation Study for ${subj} Unit 2`,
+                unitRef: 'Unit 2',
+                vivaQueries: [{ q: 'How is experimental uncertainty evaluated?', a: 'By computing absolute, relative and percentage standard errors across repeated readings.' }]
+              }
+            ]
           }
         ]
       };
@@ -100,18 +136,26 @@ export default function PaperGeneratorStudioPage() {
     setTheoryMarks(curr.theoryMarks);
     setPracticalMarks(curr.practicalMarks);
 
-    // Reset topic selections
-    const initialSelections: Record<string, boolean> = {};
+    const initialTopics: Record<string, boolean> = {};
+    const initialExps: Record<string, boolean> = {};
+
     curr.units.forEach((u) => {
-      u.subTopics.forEach((st) => {
-        initialSelections[st] = true;
-      });
+      u.subTopics.forEach((st) => { initialTopics[st] = true; });
+      if (u.experiments) {
+        u.experiments.forEach((e) => { initialExps[e.expId] = true; });
+      }
     });
-    setSelectedTopics(initialSelections);
+
+    setSelectedTopics(initialTopics);
+    setSelectedExpIds(initialExps);
   };
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) => ({ ...prev, [topic]: !prev[topic] }));
+  };
+
+  const toggleExperiment = (expId: string) => {
+    setSelectedExpIds((prev) => ({ ...prev, [expId]: !prev[expId] }));
   };
 
   // Live calculations
@@ -123,150 +167,319 @@ export default function PaperGeneratorStudioPage() {
     .filter((s) => s.enabled)
     .reduce((acc, curr) => acc + curr.count, 0);
 
-  // 3-FILES SINGLE CLICK PACKAGE GENERATOR & DOWNLOADER
-  const handleGenerate3FilesPackage = () => {
+  // Extract selected experiments across units
+  const allAvailableExperiments: PracticalExperiment[] = activeCurriculum.units.flatMap((u) => u.experiments || []);
+  const activeSelectedExperiments = allAvailableExperiments.filter((e) => selectedExpIds[e.expId] !== false);
+
+  // Helper to generate compliant MS Word HTML (.doc) document
+  const generateWordHtmlDoc = (title: string, bodyHtml: string) => {
+    return `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset='utf-8'>
+<title>${title}</title>
+<!--[if gte mso 9]>
+<xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+<w:DoNotOptimizeForBrowser/>
+</w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+@page {
+  size: 21cm 29.7cm; /* A4 */
+  margin: 1.27cm 1.27cm 1.27cm 1.27cm; /* Narrow Margin 0.5 inch */
+  mso-page-orientation: portrait;
+}
+body {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 12pt;
+  line-height: 1.25;
+  color: #000000;
+}
+.header-school {
+  font-size: 16pt;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 2pt;
+}
+.header-meta {
+  font-size: 12pt;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 6pt;
+}
+.section-title {
+  font-size: 14pt;
+  font-weight: bold;
+  margin-top: 10pt;
+  margin-bottom: 4pt;
+  border-bottom: 1pt solid #000;
+  text-transform: uppercase;
+}
+.instructions {
+  font-size: 10.5pt;
+  margin-bottom: 8pt;
+  line-height: 1.2;
+}
+.q-row {
+  margin-bottom: 6pt;
+  text-align: justify;
+}
+.q-num {
+  font-weight: bold;
+}
+.marks-badge {
+  float: right;
+  font-weight: bold;
+  font-family: 'Times New Roman', serif;
+}
+table.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6pt;
+  margin-bottom: 8pt;
+}
+table.matrix-table th, table.matrix-table td {
+  border: 1pt solid #000000;
+  padding: 4pt 6pt;
+  font-size: 11pt;
+}
+table.matrix-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+sup { vertical-align: super; font-size: 8pt; }
+sub { vertical-align: sub; font-size: 8pt; }
+.fraction { display: inline-block; vertical-align: middle; text-align: center; font-size: 10pt; padding: 0 2pt; }
+.fraction > span { display: block; padding-top: 1pt; }
+.fraction span.bottom { border-top: 1pt solid #000; }
+</style>
+</head>
+<body>
+${bodyHtml}
+</body>
+</html>`;
+  };
+
+  const downloadFile = (filename: string, content: string, mime: string) => {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // FULL SINGLE-CLICK 3+ FILES GENERATOR (MS WORD / DOCX READY)
+  const handleGenerateCompletePackage = () => {
     const timestamp = new Date().toISOString().slice(0, 10);
+    const schoolNameUpper = activeSchool.name.toUpperCase();
     const safeSub = selectedSubject.replace(/[^a-zA-Z0-9]/g, '_');
     const safeCls = selectedClass.replace(/[^a-zA-Z0-9]/g, '_');
 
-    // 1. CONTENT FOR QUESTION PAPER
-    const paperContent = `================================================================================
-${activeSchool.name.toUpperCase()}
-ACADEMIC SESSION 2026-27 • CBSE EVALUATION PORTAL
-${examPattern.toUpperCase()}
-================================================================================
-CLASS: ${selectedClass}                 TIME ALLOWED: 3 HOURS
-SUBJECT: ${selectedSubject}            MAXIMUM MARKS: ${theoryMarks}
-DIFFICULTY SPECIFICATION: ${difficulty}
---------------------------------------------------------------------------------
-GENERAL INSTRUCTIONS:
-1. This question paper contains ${totalCalculatedQuestions} questions divided into 5 Sections: A, B, C, D and E.
-2. Section A comprises ${sections[0]?.count || 18} Multiple Choice Questions (MCQs) of 1 mark each.
-3. Section B comprises ${sections[1]?.count || 7} Very Short Answer (VSA) questions of 2 marks each.
-4. Section C comprises ${sections[2]?.count || 5} Short Answer (SA) questions of 3 marks each.
-5. Section D comprises ${sections[3]?.count || 3} Long Answer (LA) questions of 5 marks each.
-6. Section E comprises ${sections[4]?.count || 2} source-based / case-based questions of 4 marks each.
-7. All questions are compulsory. Internal choice is provided where applicable.
-================================================================================
+    // 1. QUESTION PAPER DOCUMENT HTML
+    const paperHtml = `
+<div class="header-school">${schoolNameUpper}</div>
+<div class="header-meta">ACADEMIC SESSION 2026-27 • ${examPattern.toUpperCase()}<br/>
+CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()}</div>
+<table style="width: 100%; margin-bottom: 8pt; font-weight: bold;">
+<tr>
+  <td style="text-align: left;">TIME ALLOWED: 3 HOURS</td>
+  <td style="text-align: right;">MAXIMUM MARKS: ${theoryMarks}</td>
+</tr>
+</table>
+<hr style="border: 0.5pt solid #000; margin-bottom: 6pt;"/>
 
-SECTION A: OBJECTIVE & MULTIPLE CHOICE QUESTIONS (1 Mark Each)
-Q1. Which of the following fundamental principles governs the selected syllabus unit?
-    (A) Conservation of charge / energy          (B) Inductive superposition
-    (C) Relational database normalization        (D) None of the above
-Q2. Analyze the scenario where parameter values increase monotonically. What is the observed effect?
-    (A) Direct proportional response             (B) Invariant steady state
-    (C) Inverse saturation                        (D) Step-down transient
-[... Remaining ${sections[0]?.count || 18} MCQs customized for ${selectedSubject} ...]
+<div class="instructions">
+<b>GENERAL INSTRUCTIONS:</b><br/>
+1. This question paper comprises <b>${totalCalculatedQuestions} questions</b> categorized into <b>5 Sections: A, B, C, D, and E</b>.<br/>
+2. <b>Section A</b> contains ${sections[0]?.count || 18} Multiple Choice Questions (MCQs) carrying 1 mark each.<br/>
+3. <b>Section B</b> contains ${sections[1]?.count || 7} Very Short Answer (VSA) questions carrying 2 marks each.<br/>
+4. <b>Section C</b> contains ${sections[2]?.count || 5} Short Answer (SA) questions carrying 3 marks each.<br/>
+5. <b>Section D</b> contains ${sections[3]?.count || 3} Long Answer (LA) questions carrying 5 marks each.<br/>
+6. <b>Section E</b> contains ${sections[4]?.count || 2} Case-Based / Integrated Source questions carrying 4 marks each.<br/>
+7. All questions are compulsory. Internal choices have been provided in selective questions.<br/>
+8. Use of log tables and calculators is strictly prohibited. Use standard physical constants: c = 3×10<sup>8</sup> m/s, e = 1.6×10<sup>-19</sup> C, ε₀ = 8.854×10<sup>-12</sup> C<sup>2</sup>N<sup>-1</sup>m<sup>-2</sup>.
+</div>
 
-SECTION B: VERY SHORT ANSWER QUESTIONS (2 Marks Each)
-Q19. State the working principle and provide a concise mathematical definition with appropriate SI units.
-Q20. Differentiate between primary foundational concepts and secondary derived quantities in this unit.
-[... Remaining VSA Questions ...]
+<div class="section-title">SECTION A: OBJECTIVE & MULTIPLE CHOICE QUESTIONS (1 Mark Each)</div>
+<div class="q-row"><span class="q-num">Q1.</span> An electric dipole consisting of charges ±q separated by distance 2a is placed in uniform field E. What is the potential energy when aligned parallel to field?<span class="marks-badge">[1]</span><br/>
+(A) -pE &nbsp;&nbsp;&nbsp;&nbsp; (B) +pE &nbsp;&nbsp;&nbsp;&nbsp; (C) Zero &nbsp;&nbsp;&nbsp;&nbsp; (D) 2pE</div>
 
-SECTION C: SHORT ANSWER QUESTIONS (3 Marks Each)
-Q26. Derive the expression based on standard CBSE 2026-27 rubrics and sketch a labelled schematic diagram.
-Q27. Solve the following numerical problem showing clear stepwise calculation and final result with unit.
-[... Remaining SA Questions ...]
+<div class="q-row"><span class="q-num">Q2.</span> In Python database integration, identify the SQL keyword utilized to eliminate duplicate row records from result sets:<span class="marks-badge">[1]</span><br/>
+(A) UNIQUE &nbsp;&nbsp;&nbsp;&nbsp; (B) DISTINCT &nbsp;&nbsp;&nbsp;&nbsp; (C) FILTER &nbsp;&nbsp;&nbsp;&nbsp; (D) GROUP</div>
 
-SECTION D: LONG ANSWER QUESTIONS (5 Marks Each)
-Q31. (a) State and prove the fundamental theorem applicable to this system.
-     (b) Explain the practical setup and derive the working equations step-by-step.
-     -- OR --
-     (a) Elaborate on the underlying physical / computational law with an illustrative diagram.
-     (b) Compute the unknown equilibrium constant under specified ambient constraints.
+<div class="q-row"><span class="q-num">Q3.</span> Consider an alternating current circuit where inductive reactance X<sub>L</sub> equals capacitive reactance X<sub>C</sub>. The phase angle φ between V and I is:<span class="marks-badge">[1]</span><br/>
+(A) π/2 &nbsp;&nbsp;&nbsp;&nbsp; (B) π &nbsp;&nbsp;&nbsp;&nbsp; (C) 0 &nbsp;&nbsp;&nbsp;&nbsp; (D) π/4</div>
 
-SECTION E: SOURCE / CASE-BASED INTEGRATED QUESTIONS (4 Marks Each)
-Q34. Read the following comprehensive case study and answer the questions that follow:
-     "Modern institutional architectures require strict empirical observation and data governance..."
-     (i) Identify the governing mechanism discussed in the passage. (1 Mark)
-     (ii) How does this phenomenon impact real-world implementations? (1 Mark)
-     (iii) Formulate a corrective measure to stabilize the variance. (2 Marks)
+<div class="section-title">SECTION B: VERY SHORT ANSWER QUESTIONS (2 Marks Each)</div>
+<div class="q-row"><span class="q-num">Q19.</span> State Kirchhoff's Junction Rule (ΣI = 0) and Loop Rule (ΣΔV = 0). On which conservation principles are they founded?<span class="marks-badge">[2]</span></div>
+<div class="q-row"><span class="q-num">Q20.</span> Differentiate between binary serialization (pickle.dump) and text file writing in Python programming with syntax examples.<span class="marks-badge">[2]</span></div>
 
-================================================================================
-*** END OF QUESTION PAPER ***
+<div class="section-title">SECTION C: SHORT ANSWER QUESTIONS (3 Marks Each)</div>
+<div class="q-row"><span class="q-num">Q26.</span> Derive the resonant frequency formula f<sub>r</sub> = <sup>1</sup>/<sub>(2π√(LC))</sub> for an AC series LCR circuit and define Quality Factor Q.<span class="marks-badge">[3]</span></div>
+<div class="q-row"><span class="q-num">Q27.</span> Write a Python function <code>Push_Element(Stack, Data)</code> and <code>Pop_Element(Stack)</code> implementing linear Stack operations.<span class="marks-badge">[3]</span></div>
+
+<div class="section-title">SECTION D: LONG ANSWER QUESTIONS (5 Marks Each)</div>
+<div class="q-row"><span class="q-num">Q31.</span> (a) State Gauss's Law in electrostatics. Using this law, obtain the expression for electric field intensity due to an infinitely long straight wire of linear charge density λ.<br/>
+(b) Two concentric spherical shells of radii R₁ and R₂ (R₁ &lt; R₂) have uniform charge densities σ and -σ. Calculate electric field at r &gt; R₂.<span class="marks-badge">[5]</span></div>
+
+<div class="section-title">SECTION E: CASE-BASED INTEGRATED QUESTIONS (4 Marks Each)</div>
+<div class="q-row"><span class="q-num">Q34.</span> <b>Case Study: Telecommunication & Relational Database Governance</b><br/>
+Modern enterprise systems rely on normalized relational schemata to guarantee ACID compliance. During peak admissions, concurrent transactions access student records.<br/>
+(i) What is the primary role of a Foreign Key constraint? [1]<br/>
+(ii) Explain the consequence if an uncommitted transaction crashes. [1]<br/>
+(iii) Formulate a query using <code>GROUP BY</code> and <code>HAVING COUNT(*) &gt; 1</code> to identify duplicate enrollments. [2]<span class="marks-badge">[4]</span></div>
+<br/>
+<div style="text-align: center; font-weight: bold; margin-top: 15pt;">*** END OF QUESTION PAPER • STRICT CBSE COMPLIANCE ***</div>
 `;
 
-    // 2. CONTENT FOR ANSWER KEY & MARKING SCHEME
-    const answerKeyContent = `================================================================================
-${activeSchool.name.toUpperCase()}
-OFFICIAL MARKING SCHEME & STEPWISE ANSWER KEY (CBSE 2026-27)
-EXAMINATION: ${examPattern}
-CLASS: ${selectedClass} | SUBJECT: ${selectedSubject}
-================================================================================
+    // 2. ANSWER KEY & MARKING SCHEME DOCUMENT HTML
+    const answerKeyHtml = `
+<div class="header-school">${schoolNameUpper}</div>
+<div class="header-meta">CBSE SESSION 2026-27 • OFFICIAL MARKING SCHEME & ANSWER KEY<br/>
+CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()}</div>
+<hr style="border: 0.5pt solid #000; margin-bottom: 8pt;"/>
 
-SECTION A: ANSWER KEY
-Q1. (A) Conservation of charge / energy [1 Mark]
-Q2. (A) Direct proportional response [1 Mark]
-... [Stepwise Solutions for all Objective Items] ...
+<div class="section-title">SECTION A: OBJECTIVE ANSWER KEY</div>
+<p><b>Q1.</b> (A) -pE [1 Mark]<br/>
+<b>Q2.</b> (B) DISTINCT [1 Mark]<br/>
+<b>Q3.</b> (C) 0 (Resonant condition cos φ = 1) [1 Mark]</p>
 
-SECTION B: STEPWISE MARKING CRITERIA
-Q19. - Correct statement of principle: 1 Mark
-     - Formula and correct SI units: 1 Mark (Total: 2 Marks)
+<div class="section-title">SECTION B: STEPWISE MARKING RUBRICS</div>
+<p><b>Q19.</b><br/>
+- Statement of Junction Rule: ΣI = 0 (Conservation of Electric Charge): <b>1 Mark</b><br/>
+- Statement of Loop Rule: ΣΔV = 0 (Conservation of Energy): <b>1 Mark</b> (Total: 2 Marks)</p>
 
-SECTION C: DETAILED DERIVATIONS & MARKS BREAKUP
-Q26. - Neat labelled diagram: 1 Mark
-     - Stepwise mathematical progression: 1.5 Marks
-     - Final concluding result: 0.5 Mark (Total: 3 Marks)
-
-SECTION D: COMPREHENSIVE SOLUTIONS
-Q31. - Part (a) Statement & Proof: 2.5 Marks
-     - Part (b) System analysis & calculation: 2.5 Marks (Total: 5 Marks)
-
-SECTION E: CASE STUDY EVALUATION RUBRICS
-Q34. - (i) Correct mechanism identified: 1 Mark
-     - (ii) Empirical analysis: 1 Mark
-     - (iii) Justified solution: 2 Marks (Total: 4 Marks)
-================================================================================
-Marking Scheme Approved by School Examination Board.
+<div class="section-title">SECTION C & D: DERIVATIONS & DETAILED SOLUTIONS</div>
+<p><b>Q26.</b><br/>
+- At resonance: X<sub>L</sub> = X<sub>C</sub> ⇒ ωL = 1/(ωC) ⇒ ω² = 1/(LC): <b>1 Mark</b><br/>
+- Deriving f<sub>r</sub> = 1 / (2π√(LC)): <b>1 Mark</b><br/>
+- Quality Factor Q = (ω<sub>r</sub>L)/R definition: <b>1 Mark</b> (Total: 3 Marks)</p>
+<p><b>Q31.</b><br/>
+- (a) Stating Gauss Law statement: <b>1 Mark</b>; Gaussian cylinder schematic diagram: <b>1 Mark</b>; Stepwise integration ∮E·dA = q/ε₀ ⇒ E = λ / (2πε₀r): <b>1.5 Marks</b><br/>
+- (b) Application for concentric shells yielding net zero field: <b>1.5 Marks</b> (Total: 5 Marks)</p>
 `;
 
-    // 3. CONTENT FOR BLUEPRINT MATRIX
-    const blueprintContent = `================================================================================
-${activeSchool.name.toUpperCase()}
-OFFICIAL CBSE QUESTION PAPER BLUEPRINT MATRIX (SESSION 2026-27)
-SUBJECT: ${selectedSubject} | CLASS: ${selectedClass}
-TOTAL MARKS: ${theoryMarks} THEORY + ${practicalMarks} PRACTICAL = 100 MARKS
-================================================================================
+    // 3. VIVA-VOCE & PRACTICAL ASSESSMENT DOCUMENT HTML
+    const vivaHtml = `
+<div class="header-school">${schoolNameUpper}</div>
+<div class="header-meta">CBSE PRACTICAL & VIVA-VOCE EXAMINATION PORTAL 2026-27<br/>
+SUBJECT: ${selectedSubject.toUpperCase()} | TOTAL PRACTICAL: ${practicalMarks} MARKS</div>
+<hr style="border: 0.5pt solid #000; margin-bottom: 8pt;"/>
 
-1. COGNITIVE WEIGHTAGE DISTRIBUTION:
-- Remembering & Understanding (Knowledge): 40%
-- Applying (Application & Numericals): 30%
-- Analyzing, Evaluating & Creating (HOTS & Case Studies): 30%
+<div class="section-title">SELECTED TOPIC-WISE PRACTICAL EXPERIMENTS:</div>
+${activeSelectedExperiments.map((exp, idx) => `
+<div style="margin-bottom: 8pt;">
+  <b>Experiment ${idx + 1} [${exp.expId}]:</b>${exp.title}<br/>
+  <span style="font-size: 10pt; color: #333;">Mapped Syllabus Unit: ${exp.unitRef}</span>
+</div>
+`).join('')}
 
-2. SECTION-WISE BREAKDOWN TABLE:
---------------------------------------------------------------------------------
-Section | Format Description             | Marks/Q | Qs Count | Total Section
---------------------------------------------------------------------------------
-${sections.map((s) => `${s.name.padEnd(35)} \vert{}${s.marksPerQ} M    | ${String(s.count).padEnd(8)} \vert{}${s.marksPerQ * s.count} Marks`).join('\n')}
---------------------------------------------------------------------------------
-TOTAL CALCULATED THEORY MARKS: ${totalCalculatedMarks} / ${theoryMarks}
-TOTAL QUESTIONS: ${totalCalculatedQuestions}
+<div class="section-title">VIVA-VOCE QUESTION BANK & MODEL ANSWERS:</div>
+${activeSelectedExperiments.flatMap((exp) => exp.vivaQueries).map((vq, idx) => `
+<div style="margin-bottom: 6pt;">
+  <b>Q${idx + 1}.${vq.q}</b><br/>
+  <i>Model Answer:</i> ${vq.a}
+</div>
+`).join('')}
 
-3. SYLLABUS UNITS INCLUDED IN THIS BLUEPRINT:
-${activeCurriculum.units.map((u, i) => `${i + 1}. ${u.unitTitle}\n   Sub-topics:${u.subTopics.join(', ')}`).join('\n\n')}
-================================================================================
-Generated via DevGyan Enterprise AI Academic Engine.
+<div class="section-title">CBSE MARKS EVALUATION SCHEME:</div>
+<table class="matrix-table">
+  <tr><th>Assessment Parameter</th><th>Marks Assigned</th></tr>
+  <tr><td>Major Practical Experiment Performance & Record</td><td>15 Marks</td></tr>
+  <tr><td>Investigatory Project File & Working Code/Model</td><td>10 Marks</td></tr>
+  <tr><td>Viva-Voce Oral Examination</td><td>5 Marks</td></tr>
+  <tr><th>Total Internal / Practical Weightage</th><th>${practicalMarks} Marks</th></tr>
+</table>
 `;
 
-    // Helper function to trigger browser download
-    const downloadFile = (filename: string, text: string) => {
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+    // 4. CBSE BLUEPRINT MATRIX DOCUMENT HTML
+    const blueprintHtml = `
+<div class="header-school">${schoolNameUpper}</div>
+<div class="header-meta">OFFICIAL CBSE QUESTION PAPER BLUEPRINT MATRIX (2026-27)<br/>
+CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()}</div>
+<hr style="border: 0.5pt solid #000; margin-bottom: 8pt;"/>
+
+<div class="section-title">1. SECTION-WISE TYPOLOGY & BLUEPRINT:</div>
+<table class="matrix-table">
+  <tr>
+    <th>Section</th>
+    <th>Question Format</th>
+    <th>Marks/Q</th>
+    <th>Questions Count</th>
+    <th>Section Marks</th>
+  </tr>
+  ${sections.map((s) => `
+  <tr>
+    <td><b>${s.name.split(':')[0]}</b></td>
+    <td>${s.name.split(':')[1] || s.name}</td>
+    <td style="text-align: center;">${s.marksPerQ} M</td>
+    <td style="text-align: center;">${s.count}</td>
+    <td style="text-align: right; font-weight: bold;">${s.marksPerQ * s.count} Marks</td>
+  </tr>
+  `).join('')}
+  <tr>
+    <th colspan="3">TOTAL SUMMARY</th>
+    <th style="text-align: center;">${totalCalculatedQuestions} Qs</th>
+    <th style="text-align: right;">${totalCalculatedMarks} / ${theoryMarks} Marks</th>
+  </tr>
+</table>
+
+<div class="section-title">2. SYLLABUS UNITS & TOPICS INCLUDED:</div>
+<ol>
+${activeCurriculum.units.map((u) => `
+  <li style="margin-bottom: 4pt;">
+    <b>${u.unitTitle}</b><br/>
+    <span style="font-size: 10pt;">Sub-topics: ${u.subTopics.join(', ')}</span>
+  </li>
+`).join('')}
+</ol>
+`;
+
+    // Prepare Word files (.doc format which opens natively in MS Word with Times New Roman 12pt/14pt)
+    const paperDoc = generateWordHtmlDoc('Question Paper', paperHtml);
+    const answerKeyDoc = generateWordHtmlDoc('Marking Scheme', answerKeyHtml);
+    const vivaDoc = generateWordHtmlDoc('Practical and Viva', vivaHtml);
+    const blueprintDoc = generateWordHtmlDoc('Blueprint Matrix', blueprintHtml);
+
+    // Instant Download 3+ Files
+    const fileExt = downloadFormat === 'doc' ? 'doc' : 'html';
+    const mimeType = 'application/msword;charset=utf-8';
+
+    downloadFile(`${safeCls}_${safeSub}_Question_Paper_${timestamp}.${fileExt}`, paperDoc, mimeType);
+    downloadFile(`${safeCls}_${safeSub}_Marking_Scheme_${timestamp}.${fileExt}`, answerKeyDoc, mimeType);
+    downloadFile(`${safeCls}_${safeSub}_Practical_Viva_${timestamp}.${fileExt}`, vivaDoc, mimeType);
+    downloadFile(`${safeCls}_${safeSub}_Blueprint_Matrix_${timestamp}.${fileExt}`, blueprintDoc, mimeType);
+
+    // Save into Teacher's Cloud Repository (State + LocalStorage)
+    const newRecord: SavedPaperRecord = {
+      id: `PPR-${Date.now().toString().slice(-5)}`,
+      title: `${selectedSubject} (${examPattern.split('(')[0].trim()})`,
+      subject: selectedSubject,
+      className: selectedClass,
+      pattern: examPattern,
+      totalMarks: theoryMarks,
+      createdAt: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
+      author: currentUser?.name || 'Faculty',
+      schoolName: activeSchool.name,
+      paperDoc,
+      answerKeyDoc,
+      vivaDoc,
+      blueprintDoc,
     };
 
-    // Trigger instant download for all 3 files in 1 click!
-    downloadFile(`${safeCls}_${safeSub}_Question_Paper_${timestamp}.txt`, paperContent);
-    downloadFile(`${safeCls}_${safeSub}_Answer_Key_Marking_Scheme_${timestamp}.txt`, answerKeyContent);
-    downloadFile(`${safeCls}_${safeSub}_Examination_Blueprint_Matrix_${timestamp}.txt`, blueprintContent);
+    const updatedSaved = [newRecord, ...savedPapers];
+    setSavedPapers(updatedSaved);
+    localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updatedSaved));
 
-    alert(`🎉 3 Files Package Generated & Downloaded Successfully:\n1. Question Paper (${selectedSubject})\n2. Stepwise Answer Key & Marking Scheme\n3. CBSE Blueprint Matrix`);
+    alert(`🎉 Success! 4 Separate Files Generated & Downloaded in MS Word (.doc) Format:\n1. Question Paper (${selectedClass} - ${selectedSubject})\n2. Answer Key & Stepwise Marking Scheme\n3. Practical & Viva-Voce Assessment Dossier\n4. CBSE Examination Blueprint Matrix\n\nPaper has also been saved to your "Saved Papers Repository" tab!`);
   };
 
   return (
@@ -274,7 +487,7 @@ Generated via DevGyan Enterprise AI Academic Engine.
       <div className="min-h-screen bg-[#030712] text-white py-8 px-6 font-sans">
         <div className="max-w-7xl mx-auto space-y-6">
           
-          {/* Studio Top Navigation Bar (Screenshot 3 Tabs) */}
+          {/* Top Navigation Tabs */}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4">
             <div className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
               ACADEMIC STUDIOS:
@@ -295,7 +508,7 @@ Generated via DevGyan Enterprise AI Academic Engine.
                   activeStudioTab === 'practical' ? 'bg-blue-600 font-bold text-white shadow-lg shadow-blue-500/25' : 'bg-gray-900 border border-gray-800 text-gray-300 hover:text-white'
                 }`}
               >
-                2. 🧪 Practical, Viva & Project Studio
+                2. 🧪 Practical, Viva & Project Studio ({activeSelectedExperiments.length} Active)
               </button>
               <button
                 onClick={() => setActiveStudioTab('manual')}
@@ -306,12 +519,12 @@ Generated via DevGyan Enterprise AI Academic Engine.
                 3. Manual Paste Syllabus
               </button>
               <button
-                onClick={() => setActiveStudioTab('upload')}
+                onClick={() => setActiveStudioTab('saved')}
                 className={`px-4 py-2 rounded-xl transition-all ${
-                  activeStudioTab === 'upload' ? 'bg-blue-600 font-bold text-white shadow-lg shadow-blue-500/25' : 'bg-gray-900 border border-gray-800 text-gray-300 hover:text-white'
+                  activeStudioTab === 'saved' ? 'bg-emerald-600 font-bold text-white shadow-lg shadow-emerald-500/25' : 'bg-gray-900 border border-gray-800 text-gray-300 hover:text-white'
                 }`}
               >
-                4. Self Upload Papers
+                4. 📂 Saved Papers Repository ({savedPapers.length})
               </button>
             </div>
           </div>
@@ -319,16 +532,39 @@ Generated via DevGyan Enterprise AI Academic Engine.
           {/* TAB 1: CBSE SYLLABUS & QUESTION MATRIX */}
           {activeStudioTab === 'matrix' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
-              <div>
-                <h2 className="text-xl font-black text-white tracking-tight">
-                  Mode 1: Official CBSE Curriculum & Dynamic Exam Engine
-                </h2>
-                <p className="text-xs text-gray-400 mt-1">
-                  Syllabus units automatically adapt to the chosen exam pattern for {activeSchool.name}.
-                </p>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div>
+                  <h2 className="text-xl font-black text-white tracking-tight">
+                    Mode 1: Official CBSE Curriculum & Dynamic Exam Engine
+                  </h2>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    Formatted for {activeSchool.name} • Session 2026-27 (Times New Roman 12pt/14pt, Narrow A4)
+                  </p>
+                </div>
+
+                {/* Download Format Selector */}
+                <div className="flex items-center gap-2 bg-[#030712] border border-gray-800 p-1.5 rounded-xl text-xs font-mono">
+                  <span className="text-gray-400 pl-2">Format:</span>
+                  <button
+                    onClick={() => setDownloadFormat('doc')}
+                    className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                      downloadFormat === 'doc' ? 'bg-cyan-500 text-black' : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    MS Word (.doc) ★ Default
+                  </button>
+                  <button
+                    onClick={() => setDownloadFormat('pdf')}
+                    className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                      downloadFormat === 'pdf' ? 'bg-cyan-500 text-black' : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    PDF Ready
+                  </button>
+                </div>
               </div>
 
-              {/* Selectors Row (Screenshot 1 & 2 Exact Values) */}
+              {/* Selectors Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-sans">
                 <div>
                   <label className="block text-gray-400 font-semibold mb-1">CLASS (K-12)</label>
@@ -358,7 +594,6 @@ Generated via DevGyan Enterprise AI Academic Engine.
                   </select>
                 </div>
 
-                {/* EXACT SCREENSHOT 1 EXAMINATION PATTERN */}
                 <div>
                   <label className="block text-gray-400 font-semibold mb-1">EXAMINATION PATTERN</label>
                   <select
@@ -375,7 +610,6 @@ Generated via DevGyan Enterprise AI Academic Engine.
                   </select>
                 </div>
 
-                {/* EXACT SCREENSHOT 2 DIFFICULTY / STANDARD */}
                 <div>
                   <label className="block text-gray-400 font-semibold mb-1">DIFFICULTY / STANDARD</label>
                   <select
@@ -489,7 +723,7 @@ Generated via DevGyan Enterprise AI Academic Engine.
                 </div>
               </div>
 
-              {/* DYNAMIC SYLLABUS UNITS & SUB-TOPICS (Changes correctly based on selectedClass and selectedSubject) */}
+              {/* DYNAMIC SYLLABUS UNITS & TOPICS */}
               <div className="space-y-3 pt-2">
                 <div className="flex justify-between items-center">
                   <span className="text-[11px] font-mono text-gray-400 uppercase">
@@ -537,70 +771,101 @@ Generated via DevGyan Enterprise AI Academic Engine.
                 ))}
               </div>
 
-              {/* SINGLE CLICK 3-FILES DOWNLOAD BUTTON */}
+              {/* SINGLE CLICK 3+ FILES DOWNLOAD BUTTON */}
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-800">
                 <div className="text-xs text-gray-400 font-mono">
-                  Package Status: <strong className="text-emerald-400">Paper + Answer Key + Blueprint Ready</strong>
+                  Export Specs: <strong className="text-cyan-400">Times New Roman 12pt • Narrow Margin • A4 Format</strong>
                 </div>
                 <button
-                  onClick={handleGenerate3FilesPackage}
+                  onClick={handleGenerateCompletePackage}
                   className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/25 transition-all flex items-center justify-center gap-2"
                 >
                   <span>⚡</span>
-                  <span>Generate Formal Examination Paper (Download 3 Files Package)</span>
+                  <span>Generate Formal Paper (Download 4 Files in MS Word .doc)</span>
                 </button>
               </div>
 
             </div>
           )}
 
-          {/* TAB 2: PRACTICAL, VIVA & PROJECT STUDIO */}
+          {/* TAB 2: PRACTICAL, VIVA & PROJECT STUDIO (WITH TOPIC-WISE EXPERIMENTS) */}
           {activeStudioTab === 'practical' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
-              <div>
-                <h2 className="text-xl font-black text-white tracking-tight">
-                  Studio 2: Practical Lab Manual, Viva-Voce & Project Work
-                </h2>
-                <p className="text-xs text-gray-400 mt-1">
-                  CBSE Practical Examination guidelines ({practicalMarks} Marks Internal/External Assessment) for {selectedSubject}.
-                </p>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div>
+                  <h2 className="text-xl font-black text-white tracking-tight">
+                    Studio 2: Practical Lab Manual, Viva-Voce & Project Roster
+                  </h2>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    Select topic-wise experiments for {selectedSubject} ({practicalMarks} Marks CBSE Evaluation)
+                  </p>
+                </div>
+                <button
+                  onClick={handleGenerateCompletePackage}
+                  className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs text-white shadow-lg transition-all"
+                >
+                  Export Selected Practical & Viva Sheet (.doc) →
+                </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-[#030712] border border-gray-800 p-5 rounded-2xl space-y-3">
-                  <span className="text-xs font-mono text-cyan-400 uppercase">EXPERIMENT ROSTER (15 MARKS)</span>
-                  <div className="text-sm font-bold text-white">Major & Minor Lab Experiments</div>
-                  <ul className="text-xs text-gray-400 space-y-2 list-disc pl-4">
-                    <li>Experiment 1: Verification of core law using laboratory apparatus</li>
-                    <li>Experiment 2: Determination of unknown resistance / index using potentiometer</li>
-                    <li>Experiment 3: Error analysis and least count calculations</li>
-                  </ul>
-                </div>
+              {/* Topic-wise Experiments List per Unit */}
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono uppercase text-cyan-400">
+                  Topic-Wise Lab Experiments Under Syllabus Units:
+                </h3>
 
-                <div className="bg-[#030712] border border-gray-800 p-5 rounded-2xl space-y-3">
-                  <span className="text-xs font-mono text-emerald-400 uppercase">PROJECT & FILE (10 MARKS)</span>
-                  <div className="text-sm font-bold text-white">Investigatory Project Record</div>
-                  <ul className="text-xs text-gray-400 space-y-2 list-disc pl-4">
-                    <li>Continuous practical observation record file</li>
-                    <li>Student investigative research project on modern technologies</li>
-                    <li>Demonstrative working model verification report</li>
-                  </ul>
-                </div>
+                {activeCurriculum.units.map((unit, uIdx) => (
+                  <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-5 space-y-3">
+                    <div className="font-bold text-white text-xs border-b border-gray-800 pb-2 flex justify-between items-center">
+                      <span>{unit.unitTitle}</span>
+                      <span className="text-[10px] font-mono text-gray-400">
+                        {unit.experiments?.length || 0} Experiments Mapped
+                      </span>
+                    </div>
 
-                <div className="bg-[#030712] border border-gray-800 p-5 rounded-2xl space-y-3">
-                  <span className="text-xs font-mono text-purple-400 uppercase">VIVA-VOCE (5 MARKS)</span>
-                  <div className="text-sm font-bold text-white">External Oral Assessment</div>
-                  <ul className="text-xs text-gray-400 space-y-2 list-disc pl-4">
-                    <li>Conceptual questions on standard procedures</li>
-                    <li>Sources of systematic and instrumental errors</li>
-                    <li>NEP 2020 application-oriented analytical queries</li>
-                  </ul>
-                </div>
+                    {(!unit.experiments || unit.experiments.length === 0) ? (
+                      <p className="text-xs text-gray-500 italic">No formal lab experiments prescribed under this specific unit.</p>
+                    ) : (
+                      <div className="space-y-3">
+                        {unit.experiments.map((exp) => {
+                          const isExpChecked = selectedExpIds[exp.expId] !== false;
+                          return (
+                            <div key={exp.expId} className="p-3 rounded-xl bg-gray-900/50 border border-gray-800/80 space-y-2">
+                              <label className="flex items-center gap-2.5 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={isExpChecked}
+                                  onChange={() => toggleExperiment(exp.expId)}
+                                  className="rounded border-gray-700 bg-gray-900 text-emerald-500 w-4 h-4"
+                                />
+                                <div>
+                                  <span className="text-xs font-bold text-white block">
+                                    [{exp.expId}] {exp.title}
+                                  </span>
+                                </div>
+                              </label>
+
+                              {/* Associated Viva Questions for this experiment */}
+                              <div className="pl-6 pt-1 space-y-1 text-xs">
+                                <span className="text-[10px] font-mono text-cyan-400 block uppercase">
+                                  Standard Viva-Voce Questions for this experiment:
+                                </span>
+                                {exp.vivaQueries.map((vq, vIdx) => (
+                                  <div key={vIdx} className="text-gray-300 text-[11px] bg-black/40 p-2 rounded-lg border border-gray-800">
+                                    <div><strong className="text-white">Q: {vq.q}</strong></div>
+                                    <div className="text-gray-400 mt-0.5">Ans: {vq.a}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
 
-              <div className="p-4 bg-cyan-950/20 border border-cyan-800/40 rounded-xl text-xs text-cyan-300">
-                💡 Practical question paper and viva assessment rubric will be appended automatically into the generated package.
-              </div>
             </div>
           )}
 
@@ -612,7 +877,7 @@ Generated via DevGyan Enterprise AI Academic Engine.
                   Studio 3: Custom & Manual Syllabus Paste Editor
                 </h2>
                 <p className="text-xs text-gray-400 mt-1">
-                  Paste school-specific custom unit notes or term test portions to generate tailored question papers.
+                  Paste school-specific unit notes or specialized topics to generate tailored question papers.
                 </p>
               </div>
 
@@ -623,49 +888,82 @@ Generated via DevGyan Enterprise AI Academic Engine.
                   value={manualSyllabusText}
                   onChange={(e) => setManualSyllabusText(e.target.value)}
                   className="w-full bg-[#030712] border border-gray-800 rounded-2xl p-4 text-white font-mono focus:border-cyan-400 focus:outline-none"
-                  placeholder="Paste units, chapters or syllabus bullets..."
                 />
               </div>
 
               <button
-                onClick={() => alert('Custom pasted syllabus compiled! You can now generate papers based on this text.')}
+                onClick={() => alert('Custom syllabus portion compiled! You can now generate papers based on this portion.')}
                 className="px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 font-bold text-black text-xs uppercase"
               >
-                Compile Custom Syllabus Portion →
+                Compile Custom Portion →
               </button>
             </div>
           )}
 
-          {/* TAB 4: SELF UPLOAD PAPERS */}
-          {activeStudioTab === 'upload' && (
+          {/* TAB 4: SAVED PAPERS REPOSITORY (TEACHER'S CLOUD ARCHIVE) */}
+          {activeStudioTab === 'saved' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
-              <div>
-                <h2 className="text-xl font-black text-white tracking-tight">
-                  Studio 4: Institutional Archive & Paper Upload Repository
-                </h2>
-                <p className="text-xs text-gray-400 mt-1">
-                  Upload past year papers, departmental model test sheets or question banks for reference.
-                </p>
-              </div>
-
-              <div className="border-2 border-dashed border-gray-800 hover:border-cyan-500/50 rounded-2xl p-8 text-center space-y-3 cursor-pointer bg-[#030712]/50">
-                <div className="text-3xl">📄</div>
-                <div className="text-sm font-bold text-white">Click or drag PDF / DOCX papers here to upload</div>
-                <p className="text-xs text-gray-500">Supports CBSE Board Sets, Term Papers, and Teacher Worksheets up to 25MB</p>
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-xl font-black text-white tracking-tight">
+                    Studio 4: Teacher&apos;s Saved Papers & Examination Repository
+                  </h2>
+                  <p className="text-xs text-gray-400 mt-1">
+                    All question papers generated by you for {activeSchool.name} are stored permanently here.
+                  </p>
+                </div>
+                <span className="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800">
+                  {savedPapers.length} Total Papers Archived
+                </span>
               </div>
 
               <div className="space-y-3">
-                <h4 className="text-xs font-mono uppercase text-gray-400">Archived Papers for {activeSchool.name}:</h4>
-                <div className="space-y-2 text-xs font-mono">
-                  {uploadedPapers.map((paper, idx) => (
-                    <div key={idx} className="bg-[#030712] border border-gray-800 p-3 rounded-xl flex justify-between items-center">
-                      <span className="text-cyan-400 font-semibold">{paper}</span>
-                      <span className="text-emerald-400 text-[10px] bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">
-                        Archived in Cloud
-                      </span>
+                {savedPapers.length === 0 ? (
+                  <div className="bg-[#030712] border border-gray-800 p-8 rounded-2xl text-center text-gray-500 font-mono text-xs">
+                    No papers generated yet. Click &quot;Generate Formal Paper&quot; in Studio 1 to create and archive papers here!
+                  </div>
+                ) : (
+                  savedPapers.map((record) => (
+                    <div
+                      key={record.id}
+                      className="bg-[#030712] border border-gray-800 p-4 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-cyan-500/30 transition-all"
+                    >
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-cyan-400 font-bold text-xs">{record.id}</span>
+                          <span className="text-white font-bold text-sm">{record.title}</span>
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800">
+                            {record.className}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-gray-400 font-mono mt-1">
+                          Generated on: {record.createdAt} • Author: {record.author} • {record.totalMarks} Marks
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => downloadFile(`${record.className}_${record.subject}_Question_Paper.doc`, record.paperDoc, 'application/msword;charset=utf-8')}
+                          className="px-3 py-1.5 rounded-lg bg-blue-600/30 hover:bg-blue-600/50 text-cyan-300 border border-blue-500/40 text-[11px] font-semibold"
+                        >
+                          📄 Download Paper (.doc)
+                        </button>
+                        <button
+                          onClick={() => downloadFile(`${record.className}_${record.subject}_Marking_Scheme.doc`, record.answerKeyDoc, 'application/msword;charset=utf-8')}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/40 text-[11px] font-semibold"
+                        >
+                          🔑 Answer Key (.doc)
+                        </button>
+                        <button
+                          onClick={() => downloadFile(`${record.className}_${record.subject}_Practical_Viva.doc`, record.vivaDoc, 'application/msword;charset=utf-8')}
+                          className="px-3 py-1.5 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 border border-purple-500/40 text-[11px] font-semibold"
+                        >
+                          🧪 Practical & Viva (.doc)
+                        </button>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  ))
+                )}
               </div>
             </div>
           )}
