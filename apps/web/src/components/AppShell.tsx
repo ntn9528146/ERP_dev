@@ -20,8 +20,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   const isSuperAdmin = currentUser?.role === 'DEVELOPER' || currentUser?.role === 'SUPER_ADMIN';
+  const isPublicPage = pathname === '/' || pathname === '/login';
 
-  // EXACT MAP TO YOUR EXISTING DIRECTORIES:
   const allErpModules = [
     { name: 'Student Mgmt', href: '/student-management', desc: '4-Tab Dossier & KYC' },
     { name: 'Staff Mgmt', href: '/staff-management', desc: 'Faculty, Admin & Support' },
@@ -91,7 +91,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* 2. MAIN NAVIGATION */}
+        {/* 2. EXACT MAIN NAVIGATION BAR (ALWAYS VISIBLE TO EVERYONE) */}
         <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-black text-base shadow-lg shadow-cyan-500/20">
@@ -162,24 +162,100 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div>
-            {!isAuthenticated && (
+            {!isAuthenticated ? (
               <Link
                 href="/login"
                 className="px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs font-bold shadow-lg shadow-cyan-500/20 transition-all"
               >
                 Protected Login
               </Link>
+            ) : (
+              <button
+                onClick={logout}
+                className="px-4 py-2 rounded-xl bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/40 text-xs font-bold transition-all"
+              >
+                Sign Out ⎋
+              </button>
             )}
           </div>
         </div>
       </header>
 
-      {/* 3. MAIN CONTENT */}
+      {/* 3. GLOBAL ROUTE PROTECTION */}
       <main className="flex-1">
-        {children}
+        {!isPublicPage && !isAuthenticated ? (
+          /* UN-AUTHENTICATED PROMOTIONAL VIEW (BLOOMBYTE-STYLE) */
+          <div className="min-h-[85vh] bg-[#030712] text-white py-12 px-6">
+            <div className="max-w-6xl mx-auto space-y-12">
+              
+              <div className="text-center space-y-4 max-w-3xl mx-auto">
+                <span className="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800/60">
+                  NEXT-GEN CBSE K-12 ENTERPRISE PLATFORM
+                </span>
+                <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+                  Intelligent School Operations & Cloud Automation
+                </h1>
+                <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+                  Enterprise-grade academic management, dynamic CBSE matrix mapping, APAAR/PEN synchronization, and zero-trust data governance.
+                </p>
+                <div className="pt-2 flex justify-center gap-3">
+                  <Link
+                    href="/login"
+                    className="inline-block px-7 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/25 transition-all"
+                  >
+                    Protected Institutional Login →
+                  </Link>
+                </div>
+              </div>
+
+              {/* Showcase Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-[#0B1120] border border-gray-800 rounded-2xl p-6 space-y-3">
+                  <div className="text-cyan-400 text-3xl">⚡</div>
+                  <h3 className="text-xl font-bold text-white">99.98% High Availability</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Serverless Neon cloud architecture powering real-time synchronization across hundreds of classrooms.
+                  </p>
+                  <div className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest pt-2">• Zero Latency</div>
+                </div>
+
+                <div className="bg-[#0B1120] border border-gray-800 rounded-2xl p-6 space-y-3">
+                  <div className="text-emerald-400 text-3xl">📜</div>
+                  <h3 className="text-xl font-bold text-white">CBSE Curriculum Engine</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Full K-12 coverage: Nursery to Class 12th, skill subjects (IT 402, AI 417), CS 083, and co-scholastics.
+                  </p>
+                  <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest pt-2">• NEP 2020 Aligned</div>
+                </div>
+
+                <div className="bg-[#0B1120] border border-gray-800 rounded-2xl p-6 space-y-3">
+                  <div className="text-purple-400 text-3xl">🛡️</div>
+                  <h3 className="text-xl font-bold text-white">Strict Tenant Isolation</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Encrypted role-based access. Teachers view assigned classes only; student records remain strictly confidential.
+                  </p>
+                  <div className="text-[10px] font-mono text-purple-400 uppercase tracking-widest pt-2">• Zero Data Leakage</div>
+                </div>
+              </div>
+
+              <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-8 space-y-4 text-center">
+                <span className="text-xs font-mono text-amber-400 bg-amber-950/60 px-3 py-1 rounded-full border border-amber-800/50">
+                  🔒 Confidential Institutional Records Protected
+                </span>
+                <p className="text-xs text-gray-400 max-w-lg mx-auto">
+                  Live student dossiers, marks registers, and inventory records are protected under institutional compliance. Authenticate to unlock workspace.
+                </p>
+              </div>
+
+            </div>
+          </div>
+        ) : (
+          /* AUTHENTICATED OR PUBLIC (HOMEPAGE/LOGIN) VIEW */
+          children
+        )}
       </main>
 
-      {/* 4. EXACT FOOTER - MAPPED TO REAL DIRECTORIES */}
+      {/* 4. EXACT FOOTER */}
       <footer className="border-t border-gray-900 bg-[#020617] text-gray-300 pt-12 pb-8 px-6 mt-16 font-sans">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-gray-900 text-xs">
           
@@ -198,7 +274,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          {/* Column 1: ACADEMIC CORE */}
           <div className="space-y-3">
             <h4 className="font-bold text-white uppercase text-xs tracking-wider flex items-center gap-2">
               <span className="w-1 h-3.5 bg-cyan-400 rounded-sm inline-block"></span>
@@ -214,7 +289,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </ul>
           </div>
 
-          {/* Column 2: OPERATIONS & LIVING */}
           <div className="space-y-3">
             <h4 className="font-bold text-white uppercase text-xs tracking-wider flex items-center gap-2">
               <span className="w-1 h-3.5 bg-blue-500 rounded-sm inline-block"></span>
@@ -230,7 +304,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </ul>
           </div>
 
-          {/* Column 3: PORTALS & GOVERNANCE */}
           <div className="space-y-3">
             <h4 className="font-bold text-white uppercase text-xs tracking-wider flex items-center gap-2">
               <span className="w-1 h-3.5 bg-purple-500 rounded-sm inline-block"></span>
