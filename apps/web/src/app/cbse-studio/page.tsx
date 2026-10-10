@@ -27,18 +27,15 @@ export default function PaperGeneratorStudioPage() {
 
   const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved'>('matrix');
 
-  // Selectors State
   const [selectedClass, setSelectedClass] = useState('Class 12 (Science)');
   const [selectedSubject, setSelectedSubject] = useState('Computer Science (Code 083)');
   const [examPattern, setExamPattern] = useState('Pre-Board Examination (100% Syllabus)');
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
   const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('doc');
 
-  // Marks Distribution
   const [theoryMarks, setTheoryMarks] = useState(70);
   const [practicalMarks, setPracticalMarks] = useState(30);
 
-  // Restored Section Blueprint Matrix with live counters
   const [sections, setSections] = useState([
     { id: 'sec-a', name: 'Section A: Objective & MCQs (Q1 to Q21)', enabled: true, marksPerQ: 1, count: 21 },
     { id: 'sec-b', name: 'Section B: VSA Output & Syntax (Q22 to Q28)', enabled: true, marksPerQ: 2, count: 7 },
@@ -171,7 +168,6 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const safeSub = selectedSubject.replace(/[^a-zA-Z0-9]/g, '_');
     const safeCls = selectedClass.replace(/[^a-zA-Z0-9]/g, '_');
 
-    // Generate unique random questions set
     const generatedData = generateExactSubjectPaper(selectedSubject, selectedClass);
     const allQs = generatedData.questions;
 
@@ -180,6 +176,8 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const secC = allQs.filter(q => q.section === 'C');
     const secD = allQs.filter(q => q.section === 'D');
     const secE = allQs.filter(q => q.section === 'E');
+
+    const romanNums = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
 
     const paperHtml = `
 <div class="roll-no-box">Roll No: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</div>
@@ -196,7 +194,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
 <div class="instructions">
 <b>General Instructions:</b><br/>
-${generatedData.instructions.map((inst, i) => `(${['i','ii','iii','iv','v','vi','vii','viii','ix','x'][i] \vert{}\vert{} i+1})${inst}`).join('<br/>')}
+${generatedData.instructions.map((inst, i) => `(${romanNums[i] \vert{}\vert{} (i + 1)})${inst}`).join('<br/>')}
 </div>
 
 <div class="section-title">SECTION - A &nbsp;&nbsp; (21 x 1 = 21 Marks)</div>
@@ -279,13 +277,11 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     const fileExt = downloadFormat === 'doc' ? 'doc' : 'html';
     const mime = downloadFormat === 'doc' ? 'application/msword;charset=utf-8' : 'text/html;charset=utf-8';
 
-    // Download separate files
     downloadFile(`${safeCls}_${safeSub}_Question_Paper_${timestamp}.${fileExt}`, paperDoc, mime);
     downloadFile(`${safeCls}_${safeSub}_Marking_Scheme_${timestamp}.${fileExt}`, answerKeyDoc, mime);
     downloadFile(`${safeCls}_${safeSub}_Practical_Viva_${timestamp}.${fileExt}`, vivaDoc, mime);
     downloadFile(`${safeCls}_${safeSub}_Blueprint_${timestamp}.${fileExt}`, blueprintDoc, mime);
 
-    // Save into repository
     const newRecord: SavedPaperRecord = {
       id: `PPR-${Date.now().toString().slice(-5)}`,
       title: `${selectedSubject} (${examPattern.split('(')[0].trim()})`,
@@ -302,7 +298,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     setSavedPapers(updated);
     localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updated));
 
-    alert(`🎉 Unique CBSE 2026 Paper Generated in ${downloadFormat.toUpperCase()}!\n\nSubject: ${selectedSubject}\nTotal: 37 Questions (Q1 to Q37)\nMarks: 70 Marks\n4 Files Downloaded & Archived in Saved Papers!`);
+    alert(`🎉 Unique CBSE 2026 Paper Generated in ${downloadFormat.toUpperCase()}!\n\nSubject: ${selectedSubject}\nTotal: 37 Questions (Q1 to Q37)\nMarks: 70 Marks\n4 Files Downloaded & Saved in Repository!`);
   };
 
   return (
@@ -310,7 +306,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
       <div className="min-h-screen bg-[#030712] text-white py-8 px-6 font-sans">
         <div className="max-w-7xl mx-auto space-y-6">
           
-          {/* Top Tabs */}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4">
             <div className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
               ACADEMIC STUDIOS:
@@ -352,7 +347,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           </div>
 
-          {/* TAB 1: BLUEPRINT MATRIX WITH CHECKBOXES & CONTROLS RESTORED */}
           {activeStudioTab === 'matrix' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -365,7 +359,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   </p>
                 </div>
 
-                {/* RESTORED: MS WORD & PDF DOWNLOAD FORMAT TOGGLE */}
                 <div className="flex items-center gap-2 bg-[#030712] border border-gray-800 p-1.5 rounded-xl text-xs font-mono">
                   <span className="text-gray-400 pl-2">Format:</span>
                   <button
@@ -387,7 +380,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* Selectors Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-sans">
                 <div>
                   <label className="block text-gray-400 font-semibold mb-1">CLASS (K-12)</label>
@@ -448,7 +440,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* RESTORED: Evaluation Distribution Controls */}
               <div className="bg-[#030712] border border-gray-800 p-4 rounded-2xl flex flex-wrap justify-between items-center text-xs">
                 <div>
                   <span className="text-[10px] text-gray-400 uppercase font-mono block">Evaluation Distribution:</span>
@@ -470,7 +461,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* RESTORED: BLUEPRINT TABLE WITH INTERACTIVE CHECKBOXES & +/- */}
               <div className="space-y-4 pt-2">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
@@ -573,7 +563,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* RESTORED: UNITS AND TOPICS WITH CHECKBOXES */}
               <div className="space-y-3 pt-2">
                 <span className="text-[11px] font-mono text-gray-400 uppercase block">
                   SYLLABUS UNITS FOR {selectedSubject.toUpperCase()}:
@@ -615,7 +604,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 ))}
               </div>
 
-              {/* GENERATE FORMAL PAPER BUTTON */}
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-800">
                 <div className="text-xs text-gray-400 font-mono">
                   Engine: <strong className="text-emerald-400">CBSE 2026 Format Active (37 Questions • 70 Marks)</strong>
@@ -632,7 +620,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           )}
 
-          {/* TAB 2: PRACTICAL STUDIO (CHECKBOXES & EXPORT BUTTON RESTORED) */}
           {activeStudioTab === 'practical' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -701,10 +688,12 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           )}
 
-          {/* TAB 3: MANUAL PASTE */}
           {activeStudioTab === 'manual' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
-              <h2 className="text-xl font-black text-white tracking-tight">Studio 3: Manual Paste Syllabus</h2>
+              <div>
+                <h2 className="text-xl font-black text-white tracking-tight">Studio 3: Manual Paste Syllabus</h2>
+                <p className="text-xs text-gray-400 mt-1">Paste custom syllabus or unit notes to create customized question papers.</p>
+              </div>
               <textarea
                 rows={8}
                 value={manualSyllabusText}
@@ -720,7 +709,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           )}
 
-          {/* TAB 4: SAVED PAPERS (3 SEPARATE DOWNLOAD BUTTONS RESTORED) */}
           {activeStudioTab === 'saved' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex justify-between items-center">
@@ -747,7 +735,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                         <div className="text-[11px] text-gray-400 font-mono mt-1">Generated: {record.createdAt} • Author: {record.author} • {record.totalMarks} Marks</div>
                       </div>
 
-                      {/* 3 RESTORED DOWNLOAD BUTTONS */}
                       <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => downloadFile(`${record.className}_${record.subject}_Question_Paper.doc`, record.paperDoc, 'application/msword;charset=utf-8')}
