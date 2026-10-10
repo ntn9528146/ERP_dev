@@ -125,25 +125,37 @@ export default function PaperGeneratorStudioPage() {
   const allAvailableExperiments: PracticalExperiment[] = activeCurriculum.units.flatMap((u) => u.experiments || []);
   const activeSelectedExperiments = allAvailableExperiments.filter((e) => selectedExpIds[e.expId] !== false);
 
+  // WORD/PDF STYLING EXACTLY MATCHING CBSE ORIGINAL FORMAT (SCREENSHOT 2)
   const generateWordHtmlDoc = (title: string, bodyHtml: string) => {
     return `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
 <head>
 <meta charset='utf-8'>
 <title>${title}</title>
 <style>
-@page { size: 21cm 29.7cm; margin: 1.27cm; mso-page-orientation: portrait; }
-body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.35; color: #000; }
-.header-school { font-size: 16pt; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 2pt; }
-.header-meta { font-size: 12pt; text-align: center; font-weight: bold; margin-bottom: 6pt; }
-.roll-no-box { border: 1pt solid #000; padding: 4pt 8pt; width: 180pt; font-size: 10pt; font-family: monospace; margin-bottom: 6pt; }
-.section-title { font-size: 14pt; font-weight: bold; margin-top: 12pt; margin-bottom: 4pt; border-bottom: 1.5pt solid #000; text-transform: uppercase; }
-.instructions { font-size: 11pt; margin-bottom: 8pt; line-height: 1.3; }
-.q-row { margin-bottom: 8pt; text-align: justify; }
-.q-num { font-weight: bold; font-size: 12pt; }
-.marks-badge { float: right; font-weight: bold; font-family: 'Times New Roman', serif; }
-pre, code { font-family: 'Courier New', Courier, monospace; font-size: 11pt; }
+@page { size: 21cm 29.7cm; margin: 1.27cm 1.27cm 1.27cm 1.27cm; mso-page-orientation: portrait; }
+body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-height: 1.3; color: #000; }
+.header-school { font-size: 15pt; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 2pt; }
+.header-meta { font-size: 11pt; text-align: center; font-weight: bold; margin-bottom: 4pt; }
+.roll-no-box { border: 1pt solid #000; padding: 3pt 6pt; width: 170pt; font-size: 10pt; font-family: monospace; margin-bottom: 6pt; }
+.section-title { font-size: 12pt; font-weight: bold; text-align: center; margin-top: 14pt; margin-bottom: 6pt; text-transform: uppercase; border-bottom: 1pt solid #000; padding-bottom: 2pt; }
+.instructions { font-size: 10pt; margin-bottom: 8pt; line-height: 1.25; }
+
+/* QUESTION ITEM TABLE (EXACT CBSE SCREENSHOT 2 LAYOUT) */
+table.q-item-table { width: 100%; border-collapse: collapse; margin-bottom: 10pt; page-break-inside: avoid; }
+table.q-item-table td { vertical-align: top; padding: 1pt 0; font-size: 11pt; }
+td.q-col-num { width: 28pt; font-weight: bold; font-size: 11pt; }
+td.q-col-body { text-align: justify; }
+td.q-col-marks { width: 20pt; text-align: right; font-weight: bold; font-size: 11pt; }
+
+/* PYTHON CODE BLOCKS IN COURIER NEW */
+pre.code-block { font-family: 'Courier New', Courier, monospace; font-size: 10pt; font-weight: bold; margin: 4pt 0 4pt 12pt; background-color: #fafafa; padding: 3pt; line-height: 1.2; }
+
+/* 2-COLUMN OPTIONS TABLE FOR MCQS */
+table.opts-table { width: 100%; border-collapse: collapse; margin-top: 3pt; margin-bottom: 2pt; }
+table.opts-table td { width: 50%; padding: 1.5pt 4pt; font-size: 10.5pt; font-family: 'Times New Roman', Times, serif; }
+
 table.matrix-table { width: 100%; border-collapse: collapse; margin-top: 6pt; margin-bottom: 8pt; }
-table.matrix-table th, table.matrix-table td { border: 1pt solid #000; padding: 4pt 6pt; font-size: 11pt; }
+table.matrix-table th, table.matrix-table td { border: 1pt solid #000; padding: 4pt 6pt; font-size: 10pt; }
 table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
 </style>
 </head>
@@ -162,12 +174,48 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     URL.revokeObjectURL(url);
   };
 
+  const renderQuestionRow = (q: FullGeneratedQuestion) => {
+    let optionsHtml = '';
+    if (q.options) {
+      optionsHtml = `
+      <table class="opts-table">
+        <tr>
+          <td><b>(A)</b> &nbsp; ${q.options.optA}</td>
+          <td><b>(B)</b> &nbsp; ${q.options.optB}</td>
+        </tr>
+        <tr>
+          <td><b>(C)</b> &nbsp; ${q.options.optC}</td>
+          <td><b>(D)</b> &nbsp; ${q.options.optD}</td>
+        </tr>
+      </table>`;
+    }
+
+    let codeHtml = '';
+    if (q.codeBlock) {
+      codeHtml = `<pre class="code-block">${q.codeBlock}</pre>`;
+    }
+
+    return `
+    <table class="q-item-table">
+      <tr>
+        <td class="q-col-num">${q.qNum}.</td>
+        <td class="q-col-body">
+          ${q.text.replace(/\n/g, '<br/>')}
+          ${codeHtml}
+          ${optionsHtml}
+        </td>
+        <td class="q-col-marks">${q.marks}</td>
+      </tr>
+    </table>`;
+  };
+
   const handleGenerateCompletePackage = () => {
     const timestamp = new Date().toISOString().slice(0, 10);
     const schoolNameUpper = activeSchool.name.toUpperCase();
     const safeSub = selectedSubject.replace(/[^a-zA-Z0-9]/g, '_');
     const safeCls = selectedClass.replace(/[^a-zA-Z0-9]/g, '_');
 
+    // Fresh unique randomized questions set
     const generatedData = generateExactSubjectPaper(selectedSubject, selectedClass);
     const allQs = generatedData.questions;
 
@@ -178,12 +226,8 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const secE = allQs.filter(q => q.section === 'E');
 
     const romanNums = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
-
     const formattedInstructions = generatedData.instructions
-      .map(function (inst, i) {
-        var num = romanNums[i] ? romanNums[i] : (i + 1);
-        return '(' + num + ') ' + inst;
-      })
+      .map((inst, i) => `(${romanNums[i] || (i + 1)}) ${inst}`)
       .join('<br/>');
 
     const paperHtml = `
@@ -191,10 +235,10 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
 <div class="header-school">${schoolNameUpper}</div>
 <div class="header-meta">CBSE SESSION 2026-27 • ${examPattern.toUpperCase()}<br/>
 CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()}</div>
-<table style="width: 100%; margin-bottom: 8pt; font-weight: bold;">
+<table style="width: 100%; margin-bottom: 6pt; font-weight: bold;">
 <tr>
-  <td style="text-align: left;">TIME ALLOWED: 3 HOURS</td>
-  <td style="text-align: right;">MAXIMUM MARKS: ${generatedData.totalMarks}</td>
+  <td style="text-align: left;">Time allowed: 3 hours</td>
+  <td style="text-align: right;">Maximum Marks: ${generatedData.totalMarks}</td>
 </tr>
 </table>
 <hr style="border: 0.5pt solid #000; margin-bottom: 6pt;"/>
@@ -204,22 +248,22 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 ${formattedInstructions}
 </div>
 
-<div class="section-title">SECTION - A &nbsp;&nbsp; (21 x 1 = 21 Marks)</div>
-${secA.map(q => `<div class="q-row"><span class="q-num">${q.qNum}.</span>${q.text.replace(/\n/g, '<br/>')}<span class="marks-badge">[${q.marks}]</span></div>`).join('')}
+<div class="section-title">SECTION - A &nbsp;&nbsp; (21 x 1 = 21)</div>
+${secA.map(renderQuestionRow).join('')}
 
-<div class="section-title">SECTION - B &nbsp;&nbsp; (7 x 2 = 14 Marks)</div>
-${secB.map(q => `<div class="q-row"><span class="q-num">${q.qNum}.</span>${q.text.replace(/\n/g, '<br/>')}<span class="marks-badge">[${q.marks}]</span></div>`).join('')}
+<div class="section-title">SECTION - B &nbsp;&nbsp; (7 x 2 = 14)</div>
+${secB.map(renderQuestionRow).join('')}
 
-<div class="section-title">SECTION - C &nbsp;&nbsp; (3 x 3 = 9 Marks)</div>
-${secC.map(q => `<div class="q-row"><span class="q-num">${q.qNum}.</span>${q.text.replace(/\n/g, '<br/>')}<span class="marks-badge">[${q.marks}]</span></div>`).join('')}
+<div class="section-title">SECTION - C &nbsp;&nbsp; (3 x 3 = 9)</div>
+${secC.map(renderQuestionRow).join('')}
 
-<div class="section-title">SECTION - D &nbsp;&nbsp; (4 x 4 = 16 Marks)</div>
-${secD.map(q => `<div class="q-row"><span class="q-num">${q.qNum}.</span>${q.text.replace(/\n/g, '<br/>')}<span class="marks-badge">[${q.marks}]</span></div>`).join('')}
+<div class="section-title">SECTION - D &nbsp;&nbsp; (4 x 4 = 16)</div>
+${secD.map(renderQuestionRow).join('')}
 
-<div class="section-title">SECTION - E &nbsp;&nbsp; (2 x 5 = 10 Marks)</div>
-${secE.map(q => `<div class="q-row"><span class="q-num">${q.qNum}.</span>${q.text.replace(/\n/g, '<br/>')}<span class="marks-badge">[${q.marks}]</span></div>`).join('')}
+<div class="section-title">SECTION - E &nbsp;&nbsp; (2 x 5 = 10)</div>
+${secE.map(renderQuestionRow).join('')}
 
-<div style="text-align: center; font-weight: bold; margin-top: 15pt;">*** END OF QUESTION PAPER • STRICT CBSE 2026 FORMAT ***</div>
+<div style="text-align: center; font-weight: bold; margin-top: 15pt;">*** END OF QUESTION PAPER • STRICT CBSE 2026-27 FORMAT ***</div>
 `;
 
     const answerKeyHtml = `
@@ -230,8 +274,8 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
 ${allQs.map(q => `
 <div style="margin-bottom: 8pt; page-break-inside: avoid;">
-  <b>Q${q.qNum}. [Section ${q.section} -${q.marks} Mark(s)]</b><br/>
-  <div style="padding-left: 10pt; color: #222;">${q.answerKey.replace(/\n/g, '<br/>')}</div>
+  <b>${q.qNum}. [Section ${q.section} -${q.marks} Mark]</b><br/>
+  <div style="padding-left: 12pt; color: #111;">${q.answerKey.replace(/\n/g, '<br/>')}</div>
 </div>
 `).join('')}
 `;
@@ -305,7 +349,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     setSavedPapers(updated);
     localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updated));
 
-    alert(`🎉 Unique CBSE 2026 Paper Generated in ${downloadFormat.toUpperCase()}!\n\nSubject: ${selectedSubject}\nTotal: 37 Questions (Q1 to Q37)\nMarks: 70 Marks\n4 Files Downloaded & Saved in Repository!`);
+    alert(`🎉 Unique CBSE 2026 Paper Package Generated in ${downloadFormat.toUpperCase()}!\n\nSubject: ${selectedSubject}\nTotal: 37 Questions (Q1 to Q37)\nMarks: 70 Marks\nFormatted exactly as CBSE Original Paper.`);
   };
 
   return (
