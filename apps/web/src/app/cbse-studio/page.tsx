@@ -179,6 +179,13 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
 
     const romanNums = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
 
+    const formattedInstructions = generatedData.instructions
+      .map(function (inst, i) {
+        var num = romanNums[i] ? romanNums[i] : (i + 1);
+        return '(' + num + ') ' + inst;
+      })
+      .join('<br/>');
+
     const paperHtml = `
 <div class="roll-no-box">Roll No: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</div>
 <div class="header-school">${schoolNameUpper}</div>
@@ -194,7 +201,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
 <div class="instructions">
 <b>General Instructions:</b><br/>
-${generatedData.instructions.map((inst, i) => `(${romanNums[i] \vert{}\vert{} (i + 1)})${inst}`).join('<br/>')}
+${formattedInstructions}
 </div>
 
 <div class="section-title">SECTION - A &nbsp;&nbsp; (21 x 1 = 21 Marks)</div>
