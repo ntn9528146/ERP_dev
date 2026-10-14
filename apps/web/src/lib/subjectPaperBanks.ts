@@ -30,11 +30,11 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   instructions: string[];
   totalMarks: number;
 } {
-  // Normalize string by removing underscores, spaces and special characters
   const cleanSub = subjectName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   // =========================================================================
-  // 1. PHYSICAL EDUCATION (CODE 048) - EXACT CBSE 34 QUESTIONS (70 MARKS)
+  // 1. PHYSICAL EDUCATION (CODE 048) - COMPLETE 34 QUESTIONS
+  //    (NO UNDEFINED OPTIONS, COMPLETE TABLES, NO LEAKED ANSWERS)
   // =========================================================================
   if (cleanSub.includes('048') || cleanSub.includes('physicaleducation')) {
     const teamCount = getRandomChoice([13, 17, 19, 21, 23, 27]);
@@ -50,25 +50,103 @@ export function generateExactSubjectPaper(subjectName: string, className: string
     const totalPulse = pulse1 + pulse2 + pulse3;
     const pfiScore = ((stepDuration * 100) / (2 * totalPulse)).toFixed(1);
 
+    // Verified MCQs with complete optA, optB, optC, optD (Zero 'undefined')
     const peMCQs = [
-      { text: 'Which tournament format follows the formula (N - 1) to determine the total number of matches played for N teams?', opts: { optA: 'Knock-Out Tournament', optB: 'League Tournament', optC: 'Round Robin', optD: 'Combination Tournament' }, ans: '(A) Knock-Out Tournament.' },
-      { text: 'Identify the postural spinal deformity marked by an abnormal outward exaggeration of the thoracic curve (hunchback):', opts: { optA: 'Kyphosis', optB: 'Lordosis', optC: 'Scoliosis', optD: 'Knock Knees' }, ans: '(A) Kyphosis.' },
-      { text: 'Which Yogic posture is highly effective as a preventive measure against Type-2 Diabetes by stimulating the pancreas?', opts: { optA: 'Ardha Matsyendrasana', optB: 'Shavasana', optC: 'Tadasana', optD: 'Vrikshasana' }, ans: '(A) Ardha Matsyendrasana.' },
-      { text: 'What is the bench height used in the Harvard Step Test for boys?', opts: { optA: '20 inches (50.8 cm)', optB: '16 inches (40.6 cm)', optC: '14 inches', optD: '24 inches' }, ans: '(A) 20 inches.' },
-      { text: 'Newton’s Second Law of Motion is also formally termed in sports biomechanics as:', opts: { optA: 'Law of Acceleration', optB: 'Law of Inertia', optC: 'Law of Action and Reaction', optD: 'Law of Equilibrium' }, ans: '(A) Law of Acceleration.' },
-      { text: 'Which component of physical fitness is primarily measured by the 8-Foot Up and Go test in the Rikli & Jones battery?', opts: { optA: 'Agility and Dynamic Balance', optB: 'Muscular Strength', optC: 'Aerobic Endurance', optD: 'Lower Body Flexibility' }, ans: '(A) Agility and Dynamic Balance.' },
-      { text: 'Female Athlete Triad comprises which three interrelated clinical conditions?', opts: { optA: 'Osteoporosis, Amenorrhea, Eating Disorders', optB: 'Hypertension, Diabetes, Fatigue', optC: 'Kyphosis, Scoliosis, Lordosis', optD: 'Anemia, Asthma, Sprain' }, ans: '(A) Osteoporosis, Amenorrhea, Eating Disorders.' },
-      { text: 'What does the acronym P.R.I.C.E. stand for in initial sports injury management?', opts: { optA: 'Protect, Rest, Ice, Compression, Elevation', optB: 'Pressure, Relaxation, Inhale, Calm, Exercise', optC: 'Physical, Rapid, Inspection, Care, Energy', optD: 'Protect, Relief, Immobilize, Circulation, Exam' }, ans: '(A) Protect, Rest, Ice, Compression, Elevation.' },
-      { text: 'Which training cycle spans across a micro-cycle in periodization planning?', opts: { optA: '3 to 7 Days', optB: '3 to 6 Weeks', optC: '6 to 12 Months', optD: '4 Years' }, ans: '(A) 3 to 7 Days.' },
-      { text: 'Which nutrient yields approximately 9 kcal of energy per gram metabolized?', opts: { optA: 'Fats', optB: 'Proteins', optC: 'Carbohydrates', optD: 'Minerals' }, ans: '(A) Fats.' },
-      { text: 'Which classification of lever has the Fulcrum located between the Effort and the Load (e.g. nodding movement of head)?', opts: { optA: 'Class I Lever', optB: 'Class II Lever', optC: 'Class III Lever', optD: 'Class IV Lever' }, ans: '(A) Class I Lever.' },
-      { text: 'In the SAI Khelo India Fitness Test battery for age group 9-18+ years, which test measures abdominal muscular endurance?', opts: { optA: 'Partial Curl-Up', optB: 'Push-Ups for Boys', optC: '50m Dash', optD: 'Sit and Reach Test' }, ans: '(A) Partial Curl-Up.' },
-      { text: 'The ability of a muscle or muscle group to overcome resistance under conditions of fatigue is known as:', opts: { optA: 'Strength Endurance', optB: 'Maximum Strength', optC: 'Explosive Strength', optD: 'Speed Endurance' }, ans: '(A) Strength Endurance.' },
-      { text: 'Which of the following is a physical indicator of Flat Foot (Pes Planus)?', opts: { optA: 'Absence of longitudinal medial arch of foot', optB: 'Knees touching each other while standing', optC: 'Forward curvature of lumbar spine', optD: 'Lateral deviation of vertebral column' }, ans: '(A) Absence of foot arch.' },
-      { text: 'The Deaflympics sports festival is organized exclusively for athletes with hearing impairment under the governance of:', opts: { optA: 'International Committee of Sports for the Deaf (ICSD)', optB: 'International Paralympic Committee', optC: 'Special Olympics International', optD: 'World Health Organization' }, ans: '(A) ICSD.' },
-      { text: 'Assertion (A): Isometric exercises do not show visible external joint movements.\nReason (R): During isometric muscle contractions, muscle length remains constant while internal muscular tension increases.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true and (R) explains (A).' },
-      { text: 'Which personality type in Carl Jung’s psychological classification tends to be reflective, quiet, and prefers solitary pursuits?', opts: { optA: 'Introvert', optB: 'Extrovert', optC: 'Ambivert', optD: 'Somatotype' }, ans: '(A) Introvert.' },
-      { text: 'In the Fartlek training method for endurance development, the speed and pace variations are governed by:', opts: { optA: 'The athlete and natural terrain surroundings', opts: 'Whistle of the coach', opts: 'Fixed treadmill speed', opts: 'Track distance markings' }, ans: '(A) Natural terrain and athlete self-regulation.' }
+      { 
+        text: 'Which tournament format follows the formula (N - 1) to determine the total number of matches played for N teams?', 
+        opts: { optA: 'Knock-Out Tournament', optB: 'League Tournament', optC: 'Round Robin', optD: 'Combination Tournament' }, 
+        ans: '(A) Knock-Out Tournament.' 
+      },
+      { 
+        text: 'Identify the postural spinal deformity marked by an abnormal outward exaggeration of the thoracic curve (hunchback):', 
+        opts: { optA: 'Kyphosis', optB: 'Lordosis', optC: 'Scoliosis', optD: 'Knock Knees' }, 
+        ans: '(A) Kyphosis.' 
+      },
+      { 
+        text: 'Which Yogic posture is highly effective as a preventive measure against Type-2 Diabetes by stimulating the pancreas?', 
+        opts: { optA: 'Ardha Matsyendrasana', optB: 'Shavasana', optC: 'Tadasana', optD: 'Vrikshasana' }, 
+        ans: '(A) Ardha Matsyendrasana.' 
+      },
+      { 
+        text: 'What is the bench height used in the Harvard Step Test for boys?', 
+        opts: { optA: '20 inches (50.8 cm)', optB: '16 inches (40.6 cm)', optC: '14 inches', optD: '24 inches' }, 
+        ans: '(A) 20 inches.' 
+      },
+      { 
+        text: 'Newton’s Second Law of Motion is also formally termed in sports biomechanics as:', 
+        opts: { optA: 'Law of Acceleration', optB: 'Law of Inertia', optC: 'Law of Action and Reaction', optD: 'Law of Equilibrium' }, 
+        ans: '(A) Law of Acceleration.' 
+      },
+      { 
+        text: 'Which component of physical fitness is primarily measured by the 8-Foot Up and Go test in the Rikli & Jones battery?', 
+        opts: { optA: 'Agility and Dynamic Balance', optB: 'Muscular Strength', optC: 'Aerobic Endurance', optD: 'Lower Body Flexibility' }, 
+        ans: '(A) Agility and Dynamic Balance.' 
+      },
+      { 
+        text: 'Female Athlete Triad comprises which three interrelated clinical conditions?', 
+        opts: { optA: 'Osteoporosis, Amenorrhea, Eating Disorders', optB: 'Hypertension, Diabetes, Fatigue', optC: 'Kyphosis, Scoliosis, Lordosis', optD: 'Anemia, Asthma, Sprain' }, 
+        ans: '(A) Osteoporosis, Amenorrhea, Eating Disorders.' 
+      },
+      { 
+        text: 'What does the acronym P.R.I.C.E. stand for in initial sports injury management?', 
+        opts: { optA: 'Protect, Rest, Ice, Compression, Elevation', optB: 'Pressure, Relaxation, Inhale, Calm, Exercise', optC: 'Physical, Rapid, Inspection, Care, Energy', optD: 'Protect, Relief, Immobilize, Circulation, Exam' }, 
+        ans: '(A) Protect, Rest, Ice, Compression, Elevation.' 
+      },
+      { 
+        text: 'Which training cycle spans across a micro-cycle in periodization planning?', 
+        opts: { optA: '3 to 7 Days', optB: '3 to 6 Weeks', optC: '6 to 12 Months', optD: '4 Years' }, 
+        ans: '(A) 3 to 7 Days.' 
+      },
+      { 
+        text: 'Which nutrient yields approximately 9 kcal of energy per gram metabolized?', 
+        opts: { optA: 'Fats', optB: 'Proteins', optC: 'Carbohydrates', optD: 'Minerals' }, 
+        ans: '(A) Fats.' 
+      },
+      { 
+        text: 'Which classification of lever has the Fulcrum located between the Effort and the Load (e.g. nodding movement of head)?', 
+        opts: { optA: 'Class I Lever', optB: 'Class II Lever', optC: 'Class III Lever', optD: 'Class IV Lever' }, 
+        ans: '(A) Class I Lever.' 
+      },
+      { 
+        text: 'In the SAI Khelo India Fitness Test battery for age group 9-18+ years, which test measures abdominal muscular endurance?', 
+        opts: { optA: 'Partial Curl-Up', optB: 'Push-Ups for Boys', optC: '50m Dash', optD: 'Sit and Reach Test' }, 
+        ans: '(A) Partial Curl-Up.' 
+      },
+      { 
+        text: 'The ability of a muscle or muscle group to overcome resistance under conditions of fatigue is known as:', 
+        opts: { optA: 'Strength Endurance', optB: 'Maximum Strength', optC: 'Explosive Strength', optD: 'Speed Endurance' }, 
+        ans: '(A) Strength Endurance.' 
+      },
+      { 
+        text: 'Which of the following is a physical indicator of Flat Foot (Pes Planus)?', 
+        opts: { optA: 'Absence of longitudinal medial arch of foot', optB: 'Knees touching each other while standing', optC: 'Forward curvature of lumbar spine', optD: 'Lateral deviation of vertebral column' }, 
+        ans: '(A) Absence of foot arch.' 
+      },
+      { 
+        text: 'The Deaflympics sports festival is organized exclusively for athletes with hearing impairment under the governance of:', 
+        opts: { optA: 'International Committee of Sports for the Deaf (ICSD)', optB: 'International Paralympic Committee', optC: 'Special Olympics International', optD: 'World Health Organization' }, 
+        ans: '(A) ICSD.' 
+      },
+      { 
+        text: 'Assertion (A): Isometric exercises do not show visible external joint movements.\nReason (R): During isometric muscle contractions, muscle length remains constant while internal muscular tension increases.', 
+        opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, 
+        ans: '(A) Both are true and (R) explains (A).' 
+      },
+      { 
+        text: 'Which personality type in Carl Jung’s psychological classification tends to be reflective, quiet, and prefers solitary pursuits?', 
+        opts: { optA: 'Introvert', optB: 'Extrovert', optC: 'Ambivert', optD: 'Somatotype' }, 
+        ans: '(A) Introvert.' 
+      },
+      { 
+        text: 'In the Fartlek training method for endurance development, the speed and pace variations are governed by:', 
+        opts: { 
+          optA: 'The athlete and natural terrain surroundings', 
+          optB: 'The whistle and commands of the coach', 
+          optC: 'Fixed automated treadmill speed controls', 
+          optD: 'Predetermined static athletic track markers' 
+        }, 
+        ans: '(A) Natural terrain and athlete self-regulation.' 
+      }
     ];
 
     const questions: FullGeneratedQuestion[] = [];
@@ -172,13 +250,14 @@ export function generateExactSubjectPaper(subjectName: string, className: string
     });
 
     // SECTION D: Q29 to Q31 (3 Case-Based Questions x 4M = 12 Marks)
+    // FIX: Answer not leaked in question, Table provided in OR part
     questions.push({
       qNum: 29,
       partTitle: 'SECTION - D: CASE-BASED & DATA ANALYSIS QUESTIONS (12 MARKS)',
       typeBadge: '4 Marks Case-Based',
       marks: 4,
-      text: `CASE STUDY - HARVARD STEP TEST FITNESS EVALUATION:\nA physical education instructor conducted the Harvard Step Test on an 18-year-old athlete. The test duration was completed for ${stepDuration} seconds on a 20-inch gymnasium bench. The recovery heart rate pulse counts recorded during the three recovery intervals were:\n- 1 to 1.5 min: ${pulse1} beats\n- 2 to 2.5 min: ${pulse2} beats\n- 3 to 3.5 min: ${pulse3} beats\n\n(i) Calculate the Physical Fitness Index (PFI) using the Long Form formula. [2]\n(ii) Based on the calculated PFI (${pfiScore}), evaluate whether the athlete has Poor, Average, Good, or Excellent cardiovascular endurance. [2]`,
-      answerKey: `(i) PFI = (Duration in seconds x 100) / (2 x Sum of pulse counts) = (${stepDuration} x 100) / (2 x ${totalPulse}) = ${pfiScore}.\n(ii) Norm interpretation: PFI above 90 is Excellent, 80-89 is Good, 65-79 is High Average, 55-64 is Low Average, and below 55 is Poor.`
+      text: `CASE STUDY - HARVARD STEP TEST FITNESS EVALUATION:\nA physical education instructor conducted the Harvard Step Test on an 18-year-old athlete. The test duration was completed for ${stepDuration} seconds on a 20-inch gymnasium bench. The recovery heart rate pulse counts recorded during the three recovery intervals were:\n- 1 to 1.5 min: ${pulse1} beats\n- 2 to 2.5 min: ${pulse2} beats\n- 3 to 3.5 min: ${pulse3} beats\n\n(i) Calculate the Physical Fitness Index (PFI) of the athlete using the Long Form formula. [2]\n(ii) Based on your calculated PFI in part (i), evaluate whether the athlete's cardiovascular endurance rating falls into Poor, Low Average, High Average, Good, or Excellent category. [2]`,
+      answerKey: `(i) PFI = (Duration in seconds x 100) / (2 x Sum of pulse counts) = (${stepDuration} x 100) / (2 x ${totalPulse}) = ${pfiScore}.\n(ii) Rating scale: Below 55 = Poor, 55-64 = Low Average, 65-79 = High Average, 80-89 = Good, Above 90 = Excellent.`
     });
 
     questions.push({
@@ -186,8 +265,16 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       typeBadge: '4 Marks Case-Based',
       marks: 4,
       text: `CASE STUDY - POSTURAL DEFORMITIES & SCHOOL SCREENING:\nDuring an annual physical fitness screening in a school, the medical team noticed that several students in Class 12 exhibited postural issues. Student A walked with knees knocking against each other while running. Student B showed an exaggerated forward hollow curvature in the lumbar spine.\n\n(i) Identify the postural deformities of Student A and Student B. [2]\n(ii) Suggest two corrective exercises or Yogic Asanas for each deformity. [2]`,
-      orOptionText: `Read the following table of 100m sprint biomechanical split timings and answer:\n(i) Which law of motion explains the explosive drive off starting blocks? [2]\n(ii) How does air resistance friction affect the terminal velocity of a sprinter? [2]`,
-      answerKey: `(i) Student A: Knock Knees (Genu Valgum); Student B: Lordosis.\n(ii) Corrective exercises for Knock Knees: Padmasana, Gomukhasana, horse riding. For Lordosis: Halasana, Paschimottanasana, abdominal crunches.`
+      orOptionText: `Read the following 100m sprint biomechanical split-timing observation data and answer the questions below:\n(i) Which of Newton’s Laws of Motion explains the explosive propulsion exerted by a sprinter off the starting blocks? Explain the biomechanical interaction. [2]\n(ii) How do air resistance (aerodynamic drag) and ground reaction forces affect the sprinter’s acceleration and terminal velocity maintenance? [2]`,
+      orOptionTableData: `<table class="matrix-table">
+  <tr><th>Split Distance (Meters)</th><th>Split Time (Seconds)</th><th>Cumulative Time</th><th>Calculated Velocity (m/s)</th></tr>
+  <tr><td>0 - 20 m (Drive Phase)</td><td>2.88 s</td><td>2.88 s</td><td>6.94 m/s</td></tr>
+  <tr><td>20 - 40 m (Transition)</td><td>1.92 s</td><td>4.80 s</td><td>10.42 m/s</td></tr>
+  <tr><td>40 - 60 m (Maximum Velocity)</td><td>1.75 s</td><td>6.55 s</td><td>11.43 m/s</td></tr>
+  <tr><td>60 - 80 m (Speed Maintenance)</td><td>1.78 s</td><td>8.33 s</td><td>11.24 m/s</td></tr>
+  <tr><td>80 - 100 m (Deceleration Phase)</td><td>1.85 s</td><td>10.18 s</td><td>10.81 m/s</td></tr>
+</table>`,
+      answerKey: `Main: (i) Student A: Knock Knees (Genu Valgum); Student B: Lordosis. (ii) Corrective exercises: Padmasana & Gomukhasana for Knock Knees; Halasana & Paschimottanasana for Lordosis.\nOR: (i) Newton's 3rd Law of Motion (Action-Reaction): Force applied backward and downward on block produces equal and opposite forward acceleration. (ii) Ground reaction propels sprinter forward; air drag acts as resisting force opposing motion.`
     });
 
     questions.push({
@@ -729,7 +816,7 @@ Pass necessary Journal Entries for dissolution.`,
     };
   }
 
-  // Fallback for other subjects
+  // Fallback for remaining subjects
   const genericQuestions: FullGeneratedQuestion[] = [
     { qNum: 1, typeBadge: '1 Mark Question', marks: 1, text: `State the fundamental theorem or principle that defines the foundational study of ${subjectName}.`, answerKey: 'Accurate technical formulation as prescribed in CBSE 2026-27 curriculum.' },
     { qNum: 2, typeBadge: '2 Marks Question', marks: 2, text: `Differentiate between primary concepts and secondary derived principles in ${subjectName}.`, answerKey: 'Stepwise differentiation supported with illustrative examples.' },
