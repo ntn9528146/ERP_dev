@@ -25,6 +25,27 @@ export interface AcademicClass {
   availableSubjects: string[];
 }
 
+const SENIOR_SECONDARY_ALL_SUBJECTS = [
+  'Physics (Code 042)',
+  'Chemistry (Code 043)',
+  'Mathematics (Code 041)',
+  'Applied Mathematics (Code 241)',
+  'Biology (Code 044)',
+  'Computer Science (Code 083)',
+  'Informatics Practices (Code 065)',
+  'Accountancy (Code 055)',
+  'Business Studies (Code 054)',
+  'Economics (Code 030)',
+  'Political Science (Code 028)',
+  'History (Code 027)',
+  'Geography (Code 029)',
+  'Physical Education (Code 048)',
+  'Yoga (Code 841)',
+  'Hindi Core (Code 302)',
+  'Hindi Elective (Code 002)',
+  'English Core (Code 301)'
+];
+
 export const ALL_CBSE_CLASSES: AcademicClass[] = [
   { id: 'nur', name: 'Nursery', availableSubjects: ['Foundational English & Rhymes', 'Early Mathematics & Numbers', 'EVS & Sensorial World', 'Art & Craft'] },
   { id: 'lkg', name: 'LKG', availableSubjects: ['English Phonics & Tracing', 'Number Readiness & Shapes', 'General Awareness', 'Creative Art & Motor Skills'] },
@@ -39,185 +60,460 @@ export const ALL_CBSE_CLASSES: AcademicClass[] = [
   { id: 'c8', name: 'Class 8', availableSubjects: ['English Core', 'Mathematics', 'Hindi Course A', 'General Science', 'Social Science', 'Sanskrit', 'AI & Robotics'] },
   { id: 'c9', name: 'Class 9', availableSubjects: ['English Language & Literature (184)', 'Mathematics Standard (041)', 'Science (086)', 'Social Science (087)', 'Hindi Course A (002)', 'Information Technology (402)', 'Artificial Intelligence (417)'] },
   { id: 'c10', name: 'Class 10', availableSubjects: ['Information Technology (402)', 'Artificial Intelligence (417)', 'English Language & Literature (184)', 'Mathematics Standard (041)', 'Mathematics Basic (241)', 'Science (086)', 'Social Science (087)', 'Hindi Course A (002)'] },
-  { id: 'c11-sci', name: 'Class 11 (Science)', availableSubjects: ['Physics (Code 042)', 'Chemistry (Code 043)', 'Mathematics (Code 041)', 'Computer Science (Code 083)', 'Informatics Practices (Code 065)', 'Biology (Code 044)', 'Yoga (Code 841)', 'English Core (Code 301)', 'Physical Education (Code 048)'] },
-  { id: 'c11-comm', name: 'Class 11 (Commerce)', availableSubjects: ['Accountancy (Code 055)', 'Business Studies (Code 054)', 'Economics (Code 030)', 'Mathematics (Code 041)', 'Informatics Practices (Code 065)', 'Computer Science (Code 083)', 'Yoga (Code 841)', 'English Core (Code 301)'] },
-  { id: 'c11-hum', name: 'Class 11 (Humanities)', availableSubjects: ['History (Code 027)', 'Political Science (Code 028)', 'Geography (Code 029)', 'Economics (Code 030)', 'Informatics Practices (Code 065)', 'Yoga (Code 841)', 'Hindi Core (Code 302)', 'English Core (Code 301)'] },
-  { id: 'c12-sci', name: 'Class 12 (Science)', availableSubjects: ['Computer Science (Code 083)', 'Physics (Code 042)', 'Chemistry (Code 043)', 'Mathematics (Code 041)', 'Informatics Practices (Code 065)', 'Biology (Code 044)', 'Yoga (Code 841)', 'English Core (Code 301)', 'Physical Education (Code 048)'] },
-  { id: 'c12-comm', name: 'Class 12 (Commerce)', availableSubjects: ['Accountancy (Code 055)', 'Business Studies (Code 054)', 'Economics (Code 030)', 'Mathematics (Code 041)', 'Informatics Practices (Code 065)', 'Computer Science (Code 083)', 'Yoga (Code 841)', 'English Core (Code 301)'] },
-  { id: 'c12-hum', name: 'Class 12 (Humanities)', availableSubjects: ['History (Code 027)', 'Political Science (Code 028)', 'Geography (Code 029)', 'Economics (Code 030)', 'Informatics Practices (Code 065)', 'Yoga (Code 841)', 'English Core (Code 301)', 'Hindi Core (Code 302)'] }
+  
+  // Senior Secondary Streams
+  { id: 'c11-sci', name: 'Class 11 (Science)', availableSubjects: SENIOR_SECONDARY_ALL_SUBJECTS },
+  { id: 'c11-comm', name: 'Class 11 (Commerce)', availableSubjects: SENIOR_SECONDARY_ALL_SUBJECTS },
+  { id: 'c11-hum', name: 'Class 11 (Humanities)', availableSubjects: SENIOR_SECONDARY_ALL_SUBJECTS },
+  { id: 'c12-sci', name: 'Class 12 (Science)', availableSubjects: SENIOR_SECONDARY_ALL_SUBJECTS },
+  { id: 'c12-comm', name: 'Class 12 (Commerce)', availableSubjects: SENIOR_SECONDARY_ALL_SUBJECTS },
+  { id: 'c12-hum', name: 'Class 12 (Humanities)', availableSubjects: SENIOR_SECONDARY_ALL_SUBJECTS }
 ];
 
 export const ACADEMIC_CLASSES = ALL_CBSE_CLASSES;
 
 export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
-  // CLASS 10 INFORMATION TECHNOLOGY (CODE 402) - OFFICIAL CBSE CURRICULUM
-  'Information Technology (402)': {
-    name: 'Information Technology',
-    code: '402',
-    theoryMarks: 50,
-    practicalMarks: 50,
+  'Physical Education (Code 048)': {
+    name: 'Physical Education',
+    code: '048',
+    theoryMarks: 70,
+    practicalMarks: 30,
     units: [
       {
-        unitTitle: 'Part A: Employability Skills (Unit 1 to 5)',
+        unitTitle: 'Unit I: Management of Sporting Events',
         subTopics: [
-          'Unit 1: Communication Skills-II (Verbal, Non-verbal & Feedback loop)',
-          'Unit 2: Self-Management Skills-II (Stress management techniques & Self-regulation)',
-          'Unit 3: ICT Skills-II (Operating systems, File maintenance & Internet hygiene)',
-          'Unit 4: Entrepreneurial Skills-II (Characteristics, Myths & Role in society)',
-          'Unit 5: Green Skills-II (Sustainable development goals & Green economy)'
+          'Functions of Sports Event Management',
+          'Committees & Responsibilities (Pre, During, Post Event)',
+          'Fixtures: Knock-Out (Bye & Seeding) and League (Staircase & Cyclic)',
+          'Intramural & Extramural Tournaments'
         ],
         experiments: [
           {
-            expId: 'IT-EMP-01',
-            title: 'Role play and case analysis on professional business communication and email etiquette',
-            unitRef: 'Part A (Communication Skills)',
+            expId: 'PE-EXP-01',
+            title: 'Draw a complete fixture of 21 teams on Knock-Out basis showing calculation of Byes and rounds',
+            unitRef: 'Unit I',
             vivaQueries: [
-              { q: 'What are the 7 Cs of effective communication?', a: 'Clear, Concise, Concrete, Correct, Coherent, Complete, and Courteous.' }
+              { q: 'Formula for total matches in knock-out tournament?', a: 'Total Matches = N - 1.' },
+              { q: 'What is a Bye?', a: 'A scheduling privilege that advances a team directly to the next round.' }
             ]
           }
         ]
       },
       {
-        unitTitle: 'Part B - Unit 1: Digital Documentation (Advanced)',
+        unitTitle: 'Unit II: Children & Women in Sports',
         subTopics: [
-          'Create and Apply Styles in LibreOffice Writer / MS Word',
-          'Insert and Format Images, Shapes, Grouping and Positioning',
-          'Create and Customize Table of Contents (ToC) with Hierarchy',
-          'Implement Mail Merge with External Data Source Recipient Lists'
+          'Common Postural Deformities: Knock Knees, Flat Foot, Lordosis, Kyphosis, Scoliosis',
+          'Corrective Yogic Exercises',
+          'Special Considerations: Menarche and Menstrual Disfunction',
+          'Female Athlete Triad (Osteoporosis, Amenorrhea, Eating Disorders)'
+        ]
+      },
+      {
+        unitTitle: 'Unit III: Yoga as Preventive Measure for Lifestyle Diseases',
+        subTopics: [
+          'Obesity Management Asanas: Tadasana, Katichakrasana, Matsyasana',
+          'Diabetes Management: Bhujangasana, Paschimottanasana, Ardha Matsyendrasana',
+          'Asthma Management: Sukhasana, Chakrasana, Gomukhasana',
+          'Hypertension: Mandukasana, Vakrasana, Shavasana'
         ],
         experiments: [
           {
-            expId: 'IT-DOC-01',
-            title: 'Design an institutional newsletter applying custom Heading styles and auto-generated Table of Contents',
-            unitRef: 'Part B Unit 1',
+            expId: 'PE-EXP-02',
+            title: 'Demonstration and assessment of 4 corrective Asanas for management of Hypertension and Obesity',
+            unitRef: 'Unit III',
             vivaQueries: [
-              { q: 'Difference between Paragraph Style and Character Style?', a: 'Paragraph style applies to the entire block of text, whereas Character style applies to individual words or selected letters.' }
-            ]
-          },
-          {
-            expId: 'IT-DOC-02',
-            title: 'Generate personalized examination admit cards for 50 students using Mail Merge wizard',
-            unitRef: 'Part B Unit 1',
-            vivaQueries: [
-              { q: 'What is a Data Source in Mail Merge?', a: 'A structured file (like spreadsheet, CSV, or database table) containing recipient variable records.' }
+              { q: 'Which Asanas are contra-indicated for acute back pain and hernia?', a: 'Forward-bending postures like Paschimottanasana.' }
             ]
           }
         ]
       },
       {
-        unitTitle: 'Part B - Unit 2: Electronic Spreadsheet (Advanced)',
+        unitTitle: 'Unit IV: Physical Education & Sports for CWSN (Divyang)',
         subTopics: [
-          'Analyze Data using Scenarios, Goal Seek and Solver',
-          'Consolidate Data from Multiple Worksheets and External Files',
-          'Link Spreadsheet Data across Workbooks using Hyperlinks and References',
-          'Create, Record and Edit Macros to Automate Repetitive Calculations'
+          'Organizations: Special Olympics, Paralympics, Deaflympics',
+          'Concept of Classification and Divisioning',
+          'Implementation of Inclusion in Schools',
+          'Adaptive Physical Education Activities'
+        ]
+      },
+      {
+        unitTitle: 'Unit V: Sports & Nutrition',
+        subTopics: [
+          'Macro and Micro Nutrients',
+          'Nutritive & Non-Nutritive Components of Diet',
+          'Eating for Weight Control and Food Myths'
+        ]
+      },
+      {
+        unitTitle: 'Unit VI: Test & Measurement in Sports',
+        subTopics: [
+          'SAI Khelo India Fitness Assessment Protocol',
+          'Harvard Step Test: Computing Physical Fitness Index (PFI)',
+          'Basal Metabolic Rate (BMR) Calculation',
+          'Rikli & Jones Senior Citizen Fitness Battery'
         ],
         experiments: [
           {
-            expId: 'IT-CALC-01',
-            title: 'Perform Goal Seek analysis to calculate required semester exam marks to achieve 85% aggregate',
-            unitRef: 'Part B Unit 2',
+            expId: 'PE-EXP-03',
+            title: 'Conduct Harvard Step Test on a subject and calculate Physical Fitness Index (PFI)',
+            unitRef: 'Unit VI',
             vivaQueries: [
-              { q: 'What is Goal Seek in spreadsheets?', a: 'A what-if analysis tool that calculates the input value required to achieve a designated target output.' }
+              { q: 'What is the bench height used in Harvard Step Test for boys?', a: '20 inches (50.8 cm).' }
             ]
           }
         ]
       },
       {
-        unitTitle: 'Part B - Unit 3: Database Management System (DBMS)',
+        unitTitle: 'Unit VII: Physiology & Injuries in Sports',
         subTopics: [
-          'Relational Database Concepts, Primary Key and Composite Keys',
-          'Create Tables in Design View and SQL DDL Commands',
-          'Execute SQL Queries (SELECT, WHERE, ORDER BY, UPDATE, DELETE)',
-          'Create Forms and Generate Formatted Academic / Fee Reports'
-        ],
-        experiments: [
-          {
-            expId: 'IT-DBMS-01',
-            title: 'Create a student marks ledger table, enforce Primary Key constraint, and run filtering queries',
-            unitRef: 'Part B Unit 3',
-            vivaQueries: [
-              { q: 'Why is Primary Key compulsory in database design?', a: 'To uniquely identify each record in a relation and prevent duplicate tuples.' }
-            ]
-          }
+          'Physiological Factors of Strength, Speed, Endurance, Flexibility',
+          'Exercise Impacts on Cardiorespiratory System',
+          'Sports Injuries Classification (Sprain, Strain, Contusion, Fractures)',
+          'P.R.I.C.E. and P.R.I.C.E.R. Rehabilitation Protocols'
         ]
       },
       {
-        unitTitle: 'Part B - Unit 4: Web Applications and Security',
+        unitTitle: 'Unit VIII: Biomechanics & Sports',
         subTopics: [
-          'Working with Accessibility Options on Operating Systems',
-          'Networking Fundamentals: Client-Server, P2P, LAN, WAN, Wi-Fi',
-          'Instant Messaging, Online Transactions and Blog Publishing',
-          'Workplace Cyber Safety, Phishing, Strong Password Policies & Firewalls'
-        ],
-        experiments: [
-          {
-            expId: 'IT-SEC-01',
-            title: 'Inspect browser security certificates, configure browser privacy settings and multi-factor authentication',
-            unitRef: 'Part B Unit 4',
-            vivaQueries: [
-              { q: 'What is the role of HTTPS over HTTP?', a: 'HTTPS encrypts data transferred between browser and server using SSL/TLS protocol.' }
-            ]
-          }
+          'Newton’s Laws of Motion in Sporting Contexts',
+          'Types of Levers and Mechanical Advantage in Sports',
+          'Equilibrium, Center of Gravity, and Projectile Trajectory'
+        ]
+      },
+      {
+        unitTitle: 'Unit IX: Psychology & Sports',
+        subTopics: [
+          'Personality Types (Jung and Big Five Model)',
+          'Intrinsic and Extrinsic Motivation Techniques',
+          'Aggression Types: Hostile, Instrumental, and Assertive'
+        ]
+      },
+      {
+        unitTitle: 'Unit X: Training in Sports',
+        subTopics: [
+          'Micro, Meso, and Macro Sports Training Cycles',
+          'Methods for Strength, Speed, and Flexibility Development',
+          'Circuit Training Protocols'
         ]
       }
     ]
   },
 
-  // CLASS 3 HINDI (VEENA) - OFFICIAL CBSE CURRICULUM
-  'Hindi (Veena)': {
-    name: 'Hindi',
-    code: 'HIN-03',
-    theoryMarks: 50,
-    practicalMarks: 50,
+  'Accountancy (Code 055)': {
+    name: 'Accountancy',
+    code: '055',
+    theoryMarks: 80,
+    practicalMarks: 20,
     units: [
       {
-        unitTitle: 'इकाई 1: बाल कविताएँ और वाचन (हम सब सुमन एक उपवन के, सीखो)',
+        unitTitle: 'Part A: Accounting for Partnership Firms',
         subTopics: [
-          'सस्वर कविता पाठ और भाव ग्रहण',
-          'समान तुक वाले शब्द (Rhyming Words)',
-          'कठिन शब्दार्थ एवं नए वाक्यों की रचना'
+          'Partnership Deed, Profit & Loss Appropriation, Past Adjustments',
+          'Goodwill Valuation (Average, Super, Capitalization)',
+          'Admission, Retirement & Death of Partner',
+          'Dissolution of Partnership Firm: Realisation Account'
         ],
         experiments: [
           {
-            expId: 'HIN-EXP-01',
-            title: 'सुलेख एवं कविता का हाव-भाव सहित मौखिक वाचन',
-            unitRef: 'इकाई 1',
+            expId: 'ACC-EXP-01',
+            title: 'Comprehensive accounting project for a partnership firm preparing final accounts and ratio analysis',
+            unitRef: 'Part A',
             vivaQueries: [
-              { q: 'सुमन शब्द का क्या अर्थ है?', a: 'सुमन का अर्थ फूल या पुष्प होता है।' }
+              { q: 'Maximum number of partners allowed in a partnership firm?', a: '50 partners.' }
             ]
           }
         ]
       },
       {
-        unitTitle: 'इकाई 2: कहानियाँ एवं बोध (शेर और खरगोश, बुद्धिमान हंस)',
+        unitTitle: 'Part A: Accounting for Companies',
         subTopics: [
-          'कहानी पठन एवं पात्रों की समझ',
-          'प्रश्नोत्तर लेखन एवं सत्य-असत्य कथन',
-          'कहानी से मिलने वाली नैतिक शिक्षा'
+          'Issue of Shares: Par, Premium, Forfeiture, and Reissue',
+          'Pro-rata Allotment on Over-subscription',
+          'Issue and Redemption of Debentures'
         ]
       },
       {
-        unitTitle: 'इकाई 3: व्यावहारिक व्याकरण (संज्ञा, सर्वनाम, विलोम, वचन)',
+        unitTitle: 'Part B: Financial Statement Analysis',
         subTopics: [
-          'संज्ञा की पहचान (व्यक्ति, वस्तु, स्थान)',
-          'सर्वनाम शब्दों का प्रयोग (मैं, हम, तुम, वह)',
-          'विलोम शब्द (दिन-रात, बड़ा-छोटा, सुख-दुख)',
-          'एकवचन और बहुवचन (लड़का-लड़के, किताब-किताबें)',
-          'लिंग बदलो (राजा-रानी, मोर-मोरनी)'
-        ]
-      },
-      {
-        unitTitle: 'इकाई 4: रचनात्मक लेखन (चित्र वर्णन एवं मेरी प्रिय ऋतु / मेरा प्रिय मित्र)',
-        subTopics: [
-          'दिए गए चित्र को देखकर 5 सरल वाक्य लिखना',
-          'मेरी प्रिय पुस्तक / मेरा विद्यालय पर लघु अनुच्छेद'
+          'Balance Sheet & Statement of Profit and Loss',
+          'Comparative and Common-Size Statements',
+          'Accounting Ratios (Liquidity, Solvency, Activity, Profitability)',
+          'Cash Flow Statement (AS-3)'
         ]
       }
     ]
   },
 
-  // CLASS 12 COMPUTER SCIENCE (CODE 083)
+  'Business Studies (Code 054)': {
+    name: 'Business Studies',
+    code: '054',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Part A: Principles and Functions of Management',
+        subTopics: [
+          'Nature & Significance of Management, Levels and Coordination',
+          'Fayol’s Principles & Taylor’s Scientific Management',
+          'Business Environment Dimensions',
+          'Planning, Organizing, Staffing, Directing, Controlling'
+        ],
+        experiments: [
+          {
+            expId: 'BST-EXP-01',
+            title: 'Field survey project analyzing consumer behavior or organizational principles in an enterprise',
+            unitRef: 'Part A',
+            vivaQueries: [
+              { q: 'Difference between Unity of Command and Unity of Direction?', a: 'Unity of Command: one boss per employee. Unity of Direction: one head and one plan for an activity group.' }
+            ]
+          }
+        ]
+      },
+      {
+        unitTitle: 'Part B: Business Finance and Marketing',
+        subTopics: [
+          'Financial Management Decisions (Investment, Financing, Dividend)',
+          'Financial Markets: Money Market & Capital Market (SEBI Functions)',
+          'Marketing Mix: 4 Ps (Product, Price, Place, Promotion)',
+          'Consumer Protection Act 2019'
+        ]
+      }
+    ]
+  },
+
+  'Economics (Code 030)': {
+    name: 'Economics',
+    code: '030',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Part A: Introductory Macroeconomics',
+        subTopics: [
+          'National Income Aggregates and Measurement Methods',
+          'Money Creation by Banks and Central Bank Functions',
+          'Aggregate Demand, Aggregate Supply, Multiplier',
+          'Government Budget and Deficits',
+          'Balance of Payments & Foreign Exchange'
+        ],
+        experiments: [
+          {
+            expId: 'ECO-EXP-01',
+            title: 'Project report analyzing trends of inflation, GDP growth rate, and RBI monetary policy',
+            unitRef: 'Part A',
+            vivaQueries: [
+              { q: 'Formula for Investment Multiplier?', a: 'k = 1 / (1 - MPC) or k = 1 / MPS.' }
+            ]
+          }
+        ]
+      },
+      {
+        unitTitle: 'Part B: Indian Economic Development',
+        subTopics: [
+          'Development Experience (1947-90) & 1991 Reforms (LPG)',
+          'Human Capital Formation, Rural Development, Employment',
+          'Sustainable Economic Development',
+          'Comparative Development of India, Pakistan, and China'
+        ]
+      }
+    ]
+  },
+
+  'Applied Mathematics (Code 241)': {
+    name: 'Applied Mathematics',
+    code: '241',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Unit I: Numbers, Quantification and Numerical Applications',
+        subTopics: ['Modulo Arithmetic, Alligation and Mixture, Boats and Streams, Pipes and Cisterns']
+      },
+      {
+        unitTitle: 'Unit II: Algebra',
+        subTopics: ['Matrices and Determinants, Cramer’s Rule, Leontief Input-Output Models']
+      },
+      {
+        unitTitle: 'Unit III: Calculus',
+        subTopics: ['Marginal Cost/Revenue, Integrals, Consumer Surplus and Producer Surplus']
+      },
+      {
+        unitTitle: 'Unit IV: Probability Distributions & Linear Programming',
+        subTopics: ['Poisson and Normal Distributions, Hypothesis Testing, LPP Formulation and Solutions']
+      },
+      {
+        unitTitle: 'Unit V: Financial Mathematics',
+        subTopics: ['Perpetuity, Sinking Funds, EMI Calculation, Depreciation Schedules']
+      }
+    ]
+  },
+
+  'Political Science (Code 028)': {
+    name: 'Political Science',
+    code: '028',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Part A: Contemporary World Politics',
+        subTopics: ['The End of Bipolarity, Centres of Power (EU, ASEAN, BRICS), UN Agencies, Globalization']
+      },
+      {
+        unitTitle: 'Part B: Politics in India since Independence',
+        subTopics: ['Challenges of Nation-Building, Planned Development, Emergency 1975, Recent Political Trends']
+      }
+    ]
+  },
+
+  'History (Code 027)': {
+    name: 'History',
+    code: '027',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Themes in Indian History Part I, II & III',
+        subTopics: [
+          'Harappan Archaeology, Early States and Economies, Early Societies',
+          'Travellers Accounts, Bhakti-Sufi Traditions, Vijayanagara Empire',
+          'Colonialism, 1857 Revolt, Mahatma Gandhi and Nationalist Movement, Framing Constitution'
+        ]
+      }
+    ]
+  },
+
+  'Geography (Code 029)': {
+    name: 'Geography',
+    code: '029',
+    theoryMarks: 70,
+    practicalMarks: 30,
+    units: [
+      {
+        unitTitle: 'Fundamentals of Human Geography & India: People and Economy',
+        subTopics: [
+          'World Population Distribution, Human Development, Primary/Secondary/Tertiary Activities',
+          'India Population, Land and Water Resources, Mineral Resources, Sustainable Development'
+        ]
+      }
+    ]
+  },
+
+  'Hindi Core (Code 302)': {
+    name: 'Hindi Core',
+    code: '302',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'खंड क, ख एवं ग (अपठित बोध, अभिव्यक्ति और माध्यम, पाठ्यपुस्तक आरोह व वितान)',
+        subTopics: [
+          'अपठित गद्यांश व काव्यांश बोध',
+          'जनसंचार माध्यम, फीचर व आलेख लेखन',
+          'आरोह काव्य व गद्य खंड, वितान भाग-2'
+        ]
+      }
+    ]
+  },
+
+  'Hindi Elective (Code 002)': {
+    name: 'Hindi Elective',
+    code: '002',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'अपठित बोध, रचनात्मक लेखन, पाठ्यपुस्तक अंतरा एवं अंतराल भाग-2',
+        subTopics: [
+          'साहित्यिक अपठित विश्लेषण',
+          'नाटक, कहानी और कविता रचना प्रक्रिया',
+          'अंतरा एवं अंतराल पाठ्यपुस्तक'
+        ]
+      }
+    ]
+  },
+
+  'English Core (Code 301)': {
+    name: 'English Core',
+    code: '301',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Section A, B & C (Reading, Writing, Literature)',
+        subTopics: [
+          'Unseen Discursive & Case-Based Passages',
+          'Notice Writing, Invitations, Letter to Editor, Job Application, Article/Report',
+          'Flamingo Poetry & Prose, Vistas Supplementary'
+        ]
+      }
+    ]
+  },
+
+  'Biology (Code 044)': {
+    name: 'Biology',
+    code: '044',
+    theoryMarks: 70,
+    practicalMarks: 30,
+    units: [
+      {
+        unitTitle: 'Units VI to X: Reproduction, Genetics, Human Welfare, Biotechnology, Ecology',
+        subTopics: [
+          'Sexual Reproduction in Plants, Human Reproduction, Reproductive Health',
+          'Mendelian Inheritance, Molecular Basis of Inheritance, Evolution',
+          'Human Health & Disease, Microbes in Welfare, Recombinant DNA, Ecosystem & Biodiversity'
+        ]
+      }
+    ]
+  },
+
+  'Chemistry (Code 043)': {
+    name: 'Chemistry',
+    code: '043',
+    theoryMarks: 70,
+    practicalMarks: 30,
+    units: [
+      {
+        unitTitle: 'Solutions, Electrochemistry, Kinetics, Coordination, Organic Chemistry',
+        subTopics: [
+          'Raoult’s Law & Colligative Properties, Nernst Equation, Rate Law & Arrhenius Equation',
+          'Transition Elements & Crystal Field Theory, Haloalkanes, Alcohols, Aldehydes, Amines, Biomolecules'
+        ]
+      }
+    ]
+  },
+
+  'Mathematics (Code 041)': {
+    name: 'Mathematics',
+    code: '041',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Relations & Functions, Algebra, Calculus, Vectors, 3D Geometry, Probability',
+        subTopics: [
+          'Equivalence Relations & Inverse Trigonometry, Matrices & Determinants',
+          'Continuity, Differentiability, Integrals & Differential Equations',
+          'Vector Algebra, Three-Dimensional Lines, Bayes’ Theorem & LPP'
+        ]
+      }
+    ]
+  },
+
+  'Informatics Practices (Code 065)': {
+    name: 'Informatics Practices',
+    code: '065',
+    theoryMarks: 70,
+    practicalMarks: 30,
+    units: [
+      {
+        unitTitle: 'Pandas Data Handling, Data Visualization, SQL Queries, Networking',
+        subTopics: [
+          'Series and DataFrame with loc/iloc, Matplotlib Plots, SQL Functions & Joins, Cyber Etiquette'
+        ]
+      }
+    ]
+  },
+
   'Computer Science (Code 083)': {
     name: 'Computer Science',
     code: '083',
@@ -226,61 +522,19 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
     units: [
       {
         unitTitle: 'Unit I: Computational Thinking and Programming - 2',
-        subTopics: [
-          'Revision of Python Basics, Flow of Control & Strings',
-          'Functions: Scope, Parameter Passing & Default Arguments',
-          'File Handling: Text, Binary (pickle module), and CSV Operations',
-          'Data Structures: Implementation of Linear Stack using Lists'
-        ],
-        experiments: [
-          {
-            expId: 'CS-EXP-01',
-            title: 'Read a text file line-by-line and display words having character length greater than 4',
-            unitRef: 'Unit I (File Handling)',
-            vivaQueries: [
-              { q: 'What is the purpose of strip() vs split() method?', a: 'strip() removes leading/trailing whitespaces, whereas split() breaks string into tokens.' }
-            ]
-          },
-          {
-            expId: 'CS-EXP-02',
-            title: 'Binary File Handling: Store student dictionary records using pickle.dump() and search using pickle.load()',
-            unitRef: 'Unit I (Pickle)',
-            vivaQueries: [
-              { q: 'What is Serialization in Python?', a: 'Converting a Python object hierarchy into a byte stream for storage.' }
-            ]
-          },
-          {
-            expId: 'CS-EXP-03',
-            title: 'Stack Implementation: Menu-driven Push and Pop operations for book details',
-            unitRef: 'Unit I (Data Structures)',
-            vivaQueries: [
-              { q: 'Explain LIFO principle in Stack.', a: 'Last-In-First-Out: element inserted last is removed first.' }
-            ]
-          }
-        ]
+        subTopics: ['Python Basics, Functions, Text/Binary/CSV File Handling, Linear Stack Implementation']
       },
       {
         unitTitle: 'Unit II: Computer Networks',
-        subTopics: [
-          'Evolution of Networking, Switching Techniques & Topologies (Star, Bus, Tree)',
-          'Transmission Media (Twisted pair, Co-axial, Fiber Optic, Radio, Micro, Satellite)',
-          'Network Devices: NIC, Repeater, Hub, Switch, Bridge, Gateway, Router',
-          'Network Protocols: TCP/IP, FTP, PPP, HTTP, HTTPS, SMTP, POP3, VoIP'
-        ]
+        subTopics: ['Transmission Media, Network Topologies, Devices, Protocols, VoIP, Cyber Security']
       },
       {
-        unitTitle: 'Unit III: Database Management & SQL Integration',
-        subTopics: [
-          'Relational Model, Primary Key, Candidate Key, Foreign Key',
-          'SQL DDL/DML: CREATE, ALTER, INSERT, UPDATE, DELETE, SELECT',
-          'SQL Functions: SUM(), AVG(), COUNT(), MAX(), MIN(), GROUP BY, HAVING',
-          'Python Database Connectivity: mysql.connector and execute queries'
-        ]
+        unitTitle: 'Unit III: Database Management & SQL',
+        subTopics: ['Relational Model, Keys, SQL DDL/DML, GROUP BY, Python-MySQL Connectivity']
       }
     ]
   },
 
-  // CLASS 12 YOGA (CODE 841)
   'Yoga (Code 841)': {
     name: 'Yoga',
     code: '841',
@@ -289,82 +543,15 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
     units: [
       {
         unitTitle: 'Unit 1: Introduction to Yoga and Yogic Practices – II',
-        subTopics: [
-          'Shatkarma: Meaning, Purpose and Significance in Hatha Yoga',
-          'Yogasana: Principles, Physical Alignment & Health Benefits',
-          'Pranayama (Anulom-Vilom, Bhastrika, Sheetali) & Dhyana'
-        ],
-        experiments: [
-          {
-            expId: 'YOG-EXP-01',
-            title: 'Demonstration of Surya Namaskara (12 Steps) with Breathing Synchronization and Mantras',
-            unitRef: 'Unit 1 (Asana Practice)',
-            vivaQueries: [
-              { q: 'What are the physiological benefits of Bhujangasana?', a: 'Expands thoracic cavity, strengthens lumbar spine, and stimulates abdominal digestive organs.' }
-            ]
-          }
-        ]
+        subTopics: ['Shatkarma, Yogasana Alignment, Pranayama, Dhyana, Surya Namaskara']
       },
       {
         unitTitle: 'Unit 2: Introduction to Yoga Texts & Mental Well-being',
-        subTopics: [
-          'Concepts of Mitahara (Diet) according to Hatha Pradipika',
-          'Patanjali Ashtanga Yoga: Yama, Niyama, Asana, Pranayama, Pratyahara, Dharana, Dhyana, Samadhi',
-          'Yogic Stress Management Frameworks'
-        ]
+        subTopics: ['Mitahara in Hatha Pradipika, Patanjali Ashtanga Yoga, Stress Management']
       },
       {
         unitTitle: 'Unit 3: Yoga for Health Promotion – II',
-        subTopics: [
-          'Introduction to First Aid, CPR & Sports Safety in Yoga',
-          'Yogic Management of Chronic Stress & Modern Lifestyle Disorders',
-          'Yogic Prevention of Common Ailments (Hypertension, Diabetes, Asthma)'
-        ]
-      }
-    ]
-  },
-
-  // CLASS 12 PHYSICS (CODE 042)
-  'Physics (Code 042)': {
-    name: 'Physics',
-    code: '042',
-    theoryMarks: 70,
-    practicalMarks: 30,
-    units: [
-      {
-        unitTitle: 'Unit I & II: Electrostatics & Current Electricity',
-        subTopics: [
-          'Electric Charges, Fields & Gauss Law (Integral Form)',
-          'Electrostatic Potential & Energy Density: U = ½ ε₀E²',
-          'Drift Velocity (v_d = -eEτ/m), Ohm’s Law & Kirchhoff’s Laws',
-          'Wheatstone Bridge Condition: P/Q = R/S'
-        ],
-        experiments: [
-          {
-            expId: 'PHY-EXP-01',
-            title: 'Determine resistivity of two wires by plotting potential difference versus current (Ohm’s Law)',
-            unitRef: 'Unit II',
-            vivaQueries: [
-              { q: 'Why is voltmeter connected in parallel?', a: 'Voltmeter has high resistance to draw minimum current.' }
-            ]
-          }
-        ]
-      },
-      {
-        unitTitle: 'Unit III & IV: Magnetic Effects, EMI & Alternating Currents',
-        subTopics: [
-          'Biot-Savart Law & Ampere Circuital Law',
-          'Faraday’s Law of EMI & Lenz’s Law',
-          'AC Series LCR Resonance: f_r = 1 / (2π√(LC)) & Quality Factor Q'
-        ]
-      },
-      {
-        unitTitle: 'Unit V & VI: Optics & Optical Instruments',
-        subTopics: [
-          'Lens Maker’s Formula: 1/f = (μ - 1)(1/R₁ - 1/R₂)',
-          'Prism Formula: μ = sin((A + δ_m)/2) / sin(A/2)',
-          'Wave Optics: Fringe Width in Young’s Double Slit Experiment'
-        ]
+        subTopics: ['First Aid & Safety, Management of Lifestyle Disorders, Therapeutic Asanas']
       }
     ]
   }
