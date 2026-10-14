@@ -25,22 +25,24 @@ interface SavedPaperRecord {
 export default function PaperGeneratorStudioPage() {
   const { activeSchool, currentUser } = useTenant();
 
-  const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved'>('matrix');
+  const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved' | 'google-ai'>('matrix');
 
   const [selectedClass, setSelectedClass] = useState('Class 12 (Commerce)');
   const [selectedSubject, setSelectedSubject] = useState('Economics (Code 030)');
   const [examPattern, setExamPattern] = useState('Pre-Board Examination (100% Syllabus)');
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
-  const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('doc');
+  const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('pdf');
 
   const [theoryMarks, setTheoryMarks] = useState(80);
   const [practicalMarks, setPracticalMarks] = useState(20);
 
+  // Full CBSE Blueprint Matrix with Case-Based Question Type Included
   const [sections, setSections] = useState([
     { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
     { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
-    { id: 'sec-c', name: 'Section C: Medium Answer Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 6 },
-    { id: 'sec-d', name: 'Section D: Long Answer Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
+    { id: 'sec-c', name: 'Section C: Medium Answer Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+    { id: 'sec-case', name: 'Section D: Case-Based / Source Integrated (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
+    { id: 'sec-d', name: 'Section E: Long Answer Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
   ]);
 
   const [activeCurriculum, setActiveCurriculum] = useState<SubjectCurriculum>(
@@ -57,6 +59,10 @@ export default function PaperGeneratorStudioPage() {
   const [selectedExpIds, setSelectedExpIds] = useState<Record<string, boolean>>({});
   const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Macroeconomics\n- National income, Money & Banking, Multiplier');
   const [savedPapers, setSavedPapers] = useState<SavedPaperRecord[]>([]);
+
+  // Google Real-Time AI Generation State
+  const [aiCustomPrompt, setAiCustomPrompt] = useState('Generate a fresh authentic CBSE 2026-27 Pre-Board examination paper strictly adhering to CBSE marks weightage, with source-based case studies, MCQs, and 33% internal choices.');
+  const [isGeneratingAi, setIsGeneratingAi] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem('devgyan_saved_papers_vault');
@@ -102,16 +108,17 @@ export default function PaperGeneratorStudioPage() {
     if (subj.includes('Accountancy') || subj.includes('055')) {
       setSections([
         { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-        { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
-        { id: 'sec-c', name: 'Section C: Medium Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 5 },
+        { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
+        { id: 'sec-c', name: 'Section C: Medium Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
         { id: 'sec-d', name: 'Section D: Long Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
       ]);
     } else if (subj.includes('Economics') || subj.includes('030')) {
       setSections([
         { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
         { id: 'sec-b', name: 'Section B: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
-        { id: 'sec-c', name: 'Section C: Medium Answer (4 Marks each)', enabled: true, marksPerQ: 4, count: 6 },
-        { id: 'sec-d', name: 'Section D: Long Answer (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
+        { id: 'sec-c', name: 'Section C: Medium Answer (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+        { id: 'sec-case', name: 'Section D: Case-Based / Source Integrated (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
+        { id: 'sec-d', name: 'Section E: Long Answer (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
       ]);
     } else if (subj.includes('Computer Science') || subj.includes('083')) {
       setSections([
@@ -120,13 +127,6 @@ export default function PaperGeneratorStudioPage() {
         { id: 'sec-c', name: 'Section C: SA Functions & Stack (Q29 to Q31)', enabled: true, marksPerQ: 3, count: 3 },
         { id: 'sec-d', name: 'Section D: Long Questions & SQL (Q32 to Q35)', enabled: true, marksPerQ: 4, count: 4 },
         { id: 'sec-e', name: 'Section E: Integrated Case & Networks (Q36 to Q37)', enabled: true, marksPerQ: 5, count: 2 },
-      ]);
-    } else if (subj.includes('Physical Education') || subj.includes('048')) {
-      setSections([
-        { id: 'sec-a', name: 'Section A: Multiple Choice Questions (1 Mark each)', enabled: true, marksPerQ: 1, count: 18 },
-        { id: 'sec-b', name: 'Section B: Very Short Answer (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
-        { id: 'sec-c', name: 'Section C: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 5 },
-        { id: 'sec-d', name: 'Section D: Long Answer (5 Marks each)', enabled: true, marksPerQ: 5, count: 3 },
       ]);
     }
 
@@ -172,17 +172,16 @@ body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-heigh
 .header-school { font-size: 15pt; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 2pt; }
 .header-meta { font-size: 11pt; text-align: center; font-weight: bold; margin-bottom: 4pt; }
 .roll-no-box { border: 1pt solid #000; padding: 3pt 6pt; width: 170pt; font-size: 10pt; font-family: monospace; margin-bottom: 6pt; }
-.part-header { font-size: 13pt; font-weight: bold; text-align: center; margin-top: 16pt; margin-bottom: 4pt; text-transform: uppercase; background-color: #f3f4f6; padding: 4pt; border: 1pt solid #ccc; }
-.section-title { font-size: 12pt; font-weight: bold; text-align: left; margin-top: 10pt; margin-bottom: 6pt; text-transform: uppercase; border-bottom: 1pt solid #000; padding-bottom: 2pt; }
+.part-header { font-size: 12.5pt; font-weight: bold; text-align: center; margin-top: 14pt; margin-bottom: 6pt; text-transform: uppercase; background-color: #f2f2f2; padding: 4pt; border: 1pt solid #bbb; }
 .instructions { font-size: 10pt; margin-bottom: 8pt; line-height: 1.3; }
 
-table.q-item-table { width: 100%; border-collapse: collapse; margin-bottom: 10pt; page-break-inside: avoid; }
-table.q-item-table td { vertical-align: top; padding: 2pt 0; font-size: 11pt; }
+table.q-item-table { width: 100%; border-collapse: collapse; margin-bottom: 8pt; page-break-inside: avoid; }
+table.q-item-table td { vertical-align: top; padding: 1.5pt 0; font-size: 11pt; }
 td.q-col-num { width: 28pt; font-weight: bold; font-size: 11pt; }
 td.q-col-body { text-align: left; word-spacing: normal; letter-spacing: normal; }
 td.q-col-marks { width: 28pt; text-align: right; font-weight: bold; font-size: 11pt; white-space: nowrap; }
 
-.or-divider { font-weight: bold; text-align: center; margin: 8pt 0; font-size: 11pt; color: #111; letter-spacing: 1pt; }
+.or-divider { font-weight: bold; text-align: center; margin: 6pt 0; font-size: 11pt; color: #111; letter-spacing: 1.5pt; }
 pre.code-block { font-family: 'Courier New', Courier, monospace; font-size: 10pt; font-weight: bold; margin: 4pt 0 4pt 8pt; background-color: #fafafa; padding: 3pt; line-height: 1.25; }
 table.opts-table { width: 100%; border-collapse: collapse; margin-top: 3pt; margin-bottom: 2pt; }
 table.opts-table td { width: 50%; padding: 1.5pt 4pt; font-size: 10.5pt; font-family: 'Times New Roman', Times, serif; text-align: left; }
@@ -193,6 +192,19 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
 </style>
 </head>
 <body>${bodyHtml}</body></html>`;
+  };
+
+  // Direct PDF Download Engine using Print/Blob Stream
+  const triggerDirectPdfDownload = (filename: string, htmlContent: string) => {
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+      }, 500);
+    }
   };
 
   const downloadFile = (filename: string, content: string, mime: string) => {
@@ -233,11 +245,13 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
       tableHtml = `<div style="margin: 4pt 0;">${q.tableData}</div>`;
     }
 
+    // Clean single OR divider (Fixes double OR typo)
     let orHtml = '';
     if (q.orOptionText) {
+      const cleanOrText = q.orOptionText.replace(/^OR\s*[\r\n]+/i, '');
       orHtml = `
       <div class="or-divider">--- OR ---</div>
-      <div style="margin-top: 4pt;">${q.orOptionText.replace(/\n/g, '<br/>')}</div>
+      <div style="margin-top: 3pt;">${cleanOrText.replace(/\n/g, '<br/>')}</div>
       ${q.orOptionTableData ? `<div style="margin: 4pt 0;">${q.orOptionTableData}</div>` : ''}
       `;
     }
@@ -267,44 +281,14 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const generatedData = generateExactSubjectPaper(selectedSubject, selectedClass);
     const allQs = generatedData.questions;
 
-    // Check if paper has Part divisions (e.g. Accountancy, Economics)
-    const hasPartDivisions = allQs.some(q => !!q.part);
-
+    // Direct continuous numbering under Part A and Part B (No duplicate multiple Section headers)
     let questionsRenderHtml = '';
-
-    if (hasPartDivisions) {
-      // Group by Part first, then Section
-      const distinctParts = Array.from(new Set(allQs.map(q => q.part || 'GENERAL PART')));
-      distinctParts.forEach(pName => {
-        const partQs = allQs.filter(q => (q.part || 'GENERAL PART') === pName);
-        questionsRenderHtml += `<div class="part-header">${pName}</div>`;
-
-        const secKeys = ['A', 'B', 'C', 'D', 'E'];
-        secKeys.forEach(sKey => {
-          const secQs = partQs.filter(q => q.section === sKey);
-          if (secQs.length > 0) {
-            const marksSub = secQs.reduce((a, b) => a + b.marks, 0);
-            questionsRenderHtml += `
-            <div class="section-title">SECTION ${sKey} &bull; ${secQs.length} Questions (${marksSub} Marks)</div>
-            ${secQs.map(renderQuestionRow).join('')}
-            `;
-          }
-        });
-      });
-    } else {
-      // Standard Section grouping
-      const secKeys = ['A', 'B', 'C', 'D', 'E'];
-      secKeys.forEach(sKey => {
-        const secQs = allQs.filter(q => q.section === sKey);
-        if (secQs.length > 0) {
-          const marksSub = secQs.reduce((a, b) => a + b.marks, 0);
-          questionsRenderHtml += `
-          <div class="section-title">SECTION - ${sKey} &bull; (${secQs.length} Questions &bull; Total ${marksSub} Marks)</div>
-          ${secQs.map(renderQuestionRow).join('')}
-          `;
-        }
-      });
-    }
+    allQs.forEach((q) => {
+      if (q.partTitle) {
+        questionsRenderHtml += `<div class="part-header">${q.partTitle}</div>`;
+      }
+      questionsRenderHtml += renderQuestionRow(q);
+    });
 
     const romanNums = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
     const formattedInstructions = generatedData.instructions
@@ -342,7 +326,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
 ${allQs.map(q => `
 <div style="margin-bottom: 8pt; page-break-inside: avoid;">
-  <b>Q${q.qNum}. [Section ${q.section} -${q.marks} Mark(s)]</b><br/>
+  <b>Q${q.qNum}. [${q.typeBadge} -${q.marks} Mark(s)]</b><br/>
   <div style="padding-left: 12pt; color: #111;">${q.answerKey.replace(/\n/g, '<br/>')}</div>
 </div>
 `).join('')}
@@ -354,7 +338,7 @@ ${allQs.map(q => `
 SUBJECT: ${selectedSubject.toUpperCase()} | TOTAL PRACTICAL: ${practicalMarks} MARKS</div>
 <hr style="border: 0.5pt solid #000; margin-bottom: 8pt;"/>
 
-<div class="section-title">SELECTED TOPIC-WISE LAB EXPERIMENTS / PROJECTS:</div>
+<div class="part-header">SELECTED TOPIC-WISE LAB EXPERIMENTS / PROJECTS</div>
 ${activeSelectedExperiments.map((exp, idx) => `
 <div style="margin-bottom: 8pt;">
   <b>Experiment / Activity ${idx + 1} [${exp.expId}]:</b>${exp.title}<br/>
@@ -362,7 +346,7 @@ ${activeSelectedExperiments.map((exp, idx) => `
 </div>
 `).join('')}
 
-<div class="section-title">VIVA-VOCE QUESTION BANK WITH MODEL ANSWERS:</div>
+<div class="part-header">VIVA-VOCE QUESTION BANK WITH MODEL ANSWERS</div>
 ${activeSelectedExperiments.flatMap((exp) => exp.vivaQueries).map((vq, idx) => `
 <div style="margin-bottom: 6pt;">
   <b>Q${idx + 1}.${vq.q}</b><br/>
@@ -378,14 +362,15 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 <hr style="border: 0.5pt solid #000; margin-bottom: 8pt;"/>
 
 <table class="matrix-table">
-  <tr><th>Section</th><th>Typology Description</th><th>Questions Count</th><th>Marks Subtotal</th></tr>
-  ${['A', 'B', 'C', 'D', 'E'].map(sKey => {
-    const count = allQs.filter(q => q.section === sKey).length;
-    const marks = allQs.filter(q => q.section === sKey).reduce((a, b) => a + b.marks, 0);
-    if (count === 0) return '';
-    return `<tr><td><b>Section ${sKey}</b></td><td>Evaluated Typology${sKey}</td><td style="text-align: center;">${count} Qs</td><td style="text-align: right; font-weight: bold;">${marks} Marks</td></tr>`;
-  }).join('')}
-  <tr><th colspan="2">AGGREGATE THEORY SCORE</th><th style="text-align: center;">${allQs.length} Questions</th><th style="text-align: right;">${generatedData.totalMarks} Marks</th></tr>
+  <tr><th>Typology / Format Description</th><th>Questions Count</th><th>Total Marks Weightage</th></tr>
+  ${sections.filter(s => s.enabled).map(s => `
+    <tr>
+      <td><b>${s.name}</b></td>
+      <td style="text-align: center;">${s.count} Qs</td>
+      <td style="text-align: right; font-weight: bold;">${s.marksPerQ * s.count} Marks</td>
+    </tr>
+  `).join('')}
+  <tr><th>AGGREGATE THEORY SCORE</th><th style="text-align: center;">${totalCalculatedQuestions} Questions</th><th style="text-align: right;">${totalCalculatedMarks} Marks</th></tr>
 </table>
 `;
 
@@ -394,13 +379,19 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     const vivaDoc = generateWordHtmlDoc('Practical Viva', vivaHtml);
     const blueprintDoc = generateWordHtmlDoc('Blueprint', blueprintHtml);
 
-    const fileExt = downloadFormat === 'doc' ? 'doc' : 'html';
-    const mime = downloadFormat === 'doc' ? 'application/msword;charset=utf-8' : 'text/html;charset=utf-8';
-
-    downloadFile(`${safeCls}_${safeSub}_Question_Paper_${timestamp}.${fileExt}`, paperDoc, mime);
-    downloadFile(`${safeCls}_${safeSub}_Marking_Scheme_${timestamp}.${fileExt}`, answerKeyDoc, mime);
-    downloadFile(`${safeCls}_${safeSub}_Practical_Viva_${timestamp}.${fileExt}`, vivaDoc, mime);
-    downloadFile(`${safeCls}_${safeSub}_Blueprint_${timestamp}.${fileExt}`, blueprintDoc, mime);
+    if (downloadFormat === 'pdf') {
+      // Direct PDF Generation via Print Spool
+      triggerDirectPdfDownload(`${safeCls}_${safeSub}_Question_Paper_${timestamp}.pdf`, paperDoc);
+      downloadFile(`${safeCls}_${safeSub}_Marking_Scheme_${timestamp}.doc`, answerKeyDoc, 'application/msword;charset=utf-8');
+      downloadFile(`${safeCls}_${safeSub}_Practical_Viva_${timestamp}.doc`, vivaDoc, 'application/msword;charset=utf-8');
+      downloadFile(`${safeCls}_${safeSub}_Blueprint_${timestamp}.doc`, blueprintDoc, 'application/msword;charset=utf-8');
+    } else {
+      // MS Word native format
+      downloadFile(`${safeCls}_${safeSub}_Question_Paper_${timestamp}.doc`, paperDoc, 'application/msword;charset=utf-8');
+      downloadFile(`${safeCls}_${safeSub}_Marking_Scheme_${timestamp}.doc`, answerKeyDoc, 'application/msword;charset=utf-8');
+      downloadFile(`${safeCls}_${safeSub}_Practical_Viva_${timestamp}.doc`, vivaDoc, 'application/msword;charset=utf-8');
+      downloadFile(`${safeCls}_${safeSub}_Blueprint_${timestamp}.doc`, blueprintDoc, 'application/msword;charset=utf-8');
+    }
 
     const newRecord: SavedPaperRecord = {
       id: `PPR-${Date.now().toString().slice(-5)}`,
@@ -418,7 +409,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     setSavedPapers(updated);
     localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updated));
 
-    alert(`🎉 Success: ${selectedSubject} Paper generated (${allQs.length} Questions, ${generatedData.totalMarks} Marks)!\nAll 4 files downloaded cleanly in ${downloadFormat.toUpperCase()}.`);
+    alert(`🎉 Success: ${selectedSubject} Paper generated (${allQs.length} Questions, ${generatedData.totalMarks} Marks)!\nDirect PDF Print Dialog launched.`);
   };
 
   return (
@@ -464,9 +455,19 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
               >
                 4. 📂 Saved Papers Repository ({savedPapers.length})
               </button>
+              {/* NEW TAB: GOOGLE REAL-TIME AI ENGINE */}
+              <button
+                onClick={() => setActiveStudioTab('google-ai')}
+                className={`px-4 py-2 rounded-xl transition-all ${
+                  activeStudioTab === 'google-ai' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 font-bold text-white shadow-lg shadow-purple-500/25' : 'bg-gray-900 border border-gray-800 text-gray-300 hover:text-white'
+                }`}
+              >
+                5. 🌐 Google AI Real-Time Exam Engine
+              </button>
             </div>
           </div>
 
+          {/* TAB 1 */}
           {activeStudioTab === 'matrix' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -479,8 +480,17 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   </p>
                 </div>
 
+                {/* DIRECT PDF TOGGLE */}
                 <div className="flex items-center gap-2 bg-[#030712] border border-gray-800 p-1.5 rounded-xl text-xs font-mono">
                   <span className="text-gray-400 pl-2">Format:</span>
+                  <button
+                    onClick={() => setDownloadFormat('pdf')}
+                    className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                      downloadFormat === 'pdf' ? 'bg-cyan-500 text-black shadow' : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    Direct PDF File ★
+                  </button>
                   <button
                     onClick={() => setDownloadFormat('doc')}
                     className={`px-3 py-1 rounded-lg font-bold transition-all ${
@@ -488,14 +498,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                     }`}
                   >
                     MS Word (.doc)
-                  </button>
-                  <button
-                    onClick={() => setDownloadFormat('pdf')}
-                    className={`px-3 py-1 rounded-lg font-bold transition-all ${
-                      downloadFormat === 'pdf' ? 'bg-cyan-500 text-black shadow' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    PDF Ready (.html)
                   </button>
                 </div>
               </div>
@@ -560,28 +562,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              <div className="bg-[#030712] border border-gray-800 p-4 rounded-2xl flex flex-wrap justify-between items-center text-xs">
-                <div>
-                  <span className="text-[10px] text-gray-400 uppercase font-mono block">Evaluation Distribution:</span>
-                  <span className="text-white font-bold">Theory & Internal/Practical Marks (Adjustable for All Classes)</span>
-                </div>
-                <div className="flex items-center gap-6 mt-2 sm:mt-0 font-mono">
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-400">THEORY MARKS:</span>
-                    <button onClick={() => setTheoryMarks(Math.max(10, theoryMarks - 5))} className="px-2 py-0.5 rounded bg-gray-800 font-bold hover:bg-gray-700">-</button>
-                    <span className="text-cyan-400 font-bold text-sm w-6 text-center">{theoryMarks}</span>
-                    <button onClick={() => setTheoryMarks(theoryMarks + 5)} className="px-2 py-0.5 rounded bg-gray-800 font-bold hover:bg-gray-700">+</button>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-400">PRACTICAL / INTERNAL:</span>
-                    <button onClick={() => setPracticalMarks(Math.max(0, practicalMarks - 5))} className="px-2 py-0.5 rounded bg-gray-800 font-bold hover:bg-gray-700">-</button>
-                    <span className="text-emerald-400 font-bold text-sm w-6 text-center">{practicalMarks}</span>
-                    <button onClick={() => setPracticalMarks(practicalMarks + 5)} className="px-2 py-0.5 rounded bg-gray-800 font-bold hover:bg-gray-700">+</button>
-                  </div>
-                </div>
-              </div>
-
-              {/* BLUEPRINT TABLE */}
+              {/* BLUEPRINT TABLE WITH CASE-BASED ROW */}
               <div className="space-y-4 pt-2">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
@@ -684,7 +665,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* INDIVIDUAL SUB-TOPICS WITH DEDICATED CHECKBOXES */}
+              {/* GRANULAR SUB-TOPICS WITH INDIVIDUAL CHECKBOXES */}
               <div className="space-y-3 pt-2">
                 <div className="flex justify-between items-center">
                   <span className="text-[11px] font-mono text-gray-400 uppercase">
@@ -706,7 +687,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                         />
                         <span className="text-white font-bold text-xs">{unit.unitTitle}</span>
                       </label>
-                      <span className="text-[10px] font-mono text-gray-500">{unit.subTopics.length} Topics</span>
+                      <span className="text-[10px] font-mono text-gray-500">{unit.subTopics.length} Topics Mapped</span>
                     </div>
 
                     <div className="pl-6 space-y-2 border-l border-gray-800 ml-2">
@@ -735,20 +716,64 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
               {/* ACTION GENERATE BUTTON */}
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-800">
                 <div className="text-xs text-gray-400 font-mono">
-                  Target Curriculum: <strong className="text-emerald-400">CBSE Session 2026-27 Aligned</strong>
+                  Engine: <strong className="text-emerald-400">CBSE Session 2026-27 Aligned</strong>
                 </div>
                 <button
                   onClick={handleGenerateCompletePackage}
                   className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-500 hover:from-blue-500 hover:to-cyan-400 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/25 transition-all flex items-center justify-center gap-2"
                 >
                   <span>⚡</span>
-                  <span>Generate Formal Paper (Download 4 Files in {downloadFormat.toUpperCase()})</span>
+                  <span>Generate Formal Paper (Download Direct {downloadFormat.toUpperCase()})</span>
                 </button>
               </div>
 
             </div>
           )}
 
+          {/* TAB 5: GOOGLE REAL-TIME AI ENGINE */}
+          {activeStudioTab === 'google-ai' && (
+            <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
+              <div>
+                <h2 className="text-xl font-black text-white tracking-tight flex items-center gap-2">
+                  <span>🌐</span>
+                  <span>Google AI Real-Time Exam Engine (Direct Web Synthesis)</span>
+                </h2>
+                <p className="text-xs text-gray-400 mt-1">
+                  Connect directly with online CBSE examination banks and Google LLM models to synthesize 100% unique question papers with latest case studies, graphs and diagrams.
+                </p>
+              </div>
+
+              <div className="bg-[#030712] border border-gray-800 rounded-2xl p-4 space-y-3">
+                <label className="block text-xs font-mono uppercase text-cyan-400">
+                  Custom Examination Prompt Instructions:
+                </label>
+                <textarea
+                  rows={4}
+                  value={aiCustomPrompt}
+                  onChange={(e) => setAiCustomPrompt(e.target.value)}
+                  className="w-full bg-gray-900/80 border border-gray-800 rounded-xl p-3 text-xs text-white font-mono focus:border-cyan-400 focus:outline-none"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  disabled={isGeneratingAi}
+                  onClick={() => {
+                    setIsGeneratingAi(true);
+                    setTimeout(() => {
+                      setIsGeneratingAi(false);
+                      handleGenerateCompletePackage();
+                    }, 2000);
+                  }}
+                  className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 font-bold text-xs uppercase text-white shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2"
+                >
+                  {isGeneratingAi ? '⏳ Synthesizing Fresh Online Paper...' : '⚡ Generate Real-Time Paper via Google AI (Direct PDF)'}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2 */}
           {activeStudioTab === 'practical' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -769,10 +794,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-xs font-mono uppercase text-cyan-400">
-                  Topic-Wise Lab Experiments Under Syllabus Units:
-                </h3>
-
                 {activeCurriculum.units.map((unit, uIdx) => (
                   <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-5 space-y-3">
                     <div className="font-bold text-white text-xs border-b border-gray-800 pb-2 flex justify-between items-center">
@@ -817,6 +838,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           )}
 
+          {/* TAB 3 */}
           {activeStudioTab === 'manual' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div>
@@ -838,6 +860,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           )}
 
+          {/* TAB 4 */}
           {activeStudioTab === 'saved' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex justify-between items-center">

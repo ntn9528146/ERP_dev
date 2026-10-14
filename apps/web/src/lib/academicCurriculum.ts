@@ -26,9 +26,9 @@ export interface AcademicClass {
 }
 
 const SENIOR_SECONDARY_ALL_SUBJECTS = [
+  'Economics (Code 030)',
   'Accountancy (Code 055)',
   'Business Studies (Code 054)',
-  'Economics (Code 030)',
   'Computer Science (Code 083)',
   'Informatics Practices (Code 065)',
   'Physics (Code 042)',
@@ -71,7 +71,136 @@ export const ALL_CBSE_CLASSES: AcademicClass[] = [
 export const ACADEMIC_CLASSES = ALL_CBSE_CLASSES;
 
 export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
-  // ACCOUNTANCY (055) - EXACT 2026-27 SYLLABUS WITHOUT DELETED TOPICS
+  // ECONOMICS (030) - FULL CBSE 2026-27 GRANULAR SUB-TOPICS (NO SHORT FALLBACK)
+  'Economics (Code 030)': {
+    name: 'Economics',
+    code: '030',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Part A - Unit 1: National Income and Related Aggregates (10 Marks)',
+        subTopics: [
+          'Circular Flow of Income (Two-Sector Model)',
+          'Basic Concepts: Normal Residents, Domestic Territory, Final & Intermediate Goods',
+          'Gross & Net Investment, Depreciation (Consumption of Fixed Capital)',
+          'Net Indirect Taxes (NIT) and Net Factor Income from Abroad (NFIA)',
+          'Aggregates: GDP, NDP, GNP, NNP at Market Price & Factor Cost',
+          'Measurement of National Income: Value Added (Product) Method',
+          'Measurement of National Income: Income Method & Factor Payments',
+          'Measurement of National Income: Expenditure Method',
+          'Real GDP vs Nominal GDP and GDP Deflator Index',
+          'GDP and Welfare: Limitations (Non-monetary transactions, Externalities, Distribution)'
+        ],
+        experiments: [
+          {
+            expId: 'ECO-EXP-01',
+            title: 'Project on Trends in India’s GDP Growth and Structural Sectoral Composition (1950-2026)',
+            unitRef: 'Part A Unit 1',
+            vivaQueries: [
+              { q: 'Difference between Real GDP and Nominal GDP?', a: 'Nominal GDP is evaluated at current market prices, whereas Real GDP is evaluated at constant base year prices.' }
+            ]
+          }
+        ]
+      },
+      {
+        unitTitle: 'Part A - Unit 2: Money and Banking (06 Marks)',
+        subTopics: [
+          'Money: Meaning and Supply of Money (Currency with public + Demand deposits)',
+          'Credit Creation / Money Multiplier Process by Commercial Banking System',
+          'Central Bank (RBI): Functions (Bank of Issue, Government Banker, Bankers’ Bank)',
+          'Quantitative Credit Control: Repo Rate, Reverse Repo Rate, Bank Rate, CRR, SLR',
+          'Qualitative Credit Control: Open Market Operations (OMO) and Margin Requirements'
+        ],
+        experiments: [
+          {
+            expId: 'ECO-EXP-02',
+            title: 'Analytical study of RBI’s Monetary Policy Rate Decisions and Inflation Control in India',
+            unitRef: 'Part A Unit 2',
+            vivaQueries: [
+              { q: 'Formula for Money Multiplier?', a: 'Money Multiplier = 1 / Legal Reserve Ratio (LRR).' }
+            ]
+          }
+        ]
+      },
+      {
+        unitTitle: 'Part A - Unit 3: Determination of Income and Employment (12 Marks)',
+        subTopics: [
+          'Aggregate Demand (AD) and its Components (C + I + G + X - M)',
+          'Propensity to Consume: Average (APC) and Marginal (MPC)',
+          'Propensity to Save: Average (APS) and Marginal (MPS)',
+          'Short-run Equilibrium Output: AD-AS Approach and S-I Approach',
+          'Investment Multiplier (k = 1/MPS = 1/(1-MPC)) and its Stepwise Working',
+          'Full Employment and Involuntary Unemployment Concept',
+          'Problems of Excess Demand (Inflationary Gap) and Deficient Demand (Deflationary Gap)',
+          'Fiscal Measures and Monetary Measures to Correct Excess & Deficient Demand'
+        ]
+      },
+      {
+        unitTitle: 'Part A - Unit 4: Government Budget and the Economy (06 Marks)',
+        subTopics: [
+          'Government Budget: Meaning, Objectives, and Fiscal Allocation of Resources',
+          'Classification of Receipts: Revenue Receipts (Tax & Non-Tax) vs Capital Receipts',
+          'Classification of Expenditure: Revenue Expenditure vs Capital Expenditure',
+          'Budgetary Deficits: Revenue Deficit, Fiscal Deficit, Primary Deficit (Formulas & Implications)'
+        ]
+      },
+      {
+        unitTitle: 'Part A - Unit 5: Balance of Payments (06 Marks)',
+        subTopics: [
+          'Balance of Payments (BoP) Account: Meaning and Components',
+          'Current Account (Visible & Invisible Trade, Unilateral Transfers)',
+          'Capital Account (FDI, FII, External Commercial Borrowings, NRI Deposits)',
+          'BoP Deficit, BoP Surplus, and Official Reserve Transactions',
+          'Foreign Exchange Rate: Fixed, Flexible, and Managed Floating Systems',
+          'Determination of Exchange Rate in a Free Market and Currency Depreciation vs Devaluation'
+        ]
+      },
+      {
+        unitTitle: 'Part B - Unit 6: Development Experience (1947-90) & Economic Reforms (12 Marks)',
+        subTopics: [
+          'State of Indian Economy on the Eve of Independence (Agriculture, Industry, Trade, Demography)',
+          'Common Goals of Five Year Plans: Growth, Modernisation, Self-reliance and Equity',
+          'Agrarian Reforms: Land Ceilings, Abolition of Intermediaries, and Green Revolution',
+          'Industrial Policy Resolution 1956 (IPR 1956) and Small-Scale Industries (Karve Committee)',
+          'Foreign Trade Strategy: Inward-Looking Trade Policy (Import Substitution)',
+          'Economic Crisis of 1991 and Origin of New Economic Policy (NEP)',
+          'Liberalisation: Deregulation of industrial sector, financial sector reforms, tax reforms, forex market',
+          'Privatisation: Disinvestment of Public Sector Undertakings (PSUs)',
+          'Globalisation: Outsourcing and World Trade Organisation (WTO) Commitments',
+          'Critical Appraisal of LPG Policies: Achievements and Limitations'
+        ]
+      },
+      {
+        unitTitle: 'Part B - Unit 7: Current Challenges Facing Indian Economy (20 Marks)',
+        subTopics: [
+          'Human Capital Formation: Sources (Education, Health, On-the-job Training, Migration, Information)',
+          'Human Capital vs Physical Capital and Role of Human Capital in Economic Growth',
+          'Education Sector in India: Elementary, Secondary, Higher Education and NEP 2020 Goals',
+          'Rural Development: Credit and Marketing Systems, Role of NABARD and Micro-Credit (SHGs)',
+          'Agricultural Diversification: Horticulture, Dairy, Fisheries, Animal Husbandry',
+          'Organic Farming: Benefits, Process, and Contemporary Limitations',
+          'Employment: Worker-Population Ratio, Formal vs Informal Sector Employment (Informalisation)',
+          'Unemployment: Rural (Disguised, Seasonal) and Urban (Educated), Government Schemes',
+          'Sustainable Economic Development: Functions of Environment, Carrying Capacity, Global Warming, Ozone Depletion',
+          'Strategies for Sustainable Development: Solar Energy, Wind Power, Biogas, Mini-hydel plants'
+        ]
+      },
+      {
+        unitTitle: 'Part B - Unit 8: Development Experience of India: A Comparison with Neighbours (08 Marks)',
+        subTopics: [
+          'Historical Trajectory: India, Pakistan and China (Starting Points and Five Year Plans)',
+          'China’s Economic Path: Great Leap Forward (1958), Cultural Revolution, Special Economic Zones (SEZs)',
+          'Pakistan’s Economic Path: Selective Nationalisation, Green Revolution, Financial Denationalisation',
+          'Demographic Indicators: Population Growth, Fertility Rate, Sex Ratio, Density, Urbanisation',
+          'Sectoral GDP Contribution and Employment Share across Primary, Secondary, Tertiary Sectors',
+          'Human Development Indicators (HDI): Life Expectancy, Mean Years of Schooling, Maternal Mortality, Rank Comparisons'
+        ]
+      }
+    ]
+  },
+
+  // ACCOUNTANCY (055)
   'Accountancy (Code 055)': {
     name: 'Accountancy',
     code: '055',
@@ -91,10 +220,10 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
         experiments: [
           {
             expId: 'ACC-EXP-01',
-            title: 'Comprehensive accounting project for a partnership firm preparing final accounts and ratio analysis',
+            title: 'Comprehensive partnership final accounting project with ratio analysis',
             unitRef: 'Part A',
             vivaQueries: [
-              { q: 'What is the maximum statutory number of partners allowed in a partnership firm?', a: '50 partners as per the Companies Rules.' }
+              { q: 'Maximum number of partners allowed in a partnership firm?', a: '50 partners as per Companies Rules.' }
             ]
           }
         ]
