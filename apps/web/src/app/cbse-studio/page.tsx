@@ -83,10 +83,11 @@ export default function PaperGeneratorStudioPage() {
       curr = {
         name: subj,
         code: subj.includes('Code') ? subj.split('Code')[1].replace(/[^0-9]/g, '') : 'CBSE',
-        theoryMarks: 70, practicalMarks: 30,
+        theoryMarks: subj.includes('Yoga') || subj.includes('IT') || subj.includes('AI') ? 50 : 70,
+        practicalMarks: subj.includes('Yoga') || subj.includes('IT') || subj.includes('AI') ? 50 : 30,
         units: [
-          { unitTitle: `Unit 1: Theory of ${subj}`, subTopics: ['Basic concepts', 'Core laws'] },
-          { unitTitle: `Unit 2: Applied ${subj}`, subTopics: ['Problem solving', 'Case study'] }
+          { unitTitle: `Unit 1: Foundations of ${subj}`, subTopics: ['Basic concepts', 'Core principles'] },
+          { unitTitle: `Unit 2: Applied Practices of ${subj}`, subTopics: ['Problem solving', 'Case study'] }
         ]
       };
     }
@@ -125,7 +126,6 @@ export default function PaperGeneratorStudioPage() {
   const allAvailableExperiments: PracticalExperiment[] = activeCurriculum.units.flatMap((u) => u.experiments || []);
   const activeSelectedExperiments = allAvailableExperiments.filter((e) => selectedExpIds[e.expId] !== false);
 
-  // WORD/PDF STYLING EXACTLY MATCHING CBSE ORIGINAL FORMAT (SCREENSHOT 2)
   const generateWordHtmlDoc = (title: string, bodyHtml: string) => {
     return `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
 <head>
@@ -133,26 +133,23 @@ export default function PaperGeneratorStudioPage() {
 <title>${title}</title>
 <style>
 @page { size: 21cm 29.7cm; margin: 1.27cm 1.27cm 1.27cm 1.27cm; mso-page-orientation: portrait; }
-body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-height: 1.3; color: #000; }
+body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-height: 1.35; color: #000; }
 .header-school { font-size: 15pt; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 2pt; }
 .header-meta { font-size: 11pt; text-align: center; font-weight: bold; margin-bottom: 4pt; }
 .roll-no-box { border: 1pt solid #000; padding: 3pt 6pt; width: 170pt; font-size: 10pt; font-family: monospace; margin-bottom: 6pt; }
 .section-title { font-size: 12pt; font-weight: bold; text-align: center; margin-top: 14pt; margin-bottom: 6pt; text-transform: uppercase; border-bottom: 1pt solid #000; padding-bottom: 2pt; }
-.instructions { font-size: 10pt; margin-bottom: 8pt; line-height: 1.25; }
+.instructions { font-size: 10pt; margin-bottom: 8pt; line-height: 1.3; }
 
-/* QUESTION ITEM TABLE (EXACT CBSE SCREENSHOT 2 LAYOUT) */
+/* FIX: text-align left prevents awkward word stretching */
 table.q-item-table { width: 100%; border-collapse: collapse; margin-bottom: 10pt; page-break-inside: avoid; }
-table.q-item-table td { vertical-align: top; padding: 1pt 0; font-size: 11pt; }
+table.q-item-table td { vertical-align: top; padding: 1.5pt 0; font-size: 11pt; }
 td.q-col-num { width: 28pt; font-weight: bold; font-size: 11pt; }
-td.q-col-body { text-align: justify; }
-td.q-col-marks { width: 20pt; text-align: right; font-weight: bold; font-size: 11pt; }
+td.q-col-body { text-align: left; word-spacing: normal; letter-spacing: normal; }
+td.q-col-marks { width: 28pt; text-align: right; font-weight: bold; font-size: 11pt; white-space: nowrap; }
 
-/* PYTHON CODE BLOCKS IN COURIER NEW */
-pre.code-block { font-family: 'Courier New', Courier, monospace; font-size: 10pt; font-weight: bold; margin: 4pt 0 4pt 12pt; background-color: #fafafa; padding: 3pt; line-height: 1.2; }
-
-/* 2-COLUMN OPTIONS TABLE FOR MCQS */
+pre.code-block { font-family: 'Courier New', Courier, monospace; font-size: 10pt; font-weight: bold; margin: 4pt 0 4pt 8pt; background-color: #fafafa; padding: 3pt; line-height: 1.25; }
 table.opts-table { width: 100%; border-collapse: collapse; margin-top: 3pt; margin-bottom: 2pt; }
-table.opts-table td { width: 50%; padding: 1.5pt 4pt; font-size: 10.5pt; font-family: 'Times New Roman', Times, serif; }
+table.opts-table td { width: 50%; padding: 1.5pt 4pt; font-size: 10.5pt; font-family: 'Times New Roman', Times, serif; text-align: left; }
 
 table.matrix-table { width: 100%; border-collapse: collapse; margin-top: 6pt; margin-bottom: 8pt; }
 table.matrix-table th, table.matrix-table td { border: 1pt solid #000; padding: 4pt 6pt; font-size: 10pt; }
@@ -204,7 +201,7 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
           ${codeHtml}
           ${optionsHtml}
         </td>
-        <td class="q-col-marks">${q.marks}</td>
+        <td class="q-col-marks">[${q.marks}]</td>
       </tr>
     </table>`;
   };
@@ -215,7 +212,6 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const safeSub = selectedSubject.replace(/[^a-zA-Z0-9]/g, '_');
     const safeCls = selectedClass.replace(/[^a-zA-Z0-9]/g, '_');
 
-    // Fresh unique randomized questions set
     const generatedData = generateExactSubjectPaper(selectedSubject, selectedClass);
     const allQs = generatedData.questions;
 
@@ -248,20 +244,11 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 ${formattedInstructions}
 </div>
 
-<div class="section-title">SECTION - A &nbsp;&nbsp; (21 x 1 = 21)</div>
-${secA.map(renderQuestionRow).join('')}
-
-<div class="section-title">SECTION - B &nbsp;&nbsp; (7 x 2 = 14)</div>
-${secB.map(renderQuestionRow).join('')}
-
-<div class="section-title">SECTION - C &nbsp;&nbsp; (3 x 3 = 9)</div>
-${secC.map(renderQuestionRow).join('')}
-
-<div class="section-title">SECTION - D &nbsp;&nbsp; (4 x 4 = 16)</div>
-${secD.map(renderQuestionRow).join('')}
-
-<div class="section-title">SECTION - E &nbsp;&nbsp; (2 x 5 = 10)</div>
-${secE.map(renderQuestionRow).join('')}
+${secA.length > 0 ? `<div class="section-title">SECTION - A &nbsp;&nbsp; (${secA.length} x 1 = ${secA.reduce((a, b) => a + b.marks, 0)})</div>${secA.map(renderQuestionRow).join('')}` : ''}
+${secB.length > 0 ? `<div class="section-title">SECTION - B &nbsp;&nbsp; (${secB.length} x 2 = ${secB.reduce((a, b) => a + b.marks, 0)})</div>${secB.map(renderQuestionRow).join('')}` : ''}
+${secC.length > 0 ? `<div class="section-title">SECTION - C &nbsp;&nbsp; (${secC.length} x 3 = ${secC.reduce((a, b) => a + b.marks, 0)})</div>${secC.map(renderQuestionRow).join('')}` : ''}
+${secD.length > 0 ? `<div class="section-title">SECTION - D &nbsp;&nbsp; (${secD.length} x 4 = ${secD.reduce((a, b) => a + b.marks, 0)})</div>${secD.map(renderQuestionRow).join('')}` : ''}
+${secE.length > 0 ? `<div class="section-title">SECTION - E &nbsp;&nbsp; (${secE.length} x 5 = ${secE.reduce((a, b) => a + b.marks, 0)})</div>${secE.map(renderQuestionRow).join('')}` : ''}
 
 <div style="text-align: center; font-weight: bold; margin-top: 15pt;">*** END OF QUESTION PAPER • STRICT CBSE 2026-27 FORMAT ***</div>
 `;
@@ -311,12 +298,12 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
 <table class="matrix-table">
   <tr><th>Section</th><th>Typology</th><th>Marks/Q</th><th>Count</th><th>Total</th></tr>
-  <tr><td><b>Section A</b></td><td>Objective & MCQs (Q1 to Q21)</td><td>1 M</td><td>21</td><td>21 Marks</td></tr>
-  <tr><td><b>Section B</b></td><td>VSA Output & Syntax (Q22 to Q28)</td><td>2 M</td><td>7</td><td>14 Marks</td></tr>
-  <tr><td><b>Section C</b></td><td>SA Functions & Stack (Q29 to Q31)</td><td>3 M</td><td>3</td><td>9 Marks</td></tr>
-  <tr><td><b>Section D</b></td><td>LA SQL & Python Connector (Q32 to Q35)</td><td>4 M</td><td>4</td><td>16 Marks</td></tr>
-  <tr><td><b>Section E</b></td><td>Case Study & Networking (Q36 to Q37)</td><td>5 M</td><td>2</td><td>10 Marks</td></tr>
-  <tr><th colspan="3">AGGREGATE THEORY SCORE</th><th>37 Qs</th><th>70 Marks</th></tr>
+  <tr><td><b>Section A</b></td><td>Objective & MCQs</td><td>1 M</td><td>${secA.length}</td><td>${secA.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
+  <tr><td><b>Section B</b></td><td>Very Short Answer</td><td>2 M</td><td>${secB.length}</td><td>${secB.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
+  <tr><td><b>Section C</b></td><td>Short Answer</td><td>3 M</td><td>${secC.length}</td><td>${secC.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
+  <tr><td><b>Section D</b></td><td>Long Questions</td><td>4 M</td><td>${secD.length}</td><td>${secD.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
+  <tr><td><b>Section E</b></td><td>Integrated Case Study</td><td>5 M</td><td>${secE.length}</td><td>${secE.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
+  <tr><th colspan="3">AGGREGATE THEORY SCORE</th><th>${allQs.length} Qs</th><th>${generatedData.totalMarks} Marks</th></tr>
 </table>
 `;
 
@@ -349,7 +336,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     setSavedPapers(updated);
     localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updated));
 
-    alert(`🎉 Unique CBSE 2026 Paper Package Generated in ${downloadFormat.toUpperCase()}!\n\nSubject: ${selectedSubject}\nTotal: 37 Questions (Q1 to Q37)\nMarks: 70 Marks\nFormatted exactly as CBSE Original Paper.`);
+    alert(`🎉 Success: ${selectedSubject} Paper generated (${allQs.length} Questions, ${generatedData.totalMarks} Marks)!\nDownloaded in ${downloadFormat.toUpperCase()} and archived in Saved Papers.`);
   };
 
   return (
@@ -406,7 +393,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                     Mode 1: Official CBSE Curriculum & Dynamic Exam Engine
                   </h2>
                   <p className="text-xs text-gray-400 mt-0.5">
-                    CBSE 2026 Examination Blueprint: 37 Questions • 70 Marks for {activeSchool.name}
+                    CBSE Session 2026-27 Compliant Paper Studio for {activeSchool.name}
                   </p>
                 </div>
 
@@ -657,7 +644,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-800">
                 <div className="text-xs text-gray-400 font-mono">
-                  Engine: <strong className="text-emerald-400">CBSE 2026 Format Active (37 Questions • 70 Marks)</strong>
+                  Engine: <strong className="text-emerald-400">Strict Subject Isolation Active (CBSE 2026 Format)</strong>
                 </div>
                 <button
                   onClick={handleGenerateCompletePackage}
