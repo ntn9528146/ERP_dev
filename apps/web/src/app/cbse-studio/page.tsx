@@ -28,7 +28,7 @@ export default function PaperGeneratorStudioPage() {
   const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved'>('matrix');
 
   const [selectedClass, setSelectedClass] = useState('Class 12 (Commerce)');
-  const [selectedSubject, setSelectedSubject] = useState('Accountancy (Code 055)');
+  const [selectedSubject, setSelectedSubject] = useState('Economics (Code 030)');
   const [examPattern, setExamPattern] = useState('Pre-Board Examination (100% Syllabus)');
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
   const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('doc');
@@ -38,18 +38,24 @@ export default function PaperGeneratorStudioPage() {
 
   const [sections, setSections] = useState([
     { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-    { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
-    { id: 'sec-c', name: 'Section C: Long Answer Type I (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
-    { id: 'sec-d', name: 'Section D: Long Answer Type II (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
+    { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
+    { id: 'sec-c', name: 'Section C: Medium Answer Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 6 },
+    { id: 'sec-d', name: 'Section D: Long Answer Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
   ]);
 
   const [activeCurriculum, setActiveCurriculum] = useState<SubjectCurriculum>(
-    DETAILED_SYLLABUS_2026_27['Accountancy (Code 055)']
+    DETAILED_SYLLABUS_2026_27['Economics (Code 030)'] || {
+      name: 'Economics',
+      code: '030',
+      theoryMarks: 80,
+      practicalMarks: 20,
+      units: []
+    }
   );
 
   const [selectedTopics, setSelectedTopics] = useState<Record<string, boolean>>({});
   const [selectedExpIds, setSelectedExpIds] = useState<Record<string, boolean>>({});
-  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Accounting for Partnership\n- Fundamental concepts, Deed, P&L Appropriation');
+  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Macroeconomics\n- National income, Money & Banking, Multiplier');
   const [savedPapers, setSavedPapers] = useState<SavedPaperRecord[]>([]);
 
   useEffect(() => {
@@ -93,13 +99,19 @@ export default function PaperGeneratorStudioPage() {
     setTheoryMarks(curr.theoryMarks);
     setPracticalMarks(curr.practicalMarks);
 
-    // Adapt sections live to subject
     if (subj.includes('Accountancy') || subj.includes('055')) {
       setSections([
         { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-        { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
-        { id: 'sec-c', name: 'Section C: Long Answer Type I (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
-        { id: 'sec-d', name: 'Section D: Long Answer Type II (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
+        { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
+        { id: 'sec-c', name: 'Section C: Medium Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 5 },
+        { id: 'sec-d', name: 'Section D: Long Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
+      ]);
+    } else if (subj.includes('Economics') || subj.includes('030')) {
+      setSections([
+        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+        { id: 'sec-b', name: 'Section B: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
+        { id: 'sec-c', name: 'Section C: Medium Answer (4 Marks each)', enabled: true, marksPerQ: 4, count: 6 },
+        { id: 'sec-d', name: 'Section D: Long Answer (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
       ]);
     } else if (subj.includes('Computer Science') || subj.includes('083')) {
       setSections([
@@ -160,15 +172,17 @@ body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-heigh
 .header-school { font-size: 15pt; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 2pt; }
 .header-meta { font-size: 11pt; text-align: center; font-weight: bold; margin-bottom: 4pt; }
 .roll-no-box { border: 1pt solid #000; padding: 3pt 6pt; width: 170pt; font-size: 10pt; font-family: monospace; margin-bottom: 6pt; }
-.section-title { font-size: 12pt; font-weight: bold; text-align: center; margin-top: 14pt; margin-bottom: 6pt; text-transform: uppercase; border-bottom: 1pt solid #000; padding-bottom: 2pt; }
+.part-header { font-size: 13pt; font-weight: bold; text-align: center; margin-top: 16pt; margin-bottom: 4pt; text-transform: uppercase; background-color: #f3f4f6; padding: 4pt; border: 1pt solid #ccc; }
+.section-title { font-size: 12pt; font-weight: bold; text-align: left; margin-top: 10pt; margin-bottom: 6pt; text-transform: uppercase; border-bottom: 1pt solid #000; padding-bottom: 2pt; }
 .instructions { font-size: 10pt; margin-bottom: 8pt; line-height: 1.3; }
 
 table.q-item-table { width: 100%; border-collapse: collapse; margin-bottom: 10pt; page-break-inside: avoid; }
-table.q-item-table td { vertical-align: top; padding: 1.5pt 0; font-size: 11pt; }
+table.q-item-table td { vertical-align: top; padding: 2pt 0; font-size: 11pt; }
 td.q-col-num { width: 28pt; font-weight: bold; font-size: 11pt; }
 td.q-col-body { text-align: left; word-spacing: normal; letter-spacing: normal; }
 td.q-col-marks { width: 28pt; text-align: right; font-weight: bold; font-size: 11pt; white-space: nowrap; }
 
+.or-divider { font-weight: bold; text-align: center; margin: 8pt 0; font-size: 11pt; color: #111; letter-spacing: 1pt; }
 pre.code-block { font-family: 'Courier New', Courier, monospace; font-size: 10pt; font-weight: bold; margin: 4pt 0 4pt 8pt; background-color: #fafafa; padding: 3pt; line-height: 1.25; }
 table.opts-table { width: 100%; border-collapse: collapse; margin-top: 3pt; margin-bottom: 2pt; }
 table.opts-table td { width: 50%; padding: 1.5pt 4pt; font-size: 10.5pt; font-family: 'Times New Roman', Times, serif; text-align: left; }
@@ -214,6 +228,20 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
       codeHtml = `<pre class="code-block">${q.codeBlock}</pre>`;
     }
 
+    let tableHtml = '';
+    if (q.tableData) {
+      tableHtml = `<div style="margin: 4pt 0;">${q.tableData}</div>`;
+    }
+
+    let orHtml = '';
+    if (q.orOptionText) {
+      orHtml = `
+      <div class="or-divider">--- OR ---</div>
+      <div style="margin-top: 4pt;">${q.orOptionText.replace(/\n/g, '<br/>')}</div>
+      ${q.orOptionTableData ? `<div style="margin: 4pt 0;">${q.orOptionTableData}</div>` : ''}
+      `;
+    }
+
     return `
     <table class="q-item-table">
       <tr>
@@ -221,7 +249,9 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
         <td class="q-col-body">
           ${q.text.replace(/\n/g, '<br/>')}
           ${codeHtml}
+          ${tableHtml}
           ${optionsHtml}
+          ${orHtml}
         </td>
         <td class="q-col-marks">[${q.marks}]</td>
       </tr>
@@ -237,20 +267,44 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const generatedData = generateExactSubjectPaper(selectedSubject, selectedClass);
     const allQs = generatedData.questions;
 
-    // Group questions by section
-    const sectionsPresent = ['A', 'B', 'C', 'D', 'E'];
-    let renderedSectionsHtml = '';
+    // Check if paper has Part divisions (e.g. Accountancy, Economics)
+    const hasPartDivisions = allQs.some(q => !!q.part);
 
-    sectionsPresent.forEach(secKey => {
-      const secQs = allQs.filter(q => q.section === secKey);
-      if (secQs.length > 0) {
-        const totalSecMarks = secQs.reduce((acc, curr) => acc + curr.marks, 0);
-        renderedSectionsHtml += `
-        <div class="section-title">SECTION - ${secKey} &nbsp;&nbsp; (${secQs.length} Questions &bull; Total ${totalSecMarks} Marks)</div>
-        ${secQs.map(renderQuestionRow).join('')}
-        `;
-      }
-    });
+    let questionsRenderHtml = '';
+
+    if (hasPartDivisions) {
+      // Group by Part first, then Section
+      const distinctParts = Array.from(new Set(allQs.map(q => q.part || 'GENERAL PART')));
+      distinctParts.forEach(pName => {
+        const partQs = allQs.filter(q => (q.part || 'GENERAL PART') === pName);
+        questionsRenderHtml += `<div class="part-header">${pName}</div>`;
+
+        const secKeys = ['A', 'B', 'C', 'D', 'E'];
+        secKeys.forEach(sKey => {
+          const secQs = partQs.filter(q => q.section === sKey);
+          if (secQs.length > 0) {
+            const marksSub = secQs.reduce((a, b) => a + b.marks, 0);
+            questionsRenderHtml += `
+            <div class="section-title">SECTION ${sKey} &bull; ${secQs.length} Questions (${marksSub} Marks)</div>
+            ${secQs.map(renderQuestionRow).join('')}
+            `;
+          }
+        });
+      });
+    } else {
+      // Standard Section grouping
+      const secKeys = ['A', 'B', 'C', 'D', 'E'];
+      secKeys.forEach(sKey => {
+        const secQs = allQs.filter(q => q.section === sKey);
+        if (secQs.length > 0) {
+          const marksSub = secQs.reduce((a, b) => a + b.marks, 0);
+          questionsRenderHtml += `
+          <div class="section-title">SECTION - ${sKey} &bull; (${secQs.length} Questions &bull; Total ${marksSub} Marks)</div>
+          ${secQs.map(renderQuestionRow).join('')}
+          `;
+        }
+      });
+    }
 
     const romanNums = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
     const formattedInstructions = generatedData.instructions
@@ -275,7 +329,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 ${formattedInstructions}
 </div>
 
-${renderedSectionsHtml}
+${questionsRenderHtml}
 
 <div style="text-align: center; font-weight: bold; margin-top: 15pt;">*** END OF QUESTION PAPER • STRICT CBSE 2026-27 FORMAT ***</div>
 `;
@@ -288,7 +342,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
 ${allQs.map(q => `
 <div style="margin-bottom: 8pt; page-break-inside: avoid;">
-  <b>Q${q.qNum}. [Section ${q.section} - ${q.marks} Mark(s)]</b><br/>
+  <b>Q${q.qNum}. [Section ${q.section} -${q.marks} Mark(s)]</b><br/>
   <div style="padding-left: 12pt; color: #111;">${q.answerKey.replace(/\n/g, '<br/>')}</div>
 </div>
 `).join('')}
@@ -303,7 +357,7 @@ SUBJECT: ${selectedSubject.toUpperCase()} | TOTAL PRACTICAL: ${practicalMarks} M
 <div class="section-title">SELECTED TOPIC-WISE LAB EXPERIMENTS / PROJECTS:</div>
 ${activeSelectedExperiments.map((exp, idx) => `
 <div style="margin-bottom: 8pt;">
-  <b>Experiment / Activity ${idx + 1} [${exp.expId}]:</b> ${exp.title}<br/>
+  <b>Experiment / Activity ${idx + 1} [${exp.expId}]:</b>${exp.title}<br/>
   <span style="font-size: 10pt; color: #444;">Mapped Unit: ${exp.unitRef}</span>
 </div>
 `).join('')}
@@ -311,7 +365,7 @@ ${activeSelectedExperiments.map((exp, idx) => `
 <div class="section-title">VIVA-VOCE QUESTION BANK WITH MODEL ANSWERS:</div>
 ${activeSelectedExperiments.flatMap((exp) => exp.vivaQueries).map((vq, idx) => `
 <div style="margin-bottom: 6pt;">
-  <b>Q${idx + 1}. ${vq.q}</b><br/>
+  <b>Q${idx + 1}.${vq.q}</b><br/>
   <i>Ans:</i> ${vq.a}
 </div>
 `).join('')}
@@ -329,7 +383,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     const count = allQs.filter(q => q.section === sKey).length;
     const marks = allQs.filter(q => q.section === sKey).reduce((a, b) => a + b.marks, 0);
     if (count === 0) return '';
-    return `<tr><td><b>Section ${sKey}</b></td><td>Evaluated Typology ${sKey}</td><td style="text-align: center;">${count} Qs</td><td style="text-align: right; font-weight: bold;">${marks} Marks</td></tr>`;
+    return `<tr><td><b>Section ${sKey}</b></td><td>Evaluated Typology${sKey}</td><td style="text-align: center;">${count} Qs</td><td style="text-align: right; font-weight: bold;">${marks} Marks</td></tr>`;
   }).join('')}
   <tr><th colspan="2">AGGREGATE THEORY SCORE</th><th style="text-align: center;">${allQs.length} Questions</th><th style="text-align: right;">${generatedData.totalMarks} Marks</th></tr>
 </table>
