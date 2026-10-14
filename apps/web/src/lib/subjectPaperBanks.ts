@@ -28,216 +28,154 @@ export function generateExactSubjectPaper(subjectName: string, className: string
 } {
   const normSub = subjectName.toLowerCase();
 
-  // 1. PHYSICAL EDUCATION (CODE 048)
-  if (normSub.includes('physical education') || normSub.includes('048')) {
-    const peMCQs = [
-      { text: 'Which tournament format follows the formula (N - 1) to determine the total number of matches played for N teams?', opts: { optA: 'Knock-Out Tournament', optB: 'League Tournament', optC: 'Round Robin', optD: 'Combination Tournament' }, ans: '(A) Knock-Out Tournament' },
-      { text: 'Identify the postural spinal deformity marked by an abnormal outward exaggeration of the thoracic curve (hunchback):', opts: { optA: 'Kyphosis', optB: 'Lordosis', optC: 'Scoliosis', optD: 'Knock Knees' }, ans: '(A) Kyphosis' },
-      { text: 'Which Yogic posture is highly effective as a preventive measure against Type-2 Diabetes by stimulating the pancreas?', opts: { optA: 'Ardha Matsyendrasana', optB: 'Shavasana', optC: 'Tadasana', optD: 'Vrikshasana' }, ans: '(A) Ardha Matsyendrasana' },
-      { text: 'What is the bench height used in the Harvard Step Test for boys?', opts: { optA: '20 inches (50.8 cm)', optB: '16 inches (40.6 cm)', optC: '14 inches (35.5 cm)', optD: '24 inches (60.9 cm)' }, ans: '(A) 20 inches' },
-      { text: 'Newton’s Second Law of Motion is also formally termed in sports biomechanics as:', opts: { optA: 'Law of Acceleration', optB: 'Law of Inertia', optC: 'Law of Action and Reaction', optD: 'Law of Equilibrium' }, ans: '(A) Law of Acceleration' },
-      { text: 'Which component of physical fitness is primarily measured by the 8-Foot Up and Go test in Rikli & Jones battery?', opts: { optA: 'Agility and Dynamic Balance', optB: 'Muscular Strength', optC: 'Aerobic Endurance', optD: 'Flexibility' }, ans: '(A) Agility and Dynamic Balance' },
-      { text: 'Female Athlete Triad comprises which three interrelated clinical conditions?', opts: { optA: 'Osteoporosis, Amenorrhea, Eating Disorders', optB: 'Hypertension, Diabetes, Fatigue', optC: 'Kyphosis, Scoliosis, Lordosis', optD: 'Anemia, Asthma, Sprain' }, ans: '(A) Osteoporosis, Amenorrhea, Eating Disorders' },
-      { text: 'What does the acronym P.R.I.C.E. stand for in initial sports injury management?', opts: { optA: 'Protect, Rest, Ice, Compression, Elevation', optB: 'Pressure, Relaxation, Inhale, Calm, Exercise', optC: 'Physical, Rapid, Inspection, Care, Energy', optD: 'Protect, Relief, Immobilize, Circulation, Exam' }, ans: '(A) Protect, Rest, Ice, Compression, Elevation' },
-      { text: 'Which training cycle spans across a micro-cycle in periodization planning?', opts: { optA: '3 to 7 Days', optB: '3 to 6 Weeks', optC: '6 to 12 Months', optD: '4 Years' }, ans: '(A) 3 to 7 Days' },
-      { text: 'Which nutrient yields approximately 9 kcal of energy per gram metabolized?', opts: { optA: 'Fats', optB: 'Proteins', optC: 'Carbohydrates', optD: 'Minerals' }, ans: '(A) Fats' }
+  // =========================================================================
+  // 1. ACCOUNTANCY (CODE 055) - OFFICIAL CBSE 34 QUESTIONS (80 MARKS THEORY)
+  // =========================================================================
+  if (normSub.includes('accountancy') || normSub.includes('055')) {
+    const pA = getRandomChoice([3, 4, 5]);
+    const pB = getRandomChoice([2, 3]);
+    const pC = 1;
+
+    const accPool1M = [
+      { text: 'In the absence of a Partnership Deed, interest on advances/loan given by a partner to the firm is payable at what rate?', opts: { optA: '6% p.a.', optB: '10% p.a.', optC: '12% p.a.', optD: 'Zero / Nil' }, ans: '(A) 6% p.a.' },
+      { text: 'At the time of admission of a new partner, general reserve appearing in the balance sheet is transferred to:', opts: { optA: 'Old Partners’ Capital Accounts in Old Ratio', optB: 'All Partners in New Ratio', optC: 'Revaluation Account', optD: 'Sacrificing Ratio' }, ans: '(A) Old Partners in Old Ratio' },
+      { text: 'A company forfeited 100 shares of Rs 10 each on which Rs 7 per share was received. What is the maximum discount allowed on reissue?', opts: { optA: 'Rs 7 per share', optB: 'Rs 3 per share', optC: 'Rs 10 per share', optD: 'Rs 5 per share' }, ans: '(A) Rs 7 per share (amount forfeited)' },
+      { text: 'Securities Premium Account cannot be utilized for which of the following purposes as per Section 52(2) of Companies Act?', opts: { optA: 'Distribution of Dividends to Shareholders', optB: 'Writing off preliminary expenses', optC: 'Issuing fully paid bonus shares', optD: 'Buy-back of own shares' }, ans: '(A) Distribution of Dividends' },
+      { text: 'Gaining Ratio is calculated as:', opts: { optA: 'New Ratio - Old Ratio', optB: 'Old Ratio - New Ratio', optC: 'Old Ratio - Sacrificing Ratio', optD: 'New Ratio + Old Ratio' }, ans: '(A) New Ratio - Old Ratio' },
+      { text: 'If a partner withdraws Rs 5,000 at the beginning of every month, for how many months will interest on drawings be calculated?', opts: { optA: '6.5 Months', optB: '6 Months', optC: '5.5 Months', optD: '7 Months' }, ans: '(A) 6.5 Months' },
+      { text: 'On dissolution of a firm, unrecorded asset realized in cash is credited to:', opts: { optA: 'Realisation Account', optB: 'Cash Account', optC: 'Partners Capital Account', optD: 'Profit and Loss Account' }, ans: '(A) Realisation Account' },
+      { text: 'Debentures issued as collateral security for a bank loan means:', opts: { optA: 'Secondary security in addition to prime security', optB: 'Primary security for loan', optC: 'Interest-free security', optD: 'Unsecured debentures' }, ans: '(A) Secondary security' },
+      { text: 'Operating Cycle is 15 months and expected realization of trade receivables is 14 months. It will be classified as:', opts: { optA: 'Current Asset', optB: 'Non-Current Asset', optC: 'Contingent Asset', optD: 'Intangible Asset' }, ans: '(A) Current Asset' },
+      { text: 'Which financial ratio measures the ability of the firm to meet its immediate short-term liquid commitments without selling inventory?', opts: { optA: 'Quick Ratio / Acid Test Ratio', optB: 'Current Ratio', optC: 'Debt-Equity Ratio', optD: 'Gross Profit Ratio' }, ans: '(A) Quick Ratio' },
+      { text: 'Cash flow arising from purchase of machinery is classified under which activity in Cash Flow Statement (AS-3)?', opts: { optA: 'Investing Activities', optB: 'Operating Activities', optC: 'Financing Activities', optD: 'Cash Equivalents' }, ans: '(A) Investing Activities' },
+      { text: 'Interest paid on long-term borrowings by a non-financing enterprise is an outflow under:', opts: { optA: 'Financing Activities', optB: 'Operating Activities', optC: 'Investing Activities', optD: 'Operating Inflow' }, ans: '(A) Financing Activities' },
+      { text: 'Assertion (A): Current Ratio measures short-term financial liquidity of the enterprise.\nReason (R): Ideal current ratio considered standard by accountants is 2:1.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(B) Both are true but (R) does not explain (A).' },
+      { text: 'Capital Reserve is created out of which of the following profits?', opts: { optA: 'Capital Profits (Profit on sale of fixed asset/forfeited shares)', optB: 'Normal trading profit', optC: 'Revenue reserve', optD: 'Net profit before tax' }, ans: '(A) Capital Profits' },
+      { text: 'What is the nature of Realisation Account prepared at the time of dissolution of partnership firm?', opts: { optA: 'Nominal Account', optB: 'Personal Account', optC: 'Real Account', optD: 'Representative Account' }, ans: '(A) Nominal Account' },
+      { text: 'Calls in Arrears is deducted from which of the following items in the Notes to Accounts on Share Capital?', opts: { optA: 'Subscribed but not fully paid-up capital', optB: 'Authorized Capital', optC: 'Issued Capital', optD: 'Reserve Capital' }, ans: '(A) Subscribed but not fully paid-up capital' },
+      { text: 'Which tool of financial analysis represents each financial item as a percentage of total assets or net revenue?', opts: { optA: 'Common-Size Statements', optB: 'Comparative Statements', optC: 'Ratio Analysis', optD: 'Cash Flow Analysis' }, ans: '(A) Common-Size Statements' },
+      { text: 'Goodwill of a partnership firm is valued at 2 years purchase of average profits of last 3 years. Profits are: Rs 40,000; Rs 50,000; Rs 60,000. Value of goodwill is:', opts: { optA: 'Rs 1,00,000', optB: 'Rs 1,50,000', optC: 'Rs 75,000', optD: 'Rs 50,000' }, ans: '(A) Average = 50,000 x 2 = Rs 1,00,000.' },
+      { text: 'When a partner dies, his share of profit from the date of last balance sheet to the date of death is debited to:', opts: { optA: 'Profit and Loss Suspense Account', optB: 'Deceased Partner Capital Account', optC: 'Profit and Loss Appropriation Account', optD: 'Realisation Account' }, ans: '(A) Profit and Loss Suspense Account' },
+      { text: 'Dividend paid by a financing company is classified as which cash flow activity?', opts: { optA: 'Financing Activity', optB: 'Operating Activity', optC: 'Investing Activity', optD: 'Non-Cash transaction' }, ans: '(A) Financing Activity' }
     ];
 
-    const pe2M = [
-      { text: 'Define Extramural tournaments. Mention two key educational benefits of inter-school sports competitions.', ans: 'Extramural tournaments are competitions between teams of different schools. Benefits: fosters national integration and enhances sports talent.' },
-      { text: 'Explain the physiological differences between Fast Twitch (White) and Slow Twitch (Red) muscle fibers.', ans: 'Slow twitch fibers have high myoglobin for aerobic endurance; fast twitch fibers contract rapidly for anaerobic power.' },
-      { text: 'State the difference between Intrinsic Motivation and Extrinsic Motivation with sports examples.', ans: 'Intrinsic motivation comes from personal satisfaction; Extrinsic motivation comes from medals, cash awards, and recognition.' }
+    const accPool3M = [
+      { text: `A, B and C are partners sharing profits in ${pA}:${pB}:${pC}. They agree to admit D for 1/6th share which he acquires equally from B and C. Calculate the new profit sharing ratio and sacrificing ratio.`, ans: `Sacrificing ratio of B and C is 1:1. D acquires 1/12 from B and 1/12 from C. Calculate new shares accordingly.` },
+      { text: 'X Ltd purchased building worth Rs 4,40,000 from Y Ltd and agreed to pay by issuing 9% Debentures of Rs 100 each at a premium of 10%. Pass necessary journal entries.', ans: 'Debentures issued = 4,40,000 / 110 = 4,000 Debentures. Pass purchase entry and debenture issue entry with Securities Premium.' },
+      { text: 'An enterprise has Current Assets of Rs 6,00,000 and Current Liabilities of Rs 4,00,000. State with reasons whether payment of a trade payable Rs 50,000 will improve, reduce or not change the Current Ratio.', ans: 'Both Current Assets and Current Liabilities decrease by 50,000. New ratio = 5,50,000 / 3,50,000 = 1.57:1 (Old was 1.50:1). Current Ratio improves.' },
+      { text: 'P and Q are partners sharing profits in 3:2 with capitals Rs 2,00,000 and Rs 1,50,000. Partnership Deed provides interest on capital @ 6% p.a. During the year, firm earned profit of Rs 14,000 before interest. Show appropriation of profits.', ans: 'Total interest on capital due = 12,000 + 9,000 = 21,000. Since profit is only 14,000, profit is distributed in the ratio of interest due (12:9 = 4:3). P gets 8,000 and Q gets 6,000.' },
+      { text: 'From the following details, calculate Operating Ratio:\nRevenue from Operations: Rs 8,00,000; Gross Profit: 25% on Cost; Operating Expenses: Rs 60,000.', ans: 'Cost of Revenue from operations = 8,00,000 x 100 / 125 = Rs 6,40,000. Operating Cost = 6,40,000 + 60,000 = 7,00,000. Operating Ratio = (7,00,000 / 8,00,000) x 100 = 87.5%.' },
+      { text: 'Distinguish between Dissolution of Partnership and Dissolution of Partnership Firm on the basis of: (i) Court intervention, (ii) Closure of books, (iii) Economic relationship.', ans: '(i) Voluntary for partnership; Court can order firm dissolution. (ii) Books continue in partnership; Books closed in firm dissolution. (iii) Relationship reconstituted in partnership; Relationship terminated in firm dissolution.' }
     ];
 
-    const pe3M = [
-      { text: 'Draw a knock-out fixture of 13 teams showing clearly the calculation of upper half, lower half, and number of byes.', ans: 'N=13. Next power of 2 = 16. Byes = 16 - 13 = 3. Upper half = (13+1)/2 = 7; Lower half = 6.' },
-      { text: 'Describe the procedure, scoring, and significance of the Chair Sit and Reach test for senior citizens.', ans: 'Evaluates lower body hamstring flexibility. Subject reaches towards toes with one leg straight on edge of chair.' }
+    const accPool4M = [
+      { text: 'Pass necessary journal entries for forfeiture and reissue in following cases:\n(a) Star Ltd forfeited 200 shares of Rs 10 each (Rs 8 called up) for non-payment of first call of Rs 2. 150 of these shares were reissued as Rs 8 paid-up for Rs 7 per share.\n(b) Moon Ltd forfeited 100 shares of Rs 10 each issued at 10% premium for non-payment of allotment of Rs 5 (including premium). These shares were reissued as fully paid for Rs 9.', ans: 'Share forfeiture entries, Reissue entries and transfer of net surplus to Capital Reserve Account.' },
+      { text: 'Calculate Trend Percentages or Comparative Statement of Profit and Loss of Omega Ltd for years ended 31st March 2024 and 31st March 2025.', ans: 'Compute Absolute Change and Percentage Change columns accurately for Revenue, Expenses, Tax, and Profit after tax.' },
+      { text: 'Prepare Realisation Account when firm dissolved: Sundry Debtors Rs 80,000 (Provision Rs 5,000); Stock Rs 60,000 realized at 10% discount; Creditors of Rs 40,000 settled at 5% discount; Realisation expenses Rs 2,500.', ans: 'Post book values to debit/credit, record asset realization, settle liability, and compute net profit/loss on realisation.' }
     ];
 
-    const pe5M = [
-      { text: 'Explain the classification of Sports Injuries into Soft Tissue and Bone injuries. Elaborate on PRICER procedure.', ans: 'Soft tissue: sprain, strain, contusion. Bone: fractures. PRICER: Protect, Rest, Ice, Compression, Elevation, Referral.' },
-      { text: 'Explain Newton’s three laws of motion and illustrate their practical applications in athletic jumping and sprinting events.', ans: '1st Law: Starting blocks push-off; 2nd Law: Acceleration proportional to force exerted; 3rd Law: Ground reaction propulsion.' }
+    const accPool6M = [
+      { text: 'Alpha Ltd invited applications for 1,00,000 equity shares of Rs 10 each at a premium of Rs 2 per share payable: Rs 3 on application, Rs 5 on allotment (including premium), and Rs 4 on first & final call. Applications were received for 1,40,000 shares. Allotment was made pro-rata to applicants of 1,20,000 shares, remaining rejected. Excess application money adjusted to allotment. A shareholder holding 500 shares failed to pay allotment and call money. His shares were forfeited and reissued at Rs 8 per share fully paid. Pass Journal Entries.', ans: 'Complete journal entries for application received, pro-rata allotment, calls, forfeiture, reissue and transfer to Capital Reserve.' },
+      { text: 'X, Y and Z were partners sharing profits in 5:3:2. Balance Sheet showed Capitals: X Rs 1,50,000; Y Rs 1,00,000; Z Rs 80,000; Reserves Rs 30,000. Y retired on 31st March. Assets were revalued: Machinery increased by 10%, Stock reduced by 5%, Provision for doubtful debts created @ 5%. Goodwill valued at Rs 60,000. Y was paid Rs 20,000 in cash and balance transferred to loan account. Prepare Revaluation Account and Partners’ Capital Accounts.', ans: 'Revaluation Account showing profit/loss, Partners Capital Accounts with goodwill adjustment, and Y’s loan balance.' },
+      { text: 'From the following Balance Sheets of Sunrise Ltd, prepare Cash Flow Statement as per AS-3 (Revised):\nShare Capital increased from Rs 5,00,000 to Rs 7,00,000; Reserves & Surplus increased from Rs 1,00,000 to Rs 2,20,000; Long term borrowings reduced from Rs 2,00,000 to Rs 1,00,000. Machinery cost Rs 8,00,000 (accumulated depreciation Rs 1,20,000). During the year, machinery costing Rs 50,000 was sold at loss of Rs 5,000. Depreciation charged during year Rs 40,000.', ans: 'Operating cash flow, Investing cash flow (machinery purchase/sale), Financing cash flow (shares/debentures), and net increase in cash and cash equivalents.' },
+      { text: 'A and B are partners sharing in 3:2. On 1st April they admit C into partnership for 1/4th share. C brings Rs 1,00,000 as capital and Rs 30,000 for goodwill. Half of goodwill is withdrawn by old partners. Prepare Revaluation Account, Capital Accounts and opening Balance Sheet of new firm.', ans: 'Complete partnership reconstitution ledger accounts with revaluation and cash adjustments.' },
+      { text: 'Pass journal entries for issue of Debentures:\n(i) 5,000 9% Debentures of Rs 100 issued at par redeemable at 5% premium.\n(ii) 4,000 9% Debentures of Rs 100 issued at 5% discount redeemable at 5% premium.\n(iii) 2,000 9% Debentures of Rs 100 issued at 5% premium redeemable at 10% premium.', ans: 'Journalize entries recording Loss on Issue of Debentures and Premium on Redemption.' }
     ];
 
     const questions: FullGeneratedQuestion[] = [];
     let qCount = 1;
 
-    shuffleArray(peMCQs).slice(0, 18).forEach(q => {
+    // SECTION A: 20 Questions x 1 Mark = 20 Marks
+    shuffleArray(accPool1M).slice(0, 20).forEach(q => {
       questions.push({ qNum: qCount++, section: 'A', marks: 1, text: q.text, options: q.opts, answerKey: q.ans });
     });
-    shuffleArray(pe2M).slice(0, 5).forEach(q => {
-      questions.push({ qNum: qCount++, section: 'B', marks: 2, text: q.text, answerKey: q.ans });
+
+    // SECTION B: 6 Questions x 3 Marks = 18 Marks
+    shuffleArray(accPool3M).slice(0, 6).forEach(q => {
+      questions.push({ qNum: qCount++, section: 'B', marks: 3, text: q.text, answerKey: q.ans });
     });
-    shuffleArray(pe3M).slice(0, 5).forEach(q => {
-      questions.push({ qNum: qCount++, section: 'C', marks: 3, text: q.text, answerKey: q.ans });
+
+    // SECTION C: 3 Questions x 4 Marks = 12 Marks
+    shuffleArray(accPool4M).slice(0, 3).forEach(q => {
+      questions.push({ qNum: qCount++, section: 'C', marks: 4, text: q.text, answerKey: q.ans });
     });
-    shuffleArray(pe5M).slice(0, 3).forEach(q => {
-      questions.push({ qNum: qCount++, section: 'D', marks: 5, text: q.text, answerKey: q.ans });
+
+    // SECTION D: 5 Questions x 6 Marks = 30 Marks
+    shuffleArray(accPool6M).slice(0, 5).forEach(q => {
+      questions.push({ qNum: qCount++, section: 'D', marks: 6, text: q.text, answerKey: q.ans });
+    });
+
+    return {
+      questions,
+      totalMarks: 80,
+      instructions: [
+        'This question paper contains 34 questions divided into two Parts – Part A and Part B.',
+        'Part A is compulsory for all candidates (Accounting for Partnership Firms and Companies).',
+        'Part B is Analysis of Financial Statements.',
+        'Questions 1 to 20 carry 1 mark each.',
+        'Questions 21 to 26 carry 3 marks each.',
+        'Questions 27 to 29 carry 4 marks each.',
+        'Questions 30 to 34 carry 6 marks each.',
+        'All calculations should be supported with clear working notes.'
+      ]
+    };
+  }
+
+  // =========================================================================
+  // 2. PHYSICAL EDUCATION (CODE 048) - 70 MARKS OFFICIAL PATTERN
+  // =========================================================================
+  if (normSub.includes('physical education') || normSub.includes('048')) {
+    const peMCQs = [
+      { text: 'Which tournament format follows the formula (N - 1) to determine total matches played for N teams?', opts: { optA: 'Knock-Out Tournament', optB: 'League Tournament', optC: 'Round Robin', optD: 'Combination Tournament' }, ans: '(A)' },
+      { text: 'Identify the postural spinal deformity marked by abnormal outward curvature of thoracic spine (hunchback):', opts: { optA: 'Kyphosis', optB: 'Lordosis', optC: 'Scoliosis', optD: 'Knock Knees' }, ans: '(A)' },
+      { text: 'Which Yogic posture is highly effective as a preventive measure against Type-2 Diabetes?', opts: { optA: 'Ardha Matsyendrasana', optB: 'Shavasana', optC: 'Tadasana', optD: 'Vrikshasana' }, ans: '(A)' },
+      { text: 'What is the bench height used in the Harvard Step Test for boys?', opts: { optA: '20 inches (50.8 cm)', optB: '16 inches (40.6 cm)', optC: '14 inches', optD: '24 inches' }, ans: '(A)' },
+      { text: 'Newton’s Second Law of Motion is also formally termed in sports biomechanics as:', opts: { optA: 'Law of Acceleration', optB: 'Law of Inertia', optC: 'Law of Reaction', optD: 'Law of Equilibrium' }, ans: '(A)' },
+      { text: 'Which component of physical fitness is measured by the 8-Foot Up and Go test in Rikli & Jones battery?', opts: { optA: 'Agility and Dynamic Balance', optB: 'Muscular Strength', optC: 'Aerobic Endurance', optD: 'Flexibility' }, ans: '(A)' },
+      { text: 'Female Athlete Triad comprises which three interrelated clinical conditions?', opts: { optA: 'Osteoporosis, Amenorrhea, Eating Disorders', optB: 'Hypertension, Diabetes, Fatigue', optC: 'Kyphosis, Scoliosis, Lordosis', optD: 'Anemia, Asthma, Sprain' }, ans: '(A)' },
+      { text: 'What does the acronym P.R.I.C.E. stand for in sports injury management?', opts: { optA: 'Protect, Rest, Ice, Compression, Elevation', optB: 'Pressure, Relaxation, Inhale, Calm, Exercise', optC: 'Physical, Rapid, Inspection, Care, Energy', optD: 'Protect, Relief, Immobilize, Circulation, Exam' }, ans: '(A)' },
+      { text: 'Which training cycle spans across 3 to 7 days in sports periodization planning?', opts: { optA: 'Micro Cycle', optB: 'Meso Cycle', optC: 'Macro Cycle', optD: 'Olympic Cycle' }, ans: '(A)' },
+      { text: 'Which nutrient yields approximately 9 kcal of energy per gram metabolized?', opts: { optA: 'Fats', optB: 'Proteins', optC: 'Carbohydrates', optD: 'Minerals' }, ans: '(A)' }
+    ];
+
+    const questions: FullGeneratedQuestion[] = [];
+    let qCount = 1;
+
+    shuffleArray(peMCQs).forEach(q => {
+      questions.push({ qNum: qCount++, section: 'A', marks: 1, text: q.text, options: q.opts, answerKey: q.ans });
+    });
+
+    questions.push({
+      qNum: qCount++, section: 'B', marks: 2,
+      text: 'Define Extramural tournaments. Mention two educational benefits of inter-school sports competitions.',
+      answerKey: 'Extramural tournaments are competitions between different schools. Benefits: fosters unity and develops athletic talent.'
+    });
+
+    questions.push({
+      qNum: qCount++, section: 'C', marks: 3,
+      text: 'Draw a knock-out fixture of 13 teams showing calculation of upper half, lower half, and number of byes.',
+      answerKey: 'N=13. Next power of 2 = 16. Total Byes = 16 - 13 = 3 Byes. Upper half = 7, Lower half = 6.'
+    });
+
+    questions.push({
+      qNum: qCount++, section: 'D', marks: 5,
+      text: 'Explain the classification of Sports Injuries into Soft Tissue and Bone injuries. Elaborate on PRICER procedure.',
+      answerKey: 'Soft tissue: contusion, sprain, strain. Bone: fractures. PRICER: Protect, Rest, Ice, Compression, Elevation, Referral.'
     });
 
     return {
       questions,
       totalMarks: 70,
       instructions: [
-        'The question paper consists of 30+ questions.',
-        'Section A: 18 questions of 1 mark each.',
-        'Section B: Questions 19 to 23 are 2 marks each.',
-        'Section C: Questions 24 to 28 are 3 marks each.',
-        'Section D: Questions 29 to 31 are 5 marks each.'
+        'Physical Education CBSE 2026-27 Board Examination Pattern.',
+        'Answer all questions according to specified section guidelines.'
       ]
     };
   }
 
-  // 2. ACCOUNTANCY (CODE 055)
-  if (normSub.includes('accountancy') || normSub.includes('055')) {
-    const accMCQs = [
-      { text: 'In the absence of a Partnership Deed, interest on advances/loans given by a partner is payable at what annual rate?', opts: { optA: '6% p.a.', optB: '10% p.a.', optC: '12% p.a.', optD: 'Zero / Nil' }, ans: '(A) 6% p.a.' },
-      { text: 'At the time of admission of a new partner, general reserve appearing in the balance sheet is transferred to:', opts: { optA: 'Old Partners’ Capital Accounts in Old Ratio', optB: 'All Partners in New Ratio', optC: 'Revaluation Account', optD: 'Sacrificing Ratio' }, ans: '(A) Old Partners in Old Ratio' },
-      { text: 'A company forfeited 100 shares of Rs 10 each on which Rs 7 was paid up. What is the maximum discount permitted on reissue?', opts: { optA: 'Rs 7 per share', optB: 'Rs 3 per share', optC: 'Rs 10 per share', optD: 'Rs 5 per share' }, ans: '(A) Rs 7 per share' }
-    ];
-
-    const questions: FullGeneratedQuestion[] = [];
-    let qCount = 1;
-
-    shuffleArray(accMCQs).forEach(q => {
-      questions.push({ qNum: qCount++, section: 'A', marks: 1, text: q.text, options: q.opts, answerKey: q.ans });
-    });
-
-    questions.push({
-      qNum: qCount++, section: 'B', marks: 3,
-      text: 'A, B and C share profits in 3:2:1. D is admitted for 1/6th share acquired equally from B and C. Calculate new profit sharing ratio and sacrificing ratio.',
-      answerKey: 'Sacrificing ratio B and C is 1:1. New ratio: 6:3:1:2.'
-    });
-
-    questions.push({
-      qNum: qCount++, section: 'C', marks: 6,
-      text: 'Alpha Ltd issued 50,000 equity shares of Rs 10 each at a premium of Rs 2. Applications received for 70,000 shares. Pro-rata allotment made to applicants of 60,000 shares. Excess application money adjusted to allotment. Pass journal entries.',
-      answerKey: 'Entries for application, allotment, call and securities premium.'
-    });
-
-    return {
-      questions,
-      totalMarks: 80,
-      instructions: [
-        'Part A: Accounting for Partnership Firms and Companies.',
-        'Part B: Financial Statement Analysis.',
-        'Support answers with working notes.'
-      ]
-    };
-  }
-
-  // 3. BUSINESS STUDIES (CODE 054)
-  if (normSub.includes('business studies') || normSub.includes('054')) {
-    const bstMCQs = [
-      { text: 'Which principle of management states that an employee should receive orders from one and only one superior?', opts: { optA: 'Unity of Command', optB: 'Unity of Direction', optC: 'Scalar Chain', optD: 'Espirit de Corps' }, ans: '(A) Unity of Command' },
-      { text: 'Which level of management is directly responsible for coordinating day-to-day operations and maintaining quality standards?', opts: { optA: 'Supervisory / Operational Management', optB: 'Top Level Management', optC: 'Middle Level Management', optD: 'Board of Directors' }, ans: '(A) Supervisory Management' },
-      { text: 'Which money market instrument is issued by commercial banks to finance the working capital requirements of business firms?', opts: { optA: 'Commercial Bill', optB: 'Treasury Bill', optC: 'Call Money', optD: 'Certificate of Deposit' }, ans: '(A) Commercial Bill' }
-    ];
-
-    const questions: FullGeneratedQuestion[] = [];
-    let qCount = 1;
-
-    shuffleArray(bstMCQs).forEach(q => {
-      questions.push({ qNum: qCount++, section: 'A', marks: 1, text: q.text, options: q.opts, answerKey: q.ans });
-    });
-
-    questions.push({
-      qNum: qCount++, section: 'B', marks: 4,
-      text: 'Explain any four features of the Business Environment with relevant Indian industrial examples.',
-      answerKey: 'Totality of external forces, Specific and general forces, Dynamic nature, Uncertainty, Complexity.'
-    });
-
-    questions.push({
-      qNum: qCount++, section: 'C', marks: 6,
-      text: 'Case Study: Marketing Mix Strategy.\nA consumer electronics firm launches an inverter AC. Explain how the marketing manager should establish the 4 Ps (Product, Price, Place, Promotion).',
-      answerKey: 'Product USP, Penetration pricing, Multi-tier distribution, Digital promotional campaigns.'
-    });
-
-    return {
-      questions,
-      totalMarks: 80,
-      instructions: [
-        'Answers to 1-mark questions should be brief.',
-        'Answers to 4-mark questions should be 100-150 words.',
-        'Answers to 6-mark questions should be around 200 words.'
-      ]
-    };
-  }
-
-  // 4. ECONOMICS (CODE 030)
-  if (normSub.includes('economics') || normSub.includes('030')) {
-    const ecoMCQs = [
-      { text: 'Which of the following is NOT included in the estimation of Domestic Income?', opts: { optA: 'Transfer Payments', optB: 'Wages and Salaries', optC: 'Operating Surplus', optD: 'Mixed Income' }, ans: '(A) Transfer payments' },
-      { text: 'If Marginal Propensity to Consume (MPC) is 0.8, what is the value of the investment multiplier?', opts: { optA: '5', optB: '4', optC: '2', optD: '1.25' }, ans: '(A) k = 1 / (1 - MPC) = 1 / 0.2 = 5.' },
-      { text: 'Which tool of RBI monetary policy involves direct buying and selling of government securities in the open market?', opts: { optA: 'Open Market Operations (OMO)', optB: 'Cash Reserve Ratio', optC: 'Bank Rate', optD: 'Margin Requirements' }, ans: '(A) Open Market Operations' }
-    ];
-
-    const questions: FullGeneratedQuestion[] = [];
-    let qCount = 1;
-
-    shuffleArray(ecoMCQs).forEach(q => {
-      questions.push({ qNum: qCount++, section: 'A', marks: 1, text: q.text, options: q.opts, answerKey: q.ans });
-    });
-
-    questions.push({
-      qNum: qCount++, section: 'B', marks: 4,
-      text: 'Explain the working of the Money Creation / Credit Creation process by commercial banks with an initial deposit of Rs 1,000 and LRR = 20%.',
-      answerKey: 'Deposit multiplier = 1/LRR = 5. Total credit created = 1,000 x 5 = Rs 5,000.'
-    });
-
-    questions.push({
-      qNum: qCount++, section: 'C', marks: 6,
-      text: 'Distinguish between Revenue Expenditure and Capital Expenditure in the Government Budget with two examples of each.',
-      answerKey: 'Revenue expenditure does not create assets or reduce liabilities. Capital expenditure creates assets or reduces liabilities.'
-    });
-
-    return {
-      questions,
-      totalMarks: 80,
-      instructions: [
-        'Part A: Macroeconomics. Part B: Indian Economic Development.',
-        'All mathematical calculations must be clearly shown.'
-      ]
-    };
-  }
-
-  // 5. ENGLISH CORE (CODE 301)
-  if (normSub.includes('english') || normSub.includes('301')) {
-    const questions: FullGeneratedQuestion[] = [
-      {
-        qNum: 1, section: 'A', marks: 5,
-        text: 'Read the unseen passage on Sustainable Environmental Transition and answer questions:\n"Human technological acceleration in the 21st century has reached a critical crossroad..."\n(i) Identify the central conflict presented in paragraph 1.\n(ii) What evidence does the author cite regarding carbon offset thresholds?\n(iii) Choose the word nearest in meaning to "indispensable".',
-        answerKey: '(i) Ecological balance vs industrial growth. (ii) Quantitative offset thresholds cited. (iii) Crucial / Essential.'
-      },
-      {
-        qNum: 2, section: 'B', marks: 4,
-        text: 'You are Cultural Secretary of Arden Progressive School, Haldwani. Draft a formal Notice in not more than 50 words inviting students of Class 11 & 12 to audition for the Inter-House One-Act Play Competition.',
-        answerKey: 'Box layout, Header, Notice title, Date, Details, Signature.'
-      },
-      {
-        qNum: 3, section: 'B', marks: 5,
-        text: 'Write a formal Letter to the Editor of a national daily drawing urgent attention toward traffic congestion and pedestrian safety around school zones.',
-        answerKey: 'Sender address, Date, Receiver, Subject, Salutation, 3-paragraph body, Sign-off.'
-      },
-      {
-        qNum: 4, section: 'C', marks: 5,
-        text: 'Explain the deeper metaphorical significance of the "Rattrap" in Selma Lagerlöf’s story. How does kindness redeem the peddler?',
-        answerKey: 'World as a rattrap with lures. Edla’s compassion awakened his latent goodness.'
-      }
-    ];
-
-    return {
-      questions,
-      totalMarks: 80,
-      instructions: [
-        'Section A: Reading Skills (22 Marks)',
-        'Section B: Creative Writing Skills (18 Marks)',
-        'Section C: Literature Textbooks (40 Marks)'
-      ]
-    };
-  }
-
-  // 6. COMPUTER SCIENCE (CODE 083)
+  // =========================================================================
+  // 3. COMPUTER SCIENCE (CODE 083) - 37 QUESTIONS (70 MARKS)
+  // =========================================================================
   if (normSub.includes('computer science') || normSub.includes('083')) {
     const numInt = getRandomChoice([32, 45, 64, 78, 91, 108]);
     const strWord = getRandomChoice(['the Truth', 'data Stream', 'cyber Realm', 'cloud Vault', 'matrix Space']);
@@ -470,61 +408,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
     };
   }
 
-  // 7. YOGA (CODE 841)
-  if (normSub.includes('yoga') || normSub.includes('841')) {
-    const rawYogaA = [
-      { text: 'According to Sage Patanjali, what is the precise definition of Yoga?', opts: { optA: 'Yogas Chitta Vritti Nirodha', optB: 'Samatvam Yoga Uchyate', optC: 'Yogah Karmasu Kaushalam', optD: 'Sharira Madhyam Khalu Dharma Sadhanam' }, ans: '(A)' },
-      { text: 'Which of the following is classified under the classical Shatkarma techniques?', opts: { optA: 'Trataka', optB: 'Vajrasana', optC: 'Bhastrika', optD: 'Ujjayi' }, ans: '(A)' },
-      { text: 'Surya Namaskara comprises a sequential flow of how many postures?', opts: { optA: '12 Postures', optB: '10 Postures', optC: '8 Postures', optD: '16 Postures' }, ans: '(A)' },
-      { text: 'Which dietary classification promotes lightness, longevity, and mental serenity in Hatha texts?', opts: { optA: 'Mitahara / Sattvic', optB: 'Rajasic', optC: 'Tamasic', optD: 'Ati-Aahara' }, ans: '(A)' },
-      { text: 'Which Pranayama is characterized by producing the resonant soothing hum of a bee?', opts: { optA: 'Bhramari', optB: 'Sheetali', optC: 'Surya Bhedana', optD: 'Ujjayi' }, ans: '(A)' },
-      { text: 'Which Yogic limb in Ashtanga Yoga deals with restraint of senses from external objects?', opts: { optA: 'Pratyahara', optB: 'Dharana', optC: 'Niyama', optD: 'Dhyana' }, ans: '(A)' },
-      { text: 'Which energy channel represents the cooling, lunar, and parasympathetic pathway?', opts: { optA: 'Ida Nadi', optB: 'Pingala Nadi', optC: 'Sushumna Nadi', optD: 'Gandhari Nadi' }, ans: '(A)' },
-      { text: 'Which posture is exceptionally safe and advised to be performed immediately following meals?', opts: { optA: 'Vajrasana', optB: 'Sarvangasana', optC: 'Chakrasana', optD: 'Halasana' }, ans: '(A)' }
-    ];
-
-    const rawYogaB = [
-      { text: 'Define the term Shatkarma and name any four cleansing techniques described in Hatha Yoga Pradipika.', ans: 'Shatkarma refers to six internal purificatory methods: Dhauti, Basti, Neti, Trataka, Nauli, Kapalabhati.' },
-      { text: 'State the health indications and contraindications of Paschimottanasana.', ans: 'Indications: Stretches hamstrings, relieves gastric discomfort. Contraindications: Severe lumbar herniation, acute sciatica.' },
-      { text: 'Differentiate between the concepts of Bahiranga Yoga and Antaranga Yoga in Sage Patanjali Sutras.', ans: 'Bahiranga Yoga represents external limbs (Yama to Pratyahara); Antaranga Yoga comprises internal meditative limbs (Dharana, Dhyana, Samadhi).' },
-      { text: 'Outline the physiological mechanisms of Anulom-Vilom in restoring autonomic nervous equilibrium.', ans: 'Balances sympathetic (Pingala) and parasympathetic (Ida) inputs, harmonizing heart rate variability.' }
-    ];
-
-    const questions: FullGeneratedQuestion[] = [];
-    let qCount = 1;
-
-    shuffleArray(rawYogaA).slice(0, 6).forEach(q => {
-      questions.push({ qNum: qCount++, section: 'A', marks: 1, text: q.text, options: q.opts, answerKey: q.ans });
-    });
-
-    shuffleArray(rawYogaB).slice(0, 4).forEach(q => {
-      questions.push({ qNum: qCount++, section: 'B', marks: 2, text: q.text, answerKey: q.ans });
-    });
-
-    questions.push({
-      qNum: qCount++, section: 'C', marks: 3,
-      text: 'Describe the stepwise technique, breathing synchronization, and anatomical benefits of Bhujangasana (Cobra Pose).',
-      answerKey: 'Lie prone, palms under shoulders, inhale and gently arch thoracic spine upwards while keeping navel grounded.'
-    });
-
-    questions.push({
-      qNum: qCount++, section: 'D', marks: 5,
-      text: 'Case Study: Workplace Psychosomatic Stress.\nDesign a comprehensive 30-minute Yogic routine for corporate professionals suffering from postural fatigue, cervical strain, and chronic anxiety.',
-      answerKey: 'Structure: 5 min Sukshma Vyayama, 10 min restorative asanas, 10 min Pranayama, 5 min Shavasana.'
-    });
-
-    return {
-      questions,
-      totalMarks: 22,
-      instructions: [
-        'This question paper covers CBSE Class 11/12 Yoga (Subject Code 841).',
-        'Section A comprises Objective Type Questions (1 Mark each).',
-        'Section B & C comprise Applied & Analytical Questions.'
-      ]
-    };
-  }
-
-  // 8. FALLBACK FOR OTHER SUBJECTS
+  // FALLBACK
   const genericQuestions: FullGeneratedQuestion[] = [
     { qNum: 1, section: 'A', marks: 1, text: `State the fundamental theorem or principle that defines the foundational study of ${subjectName}.`, answerKey: 'Accurate technical formulation as prescribed in CBSE 2026-27 curriculum.' },
     { qNum: 2, section: 'A', marks: 1, text: `Identify the primary SI unit or standard terminology associated with parameters measured in ${subjectName}.`, answerKey: 'Standard internationally accepted SI unit / nomenclature.' },

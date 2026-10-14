@@ -27,30 +27,29 @@ export default function PaperGeneratorStudioPage() {
 
   const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved'>('matrix');
 
-  const [selectedClass, setSelectedClass] = useState('Class 12 (Science)');
-  const [selectedSubject, setSelectedSubject] = useState('Computer Science (Code 083)');
+  const [selectedClass, setSelectedClass] = useState('Class 12 (Commerce)');
+  const [selectedSubject, setSelectedSubject] = useState('Accountancy (Code 055)');
   const [examPattern, setExamPattern] = useState('Pre-Board Examination (100% Syllabus)');
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
   const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('doc');
 
-  const [theoryMarks, setTheoryMarks] = useState(70);
-  const [practicalMarks, setPracticalMarks] = useState(30);
+  const [theoryMarks, setTheoryMarks] = useState(80);
+  const [practicalMarks, setPracticalMarks] = useState(20);
 
   const [sections, setSections] = useState([
-    { id: 'sec-a', name: 'Section A: Objective & MCQs (Q1 to Q21)', enabled: true, marksPerQ: 1, count: 21 },
-    { id: 'sec-b', name: 'Section B: VSA Output & Syntax (Q22 to Q28)', enabled: true, marksPerQ: 2, count: 7 },
-    { id: 'sec-c', name: 'Section C: SA Functions & Stack (Q29 to Q31)', enabled: true, marksPerQ: 3, count: 3 },
-    { id: 'sec-d', name: 'Section D: Long Questions & SQL (Q32 to Q35)', enabled: true, marksPerQ: 4, count: 4 },
-    { id: 'sec-e', name: 'Section E: Integrated Case & Networks (Q36 to Q37)', enabled: true, marksPerQ: 5, count: 2 },
+    { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+    { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
+    { id: 'sec-c', name: 'Section C: Long Answer Type I (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
+    { id: 'sec-d', name: 'Section D: Long Answer Type II (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
   ]);
 
   const [activeCurriculum, setActiveCurriculum] = useState<SubjectCurriculum>(
-    DETAILED_SYLLABUS_2026_27['Computer Science (Code 083)']
+    DETAILED_SYLLABUS_2026_27['Accountancy (Code 055)']
   );
 
   const [selectedTopics, setSelectedTopics] = useState<Record<string, boolean>>({});
   const [selectedExpIds, setSelectedExpIds] = useState<Record<string, boolean>>({});
-  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Computational Thinking and Programming - 2\n- Functions, File Handling, Stack');
+  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Accounting for Partnership\n- Fundamental concepts, Deed, P&L Appropriation');
   const [savedPapers, setSavedPapers] = useState<SavedPaperRecord[]>([]);
 
   useEffect(() => {
@@ -83,17 +82,41 @@ export default function PaperGeneratorStudioPage() {
       curr = {
         name: subj,
         code: subj.includes('Code') ? subj.split('Code')[1].replace(/[^0-9]/g, '') : 'CBSE',
-        theoryMarks: subj.includes('Yoga') || subj.includes('IT') || subj.includes('AI') ? 50 : 70,
-        practicalMarks: subj.includes('Yoga') || subj.includes('IT') || subj.includes('AI') ? 50 : 30,
+        theoryMarks: 80, practicalMarks: 20,
         units: [
           { unitTitle: `Unit 1: Foundations of ${subj}`, subTopics: ['Basic concepts', 'Core principles'] },
-          { unitTitle: `Unit 2: Applied Practices of ${subj}`, subTopics: ['Problem solving', 'Case study'] }
+          { unitTitle: `Unit 2: Applied Analysis of ${subj}`, subTopics: ['Problem solving', 'Case study'] }
         ]
       };
     }
     setActiveCurriculum(curr);
     setTheoryMarks(curr.theoryMarks);
     setPracticalMarks(curr.practicalMarks);
+
+    // Adapt sections live to subject
+    if (subj.includes('Accountancy') || subj.includes('055')) {
+      setSections([
+        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+        { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
+        { id: 'sec-c', name: 'Section C: Long Answer Type I (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
+        { id: 'sec-d', name: 'Section D: Long Answer Type II (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
+      ]);
+    } else if (subj.includes('Computer Science') || subj.includes('083')) {
+      setSections([
+        { id: 'sec-a', name: 'Section A: Objective & MCQs (Q1 to Q21)', enabled: true, marksPerQ: 1, count: 21 },
+        { id: 'sec-b', name: 'Section B: VSA Output & Syntax (Q22 to Q28)', enabled: true, marksPerQ: 2, count: 7 },
+        { id: 'sec-c', name: 'Section C: SA Functions & Stack (Q29 to Q31)', enabled: true, marksPerQ: 3, count: 3 },
+        { id: 'sec-d', name: 'Section D: Long Questions & SQL (Q32 to Q35)', enabled: true, marksPerQ: 4, count: 4 },
+        { id: 'sec-e', name: 'Section E: Integrated Case & Networks (Q36 to Q37)', enabled: true, marksPerQ: 5, count: 2 },
+      ]);
+    } else if (subj.includes('Physical Education') || subj.includes('048')) {
+      setSections([
+        { id: 'sec-a', name: 'Section A: Multiple Choice Questions (1 Mark each)', enabled: true, marksPerQ: 1, count: 18 },
+        { id: 'sec-b', name: 'Section B: Very Short Answer (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
+        { id: 'sec-c', name: 'Section C: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 5 },
+        { id: 'sec-d', name: 'Section D: Long Answer (5 Marks each)', enabled: true, marksPerQ: 5, count: 3 },
+      ]);
+    }
 
     const initialTopics: Record<string, boolean> = {};
     const initialExps: Record<string, boolean> = {};
@@ -140,7 +163,6 @@ body { font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-heigh
 .section-title { font-size: 12pt; font-weight: bold; text-align: center; margin-top: 14pt; margin-bottom: 6pt; text-transform: uppercase; border-bottom: 1pt solid #000; padding-bottom: 2pt; }
 .instructions { font-size: 10pt; margin-bottom: 8pt; line-height: 1.3; }
 
-/* FIX: text-align left prevents awkward word stretching */
 table.q-item-table { width: 100%; border-collapse: collapse; margin-bottom: 10pt; page-break-inside: avoid; }
 table.q-item-table td { vertical-align: top; padding: 1.5pt 0; font-size: 11pt; }
 td.q-col-num { width: 28pt; font-weight: bold; font-size: 11pt; }
@@ -215,11 +237,20 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const generatedData = generateExactSubjectPaper(selectedSubject, selectedClass);
     const allQs = generatedData.questions;
 
-    const secA = allQs.filter(q => q.section === 'A');
-    const secB = allQs.filter(q => q.section === 'B');
-    const secC = allQs.filter(q => q.section === 'C');
-    const secD = allQs.filter(q => q.section === 'D');
-    const secE = allQs.filter(q => q.section === 'E');
+    // Group questions by section
+    const sectionsPresent = ['A', 'B', 'C', 'D', 'E'];
+    let renderedSectionsHtml = '';
+
+    sectionsPresent.forEach(secKey => {
+      const secQs = allQs.filter(q => q.section === secKey);
+      if (secQs.length > 0) {
+        const totalSecMarks = secQs.reduce((acc, curr) => acc + curr.marks, 0);
+        renderedSectionsHtml += `
+        <div class="section-title">SECTION - ${secKey} &nbsp;&nbsp; (${secQs.length} Questions &bull; Total ${totalSecMarks} Marks)</div>
+        ${secQs.map(renderQuestionRow).join('')}
+        `;
+      }
+    });
 
     const romanNums = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
     const formattedInstructions = generatedData.instructions
@@ -244,11 +275,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 ${formattedInstructions}
 </div>
 
-${secA.length > 0 ? `<div class="section-title">SECTION - A &nbsp;&nbsp; (${secA.length} x 1 = ${secA.reduce((a, b) => a + b.marks, 0)})</div>${secA.map(renderQuestionRow).join('')}` : ''}
-${secB.length > 0 ? `<div class="section-title">SECTION - B &nbsp;&nbsp; (${secB.length} x 2 = ${secB.reduce((a, b) => a + b.marks, 0)})</div>${secB.map(renderQuestionRow).join('')}` : ''}
-${secC.length > 0 ? `<div class="section-title">SECTION - C &nbsp;&nbsp; (${secC.length} x 3 = ${secC.reduce((a, b) => a + b.marks, 0)})</div>${secC.map(renderQuestionRow).join('')}` : ''}
-${secD.length > 0 ? `<div class="section-title">SECTION - D &nbsp;&nbsp; (${secD.length} x 4 = ${secD.reduce((a, b) => a + b.marks, 0)})</div>${secD.map(renderQuestionRow).join('')}` : ''}
-${secE.length > 0 ? `<div class="section-title">SECTION - E &nbsp;&nbsp; (${secE.length} x 5 = ${secE.reduce((a, b) => a + b.marks, 0)})</div>${secE.map(renderQuestionRow).join('')}` : ''}
+${renderedSectionsHtml}
 
 <div style="text-align: center; font-weight: bold; margin-top: 15pt;">*** END OF QUESTION PAPER • STRICT CBSE 2026-27 FORMAT ***</div>
 `;
@@ -261,7 +288,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 
 ${allQs.map(q => `
 <div style="margin-bottom: 8pt; page-break-inside: avoid;">
-  <b>${q.qNum}. [Section ${q.section} -${q.marks} Mark]</b><br/>
+  <b>Q${q.qNum}. [Section ${q.section} - ${q.marks} Mark(s)]</b><br/>
   <div style="padding-left: 12pt; color: #111;">${q.answerKey.replace(/\n/g, '<br/>')}</div>
 </div>
 `).join('')}
@@ -273,10 +300,10 @@ ${allQs.map(q => `
 SUBJECT: ${selectedSubject.toUpperCase()} | TOTAL PRACTICAL: ${practicalMarks} MARKS</div>
 <hr style="border: 0.5pt solid #000; margin-bottom: 8pt;"/>
 
-<div class="section-title">SELECTED TOPIC-WISE LAB EXPERIMENTS:</div>
+<div class="section-title">SELECTED TOPIC-WISE LAB EXPERIMENTS / PROJECTS:</div>
 ${activeSelectedExperiments.map((exp, idx) => `
 <div style="margin-bottom: 8pt;">
-  <b>Experiment ${idx + 1} [${exp.expId}]:</b>${exp.title}<br/>
+  <b>Experiment / Activity ${idx + 1} [${exp.expId}]:</b> ${exp.title}<br/>
   <span style="font-size: 10pt; color: #444;">Mapped Unit: ${exp.unitRef}</span>
 </div>
 `).join('')}
@@ -284,7 +311,7 @@ ${activeSelectedExperiments.map((exp, idx) => `
 <div class="section-title">VIVA-VOCE QUESTION BANK WITH MODEL ANSWERS:</div>
 ${activeSelectedExperiments.flatMap((exp) => exp.vivaQueries).map((vq, idx) => `
 <div style="margin-bottom: 6pt;">
-  <b>Q${idx + 1}.${vq.q}</b><br/>
+  <b>Q${idx + 1}. ${vq.q}</b><br/>
   <i>Ans:</i> ${vq.a}
 </div>
 `).join('')}
@@ -297,13 +324,14 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 <hr style="border: 0.5pt solid #000; margin-bottom: 8pt;"/>
 
 <table class="matrix-table">
-  <tr><th>Section</th><th>Typology</th><th>Marks/Q</th><th>Count</th><th>Total</th></tr>
-  <tr><td><b>Section A</b></td><td>Objective & MCQs</td><td>1 M</td><td>${secA.length}</td><td>${secA.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
-  <tr><td><b>Section B</b></td><td>Very Short Answer</td><td>2 M</td><td>${secB.length}</td><td>${secB.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
-  <tr><td><b>Section C</b></td><td>Short Answer</td><td>3 M</td><td>${secC.length}</td><td>${secC.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
-  <tr><td><b>Section D</b></td><td>Long Questions</td><td>4 M</td><td>${secD.length}</td><td>${secD.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
-  <tr><td><b>Section E</b></td><td>Integrated Case Study</td><td>5 M</td><td>${secE.length}</td><td>${secE.reduce((a, b) => a + b.marks, 0)} Marks</td></tr>
-  <tr><th colspan="3">AGGREGATE THEORY SCORE</th><th>${allQs.length} Qs</th><th>${generatedData.totalMarks} Marks</th></tr>
+  <tr><th>Section</th><th>Typology Description</th><th>Questions Count</th><th>Marks Subtotal</th></tr>
+  ${['A', 'B', 'C', 'D', 'E'].map(sKey => {
+    const count = allQs.filter(q => q.section === sKey).length;
+    const marks = allQs.filter(q => q.section === sKey).reduce((a, b) => a + b.marks, 0);
+    if (count === 0) return '';
+    return `<tr><td><b>Section ${sKey}</b></td><td>Evaluated Typology ${sKey}</td><td style="text-align: center;">${count} Qs</td><td style="text-align: right; font-weight: bold;">${marks} Marks</td></tr>`;
+  }).join('')}
+  <tr><th colspan="2">AGGREGATE THEORY SCORE</th><th style="text-align: center;">${allQs.length} Questions</th><th style="text-align: right;">${generatedData.totalMarks} Marks</th></tr>
 </table>
 `;
 
@@ -336,7 +364,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     setSavedPapers(updated);
     localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updated));
 
-    alert(`🎉 Success: ${selectedSubject} Paper generated (${allQs.length} Questions, ${generatedData.totalMarks} Marks)!\nDownloaded in ${downloadFormat.toUpperCase()} and archived in Saved Papers.`);
+    alert(`🎉 Success: ${selectedSubject} Paper generated (${allQs.length} Questions, ${generatedData.totalMarks} Marks)!\nAll 4 files downloaded cleanly in ${downloadFormat.toUpperCase()}.`);
   };
 
   return (
@@ -499,6 +527,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
+              {/* BLUEPRINT TABLE */}
               <div className="space-y-4 pt-2">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
@@ -601,10 +630,17 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
+              {/* INDIVIDUAL SUB-TOPICS WITH DEDICATED CHECKBOXES */}
               <div className="space-y-3 pt-2">
-                <span className="text-[11px] font-mono text-gray-400 uppercase block">
-                  SYLLABUS UNITS FOR {selectedSubject.toUpperCase()}:
-                </span>
+                <div className="flex justify-between items-center">
+                  <span className="text-[11px] font-mono text-gray-400 uppercase">
+                    SYLLABUS UNITS & SUB-TOPICS FOR {selectedSubject.toUpperCase()}:
+                  </span>
+                  <span className="text-[10px] font-mono text-cyan-400">
+                    Select Specific Topics to Target Exam
+                  </span>
+                </div>
+
                 {activeCurriculum.units.map((unit, uIdx) => (
                   <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-4 space-y-3">
                     <div className="flex items-center justify-between">
@@ -616,10 +652,10 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                         />
                         <span className="text-white font-bold text-xs">{unit.unitTitle}</span>
                       </label>
-                      <span className="text-xs text-gray-500 font-mono">-</span>
+                      <span className="text-[10px] font-mono text-gray-500">{unit.subTopics.length} Topics</span>
                     </div>
 
-                    <div className="pl-7 space-y-2 border-l border-gray-800 ml-2">
+                    <div className="pl-6 space-y-2 border-l border-gray-800 ml-2">
                       <span className="text-[10px] font-mono text-gray-500 uppercase block">SUB-TOPICS IN THIS UNIT:</span>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                         {unit.subTopics.map((sub, sIdx) => {
@@ -642,9 +678,10 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 ))}
               </div>
 
+              {/* ACTION GENERATE BUTTON */}
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-800">
                 <div className="text-xs text-gray-400 font-mono">
-                  Engine: <strong className="text-emerald-400">Strict Subject Isolation Active (CBSE 2026 Format)</strong>
+                  Target Curriculum: <strong className="text-emerald-400">CBSE Session 2026-27 Aligned</strong>
                 </div>
                 <button
                   onClick={handleGenerateCompletePackage}
