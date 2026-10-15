@@ -28,33 +28,35 @@ export default function PaperGeneratorStudioPage() {
   const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved' | 'google-ai'>('matrix');
 
   const [selectedClass, setSelectedClass] = useState('Class 12 (Commerce)');
-  const [selectedSubject, setSelectedSubject] = useState('Yoga (Code 841)');
+  const [selectedSubject, setSelectedSubject] = useState('Economics (Code 030)');
   const [examPattern, setExamPattern] = useState('Pre-Board Examination (100% Syllabus)');
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
   const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('pdf');
 
-  const [theoryMarks, setTheoryMarks] = useState(50);
-  const [practicalMarks, setPracticalMarks] = useState(50);
+  const [theoryMarks, setTheoryMarks] = useState(80);
+  const [practicalMarks, setPracticalMarks] = useState(20);
 
   const [sections, setSections] = useState([
     { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-    { id: 'sec-b', name: 'Section B: Short Answer Questions (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
-    { id: 'sec-case', name: 'Section C: Case-Based / Analytical (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+    { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
+    { id: 'sec-c', name: 'Section C: Medium Answer Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+    { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
+    { id: 'sec-d', name: 'Section E: Long Answer Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
   ]);
 
   const [activeCurriculum, setActiveCurriculum] = useState<SubjectCurriculum>(
-    DETAILED_SYLLABUS_2026_27['Yoga (Code 841)'] || {
-      name: 'Yoga',
-      code: '841',
-      theoryMarks: 50,
-      practicalMarks: 50,
+    DETAILED_SYLLABUS_2026_27['Economics (Code 030)'] || {
+      name: 'Economics',
+      code: '030',
+      theoryMarks: 80,
+      practicalMarks: 20,
       units: []
     }
   );
 
   const [selectedTopics, setSelectedTopics] = useState<Record<string, boolean>>({});
   const [selectedExpIds, setSelectedExpIds] = useState<Record<string, boolean>>({});
-  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Introduction to Yoga\n- Shatkarma, Asana, Pranayama');
+  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Macroeconomics\n- National income, Money & Banking, Multiplier');
   const [savedPapers, setSavedPapers] = useState<SavedPaperRecord[]>([]);
 
   const [aiCustomPrompt, setAiCustomPrompt] = useState('Generate an official CBSE 2026-27 Board examination paper with realistic Case-based data studies, knock-out tournament fixtures, and exact marking criteria.');
@@ -69,24 +71,32 @@ export default function PaperGeneratorStudioPage() {
 
   const currentClassConfig = ALL_CBSE_CLASSES.find((c) => c.name === selectedClass) || ALL_CBSE_CLASSES[16];
 
+  // FIX 1: Class change triggers full syllabus reload automatically
   useEffect(() => {
+    let nextSub = selectedSubject;
     if (!currentClassConfig.availableSubjects.includes(selectedSubject)) {
-      const firstSub = currentClassConfig.availableSubjects[0] || '';
-      setSelectedSubject(firstSub);
-      updateCurriculumForSubject(firstSub);
-    } else {
-      updateCurriculumForSubject(selectedSubject);
+      nextSub = currentClassConfig.availableSubjects[0] || '';
+      setSelectedSubject(nextSub);
     }
+    updateCurriculumForSubject(nextSub, selectedClass, examPattern);
   }, [selectedClass]);
 
   const handleSubjectChange = (newSubject: string) => {
     setSelectedSubject(newSubject);
-    updateCurriculumForSubject(newSubject);
+    updateCurriculumForSubject(newSubject, selectedClass, examPattern);
   };
 
-  const updateCurriculumForSubject = (subj: string) => {
-    // Exact or normalized key lookup to guarantee subtopics never disappear
-    let curr = DETAILED_SYLLABUS_2026_27[subj];
+  // FIX 2: Pattern change (Unit Test 1, Half Yearly, etc.) auto-selects appropriate units/topics
+  const handlePatternChange = (newPattern: string) => {
+    setExamPattern(newPattern);
+    updateCurriculumForSubject(selectedSubject, selectedClass, newPattern);
+  };
+
+  const updateCurriculumForSubject = (subj: string, className: string, pattern: string) => {
+    // Check class-specific curriculum key first (e.g. 'Class 11_Economics (Code 030)')
+    const classSpecificKey = `${className.split('(')[0].trim()}_${subj}`;
+    let curr = DETAILED_SYLLABUS_2026_27[classSpecificKey] || DETAILED_SYLLABUS_2026_27[subj];
+
     if (!curr) {
       const cleanTarget = subj.toLowerCase().replace(/[^a-z0-9]/g, '');
       const matchedKey = Object.keys(DETAILED_SYLLABUS_2026_27).find(k => 
@@ -110,54 +120,59 @@ export default function PaperGeneratorStudioPage() {
     }
 
     setActiveCurriculum(curr);
-    setTheoryMarks(curr.theoryMarks);
-    setPracticalMarks(curr.practicalMarks);
 
-    if (subj.includes('Yoga') || subj.includes('841')) {
+    // Adapt sections to pattern & subject
+    if (pattern.includes('Unit Test') || pattern.includes('Periodic Assessment')) {
+      setTheoryMarks(25);
+      setPracticalMarks(0);
       setSections([
-        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-        { id: 'sec-b', name: 'Section B: Short Answer Questions (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
-        { id: 'sec-case', name: 'Section C: Case-Based / Analytical (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 5 },
+        { id: 'sec-b', name: 'Section B: Short Answer (2 Marks each)', enabled: true, marksPerQ: 2, count: 4 },
+        { id: 'sec-c', name: 'Section C: Medium Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 2 },
+        { id: 'sec-d', name: 'Section D: Long Answer (6 Marks each)', enabled: true, marksPerQ: 6, count: 1 },
       ]);
-    } else if (subj.includes('Physical Education') || subj.includes('048')) {
-      setSections([
-        { id: 'sec-a', name: 'Section A: Multiple Choice Questions (1 Mark each)', enabled: true, marksPerQ: 1, count: 18 },
-        { id: 'sec-b', name: 'Section B: Very Short Answer (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
-        { id: 'sec-c', name: 'Section C: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 5 },
-        { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
-        { id: 'sec-d', name: 'Section E: Long Answer Questions (5 Marks each)', enabled: true, marksPerQ: 5, count: 3 },
-      ]);
-    } else if (subj.includes('Mathematics') || subj.includes('041')) {
-      setSections([
-        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-        { id: 'sec-b', name: 'Section B: Very Short Answer (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
-        { id: 'sec-c', name: 'Section C: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
-        { id: 'sec-d', name: 'Section D: Long Answer (5 Marks each)', enabled: true, marksPerQ: 5, count: 4 },
-        { id: 'sec-case', name: 'Section E: Case-Based Integrated (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
-      ]);
-    } else if (subj.includes('Economics') || subj.includes('030')) {
-      setSections([
-        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-        { id: 'sec-b', name: 'Section B: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
-        { id: 'sec-c', name: 'Section C: Medium Answer (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
-        { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
-        { id: 'sec-d', name: 'Section E: Long Answer (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
-      ]);
-    } else if (subj.includes('Accountancy') || subj.includes('055')) {
-      setSections([
-        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-        { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
-        { id: 'sec-c', name: 'Section C: Medium Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
-        { id: 'sec-d', name: 'Section D: Long Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
-      ]);
+    } else {
+      setTheoryMarks(curr.theoryMarks);
+      setPracticalMarks(curr.practicalMarks);
+      if (subj.includes('Yoga') || subj.includes('841')) {
+        setSections([
+          { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+          { id: 'sec-b', name: 'Section B: Short Answer Questions (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
+          { id: 'sec-case', name: 'Section C: Case-Based / Analytical (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+        ]);
+      } else if (subj.includes('Physical Education') || subj.includes('048')) {
+        setSections([
+          { id: 'sec-a', name: 'Section A: Multiple Choice Questions (1 Mark each)', enabled: true, marksPerQ: 1, count: 18 },
+          { id: 'sec-b', name: 'Section B: Very Short Answer (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
+          { id: 'sec-c', name: 'Section C: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 5 },
+          { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
+          { id: 'sec-d', name: 'Section E: Long Answer Questions (5 Marks each)', enabled: true, marksPerQ: 5, count: 3 },
+        ]);
+      } else if (subj.includes('Economics') || subj.includes('030')) {
+        setSections([
+          { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+          { id: 'sec-b', name: 'Section B: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
+          { id: 'sec-c', name: 'Section C: Medium Answer (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+          { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
+          { id: 'sec-d', name: 'Section E: Long Answer (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
+        ]);
+      }
     }
 
+    // Auto-select topics according to pattern
     const initialTopics: Record<string, boolean> = {};
     const initialExps: Record<string, boolean> = {};
-    curr.units.forEach((u) => {
-      u.subTopics.forEach((st) => { initialTopics[st] = true; });
+    curr.units.forEach((u, uIdx) => {
+      let isUnitActive = true;
+      if (pattern.includes('Unit Test 1') || pattern.includes('Periodic Assessment Test - 1')) {
+        isUnitActive = (uIdx === 0);
+      } else if (pattern.includes('Half Yearly') || pattern.includes('Term-1')) {
+        isUnitActive = (uIdx < Math.ceil(curr.units.length / 2));
+      }
+
+      u.subTopics.forEach((st) => { initialTopics[st] = isUnitActive; });
       if (u.experiments) {
-        u.experiments.forEach((e) => { initialExps[e.expId] = true; });
+        u.experiments.forEach((e) => { initialExps[e.expId] = isUnitActive; });
       }
     });
     setSelectedTopics(initialTopics);
@@ -166,6 +181,18 @@ export default function PaperGeneratorStudioPage() {
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) => ({ ...prev, [topic]: !prev[topic] }));
+  };
+
+  // FIX 3: Master Unit Checkbox auto toggles all its sub-topics
+  const toggleMasterUnit = (unit: SyllabusTopic, currentMasterChecked: boolean) => {
+    const nextState = !currentMasterChecked;
+    setSelectedTopics((prev) => {
+      const updated = { ...prev };
+      unit.subTopics.forEach((st) => {
+        updated[st] = nextState;
+      });
+      return updated;
+    });
   };
 
   const toggleExperiment = (expId: string) => {
@@ -276,12 +303,17 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
       `;
     }
 
+    // Attach PYQ tag if teacher selected PYQ / Repeated board questions
+    const pyqBadge = difficulty.includes('Previous Years') || difficulty.includes('Repeated')
+      ? `<span style="font-size:9pt; color:#444; font-weight:bold; margin-left:6pt;">[CBSE 2024 / PYQ Series]</span>`
+      : '';
+
     return `
     <table class="q-item-table">
       <tr>
         <td class="q-col-num">${q.qNum}.</td>
         <td class="q-col-body">
-          ${q.text.replace(/\n/g, '<br/>')}
+          ${q.text.replace(/\n/g, '<br/>')} ${pyqBadge}
           ${codeHtml}
           ${tableHtml}
           ${optionsHtml}
@@ -314,7 +346,7 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
       .map((inst, i) => `(${romanNums[i] || (i + 1)}) ${inst}`)
       .join('<br/>');
 
-    const timeAllowed = selectedSubject.includes('Yoga') || selectedSubject.includes('841') ? '2 Hours' : '3 Hours';
+    const timeAllowed = examPattern.includes('Unit Test') ? '1 Hour' : (selectedSubject.includes('Yoga') || selectedSubject.includes('841') ? '2 Hours' : '3 Hours');
 
     const paperHtml = `
 <div class="roll-no-box">Roll No: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</div>
@@ -324,7 +356,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
 <table style="width: 100%; margin-bottom: 6pt; font-weight: bold;">
 <tr>
   <td style="text-align: left;">Time allowed: ${timeAllowed}</td>
-  <td style="text-align: right;">Maximum Marks: ${generatedData.totalMarks}</td>
+  <td style="text-align: right;">Maximum Marks: ${theoryMarks}</td>
 </tr>
 </table>
 <hr style="border: 0.5pt solid #000; margin-bottom: 6pt;"/>
@@ -418,7 +450,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
       subject: selectedSubject,
       className: selectedClass,
       pattern: examPattern,
-      totalMarks: generatedData.totalMarks,
+      totalMarks: theoryMarks,
       createdAt: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
       author: currentUser?.name || 'Faculty',
       schoolName: activeSchool.name,
@@ -428,7 +460,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     setSavedPapers(updated);
     localStorage.setItem('devgyan_saved_papers_vault', JSON.stringify(updated));
 
-    alert(`🎉 Success: ${selectedSubject} Paper generated (${allQs.length} Questions, ${generatedData.totalMarks} Marks)!\nDirect PDF Print Dialog launched.`);
+    alert(`🎉 Success: ${selectedSubject} Paper generated (${allQs.length} Questions, ${theoryMarks} Marks)!\nTarget Standard: ${difficulty}.`);
   };
 
   return (
@@ -551,7 +583,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   <label className="block text-gray-400 font-semibold mb-1">EXAMINATION PATTERN</label>
                   <select
                     value={examPattern}
-                    onChange={(e) => setExamPattern(e.target.value)}
+                    onChange={(e) => handlePatternChange(e.target.value)}
                     className="w-full bg-[#030712] border border-gray-800 rounded-xl p-3 text-white font-medium focus:border-cyan-400"
                   >
                     <option>Pre-Board Examination (100% Syllabus)</option>
@@ -681,58 +713,69 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* INDIVIDUAL SUB-TOPICS WITH CHECKBOXES */}
+              {/* GRANULAR SUB-TOPICS WITH MASTER UNIT CHECKBOX AUTO-TOGGLE */}
               <div className="space-y-3 pt-2">
                 <div className="flex justify-between items-center">
                   <span className="text-[11px] font-mono text-gray-400 uppercase">
                     SYLLABUS UNITS & SUB-TOPICS FOR {selectedSubject.toUpperCase()}:
                   </span>
                   <span className="text-[10px] font-mono text-cyan-400">
-                    Select Specific Topics to Target Exam
+                    Master Checkbox Toggles Entire Unit Sub-topics
                   </span>
                 </div>
 
-                {activeCurriculum.units.map((unit, uIdx) => (
-                  <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="flex items-center gap-3 cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          defaultChecked
-                          className="rounded border-gray-700 bg-gray-900 text-cyan-500 w-4 h-4 cursor-pointer"
-                        />
-                        <span className="text-white font-bold text-xs">{unit.unitTitle}</span>
-                      </label>
-                      <span className="text-[10px] font-mono text-gray-500">{unit.subTopics.length} Topics Mapped</span>
-                    </div>
+                {activeCurriculum.units.map((unit, uIdx) => {
+                  const allSubChecked = unit.subTopics.every(st => selectedTopics[st] !== false);
+                  const someSubChecked = unit.subTopics.some(st => selectedTopics[st] !== false);
 
-                    <div className="pl-6 space-y-2 border-l border-gray-800 ml-2">
-                      <span className="text-[10px] font-mono text-gray-500 uppercase block">SUB-TOPICS IN THIS UNIT:</span>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                        {unit.subTopics.map((sub, sIdx) => {
-                          const isChecked = selectedTopics[sub] !== false;
-                          return (
-                            <label key={sIdx} className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white">
-                              <input
-                                type="checkbox"
-                                checked={isChecked}
-                                onChange={() => toggleTopic(sub)}
-                                className="rounded border-gray-700 bg-gray-900 text-cyan-500 w-3.5 h-3.5 cursor-pointer"
-                              />
-                              <span className={isChecked ? 'text-gray-200' : 'text-gray-500 line-through'}>{sub}</span>
-                            </label>
-                          );
-                        })}
+                  return (
+                    <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        {/* MASTER CHECKBOX: Toggles all sub-topics in this unit */}
+                        <label className="flex items-center gap-3 cursor-pointer select-none">
+                          <input
+                            type="checkbox"
+                            checked={someSubChecked}
+                            onChange={() => toggleMasterUnit(unit, allSubChecked)}
+                            className="rounded border-gray-700 bg-gray-900 text-cyan-500 w-4 h-4 cursor-pointer"
+                          />
+                          <span className={`font-bold text-xs ${allSubChecked ? 'text-white' : 'text-gray-300'}`}>
+                            {unit.unitTitle}
+                          </span>
+                        </label>
+                        <span className="text-[10px] font-mono text-cyan-400">
+                          {unit.subTopics.filter(st => selectedTopics[st] !== false).length}/{unit.subTopics.length} Active
+                        </span>
+                      </div>
+
+                      <div className="pl-6 space-y-2 border-l border-gray-800 ml-2">
+                        <span className="text-[10px] font-mono text-gray-500 uppercase block">SUB-TOPICS IN THIS UNIT:</span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                          {unit.subTopics.map((sub, sIdx) => {
+                            const isChecked = selectedTopics[sub] !== false;
+                            return (
+                              <label key={sIdx} className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white">
+                                <input
+                                  type="checkbox"
+                                  checked={isChecked}
+                                  onChange={() => toggleTopic(sub)}
+                                  className="rounded border-gray-700 bg-gray-900 text-cyan-500 w-3.5 h-3.5 cursor-pointer"
+                                />
+                                <span className={isChecked ? 'text-gray-200' : 'text-gray-500 line-through'}>{sub}</span>
+                              </label>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* ACTION GENERATE BUTTON */}
               <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-800">
                 <div className="text-xs text-gray-400 font-mono">
-                  Engine: <strong className="text-emerald-400">CBSE Session 2026-27 Aligned</strong>
+                  Engine: <strong className="text-emerald-400">CBSE Session 2026-27 Aligned ({examPattern})</strong>
                 </div>
                 <button
                   onClick={handleGenerateCompletePackage}
