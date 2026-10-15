@@ -28,7 +28,7 @@ export default function PaperGeneratorStudioPage() {
   const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved' | 'google-ai'>('matrix');
 
   const [selectedClass, setSelectedClass] = useState('Class 12 (Commerce)');
-  const [selectedSubject, setSelectedSubject] = useState('Economics (Code 030)');
+  const [selectedSubject, setSelectedSubject] = useState('Accountancy (Code 055)');
   const [examPattern, setExamPattern] = useState('Pre-Board Examination (100% Syllabus)');
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
   const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('pdf');
@@ -38,16 +38,15 @@ export default function PaperGeneratorStudioPage() {
 
   const [sections, setSections] = useState([
     { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-    { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
-    { id: 'sec-c', name: 'Section C: Medium Answer Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
-    { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
-    { id: 'sec-d', name: 'Section E: Long Answer Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
+    { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
+    { id: 'sec-c', name: 'Section C: Medium Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
+    { id: 'sec-d', name: 'Section D: Long Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
   ]);
 
   const [activeCurriculum, setActiveCurriculum] = useState<SubjectCurriculum>(
-    DETAILED_SYLLABUS_2026_27['Economics (Code 030)'] || {
-      name: 'Economics',
-      code: '030',
+    DETAILED_SYLLABUS_2026_27['Accountancy (Code 055)'] || {
+      name: 'Accountancy',
+      code: '055',
       theoryMarks: 80,
       practicalMarks: 20,
       units: []
@@ -56,7 +55,7 @@ export default function PaperGeneratorStudioPage() {
 
   const [selectedTopics, setSelectedTopics] = useState<Record<string, boolean>>({});
   const [selectedExpIds, setSelectedExpIds] = useState<Record<string, boolean>>({});
-  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Macroeconomics\n- National income, Money & Banking, Multiplier');
+  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Accounting for Partnership\n- Fundamental concepts, Deed, P&L Appropriation');
   const [savedPapers, setSavedPapers] = useState<SavedPaperRecord[]>([]);
 
   const [aiCustomPrompt, setAiCustomPrompt] = useState('Generate an official CBSE 2026-27 Board examination paper with realistic Case-based data studies, knock-out tournament fixtures, and exact marking criteria.');
@@ -71,7 +70,6 @@ export default function PaperGeneratorStudioPage() {
 
   const currentClassConfig = ALL_CBSE_CLASSES.find((c) => c.name === selectedClass) || ALL_CBSE_CLASSES[16];
 
-  // FIX 1: Class change triggers full syllabus reload automatically
   useEffect(() => {
     let nextSub = selectedSubject;
     if (!currentClassConfig.availableSubjects.includes(selectedSubject)) {
@@ -86,32 +84,33 @@ export default function PaperGeneratorStudioPage() {
     updateCurriculumForSubject(newSubject, selectedClass, examPattern);
   };
 
-  // FIX 2: Pattern change (Unit Test 1, Half Yearly, etc.) auto-selects appropriate units/topics
   const handlePatternChange = (newPattern: string) => {
     setExamPattern(newPattern);
     updateCurriculumForSubject(selectedSubject, selectedClass, newPattern);
   };
 
   const updateCurriculumForSubject = (subj: string, className: string, pattern: string) => {
-    // Check class-specific curriculum key first (e.g. 'Class 11_Economics (Code 030)')
-    const classSpecificKey = `${className.split('(')[0].trim()}_${subj}`;
-    let curr = DETAILED_SYLLABUS_2026_27[classSpecificKey] || DETAILED_SYLLABUS_2026_27[subj];
+    // 1. Direct key match
+    let curr = DETAILED_SYLLABUS_2026_27[subj];
 
+    // 2. Normalized alphanumeric match
     if (!curr) {
-      const cleanTarget = subj.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const matchedKey = Object.keys(DETAILED_SYLLABUS_2026_27).find(k => 
-        k.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTarget
-      );
+      const targetClean = subj.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const matchedKey = Object.keys(DETAILED_SYLLABUS_2026_27).find(k => {
+        const kClean = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+        return kClean === targetClean || (targetClean.length > 5 && (kClean.includes(targetClean) || targetClean.includes(kClean)));
+      });
       if (matchedKey) {
         curr = DETAILED_SYLLABUS_2026_27[matchedKey];
       }
     }
 
+    // 3. Fallback only if no match found
     if (!curr) {
       curr = {
         name: subj,
         code: subj.includes('Code') ? subj.split('Code')[1].replace(/[^0-9]/g, '') : 'CBSE',
-        theoryMarks: 70, practicalMarks: 30,
+        theoryMarks: 80, practicalMarks: 20,
         units: [
           { unitTitle: `Unit 1: Core Theoretical Foundations of ${subj}`, subTopics: ['Fundamental Principles', 'Standard Formulations', 'Axiomatic Laws'] },
           { unitTitle: `Unit 2: Applied Methodologies & Case Analysis of ${subj}`, subTopics: ['Problem Solving Procedures', 'Case Scenario Evaluation', 'Practical Implementations'] }
@@ -138,7 +137,7 @@ export default function PaperGeneratorStudioPage() {
         setSections([
           { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
           { id: 'sec-b', name: 'Section B: Short Answer Questions (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
-          { id: 'sec-case', name: 'Section C: Case-Based / Analytical (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+          { id: 'sec-case', name: 'Section C: Case-Based / Analytical (4 Marks each)', enabled: true, marksPerQ: 4, count: 5 },
         ]);
       } else if (subj.includes('Physical Education') || subj.includes('048')) {
         setSections([
@@ -156,10 +155,23 @@ export default function PaperGeneratorStudioPage() {
           { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
           { id: 'sec-d', name: 'Section E: Long Answer (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
         ]);
+      } else if (subj.includes('Accountancy') || subj.includes('055')) {
+        setSections([
+          { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+          { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
+          { id: 'sec-c', name: 'Section C: Medium Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
+          { id: 'sec-d', name: 'Section D: Long Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
+        ]);
+      } else if (subj.includes('Business Studies') || subj.includes('054')) {
+        setSections([
+          { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+          { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
+          { id: 'sec-c', name: 'Section C: Medium Answer Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 6 },
+          { id: 'sec-d', name: 'Section D: Long Answer Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
+        ]);
       }
     }
 
-    // Auto-select topics according to pattern
     const initialTopics: Record<string, boolean> = {};
     const initialExps: Record<string, boolean> = {};
     curr.units.forEach((u, uIdx) => {
@@ -183,7 +195,6 @@ export default function PaperGeneratorStudioPage() {
     setSelectedTopics((prev) => ({ ...prev, [topic]: !prev[topic] }));
   };
 
-  // FIX 3: Master Unit Checkbox auto toggles all its sub-topics
   const toggleMasterUnit = (unit: SyllabusTopic, currentMasterChecked: boolean) => {
     const nextState = !currentMasterChecked;
     setSelectedTopics((prev) => {
@@ -303,7 +314,6 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
       `;
     }
 
-    // Attach PYQ tag if teacher selected PYQ / Repeated board questions
     const pyqBadge = difficulty.includes('Previous Years') || difficulty.includes('Repeated')
       ? `<span style="font-size:9pt; color:#444; font-weight:bold; margin-left:6pt;">[CBSE 2024 / PYQ Series]</span>`
       : '';
@@ -731,7 +741,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   return (
                     <div key={uIdx} className="bg-[#030712] border border-gray-800 rounded-2xl p-4 space-y-3">
                       <div className="flex items-center justify-between">
-                        {/* MASTER CHECKBOX: Toggles all sub-topics in this unit */}
                         <label className="flex items-center gap-3 cursor-pointer select-none">
                           <input
                             type="checkbox"

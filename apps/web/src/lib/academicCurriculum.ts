@@ -26,9 +26,9 @@ export interface AcademicClass {
 }
 
 const SENIOR_SECONDARY_ALL_SUBJECTS = [
-  'Economics (Code 030)',
   'Accountancy (Code 055)',
   'Business Studies (Code 054)',
+  'Economics (Code 030)',
   'Physical Education (Code 048)',
   'Yoga (Code 841)',
   'Mathematics (Code 041)',
@@ -71,161 +71,152 @@ export const ALL_CBSE_CLASSES: AcademicClass[] = [
 export const ACADEMIC_CLASSES = ALL_CBSE_CLASSES;
 
 export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
-  // CLASS 11 ECONOMICS (MICROECONOMICS + STATISTICS)
-  'Class 11_Economics (Code 030)': {
-    name: 'Economics',
-    code: '030',
+  // 1. ACCOUNTANCY (CODE 055) - COMPLETE RESTORED SUBTOPICS
+  'Accountancy (Code 055)': {
+    name: 'Accountancy',
+    code: '055',
     theoryMarks: 80,
     practicalMarks: 20,
     units: [
       {
-        unitTitle: 'Part A: Statistics for Economics - Unit 1: Introduction & Collection of Data',
+        unitTitle: 'Part A - Unit 1: Accounting for Partnership Firms - Fundamentals',
         subTopics: [
-          'What is Economics? Meaning, Scope and Functions of Statistics',
-          'Collection of Data: Primary and Secondary Sources, Methods of Collecting Data',
-          'Sampling: Census vs Sample Survey, Random and Non-Random Sampling Methods',
-          'Organization of Data: Frequency Distributions and Classification'
+          'Partnership: Features, Partnership Deed and Provisions in Absence of Deed',
+          'Fixed vs Fluctuating Capital Accounts of Partners',
+          'Preparation of Profit and Loss Appropriation Account',
+          'Division of Profit among Partners, Interest on Capital & Drawings',
+          'Past Adjustments (Omissions and Errors in Interest/Profits)',
+          'Guarantee of Minimum Profits to a Partner'
+        ],
+        experiments: [
+          {
+            expId: 'ACC-EXP-01',
+            title: 'Comprehensive accounting project for a partnership firm preparing final accounts and ratio analysis',
+            unitRef: 'Part A',
+            vivaQueries: [
+              { q: 'Maximum number of partners allowed in a partnership firm?', a: '50 partners as per Companies Rules.' }
+            ]
+          }
         ]
       },
       {
-        unitTitle: 'Part A: Statistics for Economics - Unit 2: Presentation & Measures of Central Tendency',
+        unitTitle: 'Part A - Unit 2: Goodwill & Reconstitution of Partnership Firm',
         subTopics: [
-          'Tabular Presentation and Diagrammatic Presentation (Bar Diagrams and Pie Charts)',
-          'Graphic Presentation: Histograms, Frequency Polygons and Ogives',
-          'Measures of Central Tendency: Arithmetic Mean (Direct, Short-cut and Step-deviation Methods)',
-          'Median and Mode: Calculation and Graphical Locating on Ogives/Histograms',
-          'Correlation: Meaning, Scatter Diagram, Karl Pearson’s Coefficient of Correlation',
-          'Index Numbers: Meaning, Types, Consumer Price Index and Wholesale Price Index'
+          'Goodwill: Meaning, Factors affecting Goodwill, Valuation Methods (Average, Super, Capitalization)',
+          'Change in Profit Sharing Ratio: Sacrificing and Gaining Ratio, Treatment of Reserves',
+          'Revaluation of Assets and Reassessment of Liabilities',
+          'Admission of a Partner: Effect on PSR, Goodwill Treatment (AS-26), Capital Adjustments',
+          'Retirement and Death of a Partner: Gaining Ratio, Goodwill Treatment, Deceased Partner Profit'
         ]
       },
       {
-        unitTitle: 'Part B: Introductory Microeconomics - Unit 3: Consumer Equilibrium & Demand',
+        unitTitle: 'Part A - Unit 3: Dissolution of a Partnership Firm',
         subTopics: [
-          'Central Problems of an Economy: What, How and For Whom to produce',
-          'Opportunity Cost and Production Possibility Frontier (PPF)',
-          'Consumer Equilibrium: Utility Analysis (Marginal Utility, Law of Diminishing Marginal Utility)',
-          'Indifference Curve Analysis: Consumer’s Budget Set and Budget Line, Properties of IC',
-          'Demand: Market Demand, Determinants of Demand, Demand Schedule and Demand Curve',
-          'Price Elasticity of Demand: Percentage Method and Geometric Factors'
+          'Dissolution of Partnership vs Dissolution of Firm',
+          'Settlement of Accounts on Dissolution (Section 48)',
+          'Preparation of Realisation Account and Realisation Expenses',
+          'Treatment of Unrecorded Assets, Liabilities, and Partners Loans'
         ]
       },
       {
-        unitTitle: 'Part B: Introductory Microeconomics - Unit 4: Producer Behaviour & Supply',
+        unitTitle: 'Part A - Unit 4: Accounting for Companies - Shares & Debentures',
         subTopics: [
-          'Production Function: Short-Run and Long-Run, Law of Variable Proportions (TP, MP, AP)',
-          'Cost Concepts: Short Run Costs (TFC, TVC, TC, AFC, AVC, MC and their relationships)',
-          'Revenue Concepts: Total Revenue (TR), Average Revenue (AR), Marginal Revenue (MR)',
-          'Producer’s Equilibrium: Meaning and its Conditions in terms of MC-MR Approach',
-          'Supply: Law of Supply, Supply Schedule, Movement along vs Shift in Supply Curve',
-          'Price Elasticity of Supply: Measurement by Percentage Method',
-          'Forms of Market: Perfect Competition (Features and Determination of Equilibrium Price)'
+          'Share Capital: Authorized, Issued, Subscribed, Called-up, Paid-up',
+          'Issue of Shares: At Par, At Premium, Calls in Arrears and Advance',
+          'Over-subscription of Shares and Pro-rata Allotment Calculations',
+          'Forfeiture of Shares and Reissue of Forfeited Shares (Capital Reserve)',
+          'Issue of Debentures: As Collateral Security, Consideration other than Cash',
+          'Writing off Discount / Loss on Issue of Debentures'
+        ]
+      },
+      {
+        unitTitle: 'Part B: Financial Statement Analysis (Deleted Topics Excluded)',
+        subTopics: [
+          'Financial Statements of a Company: Balance Sheet & Statement of P&L (Schedule III)',
+          'Accounting Ratios: Liquidity Ratios (Current Ratio, Quick Ratio)',
+          'Solvency Ratios: Debt to Equity, Total Assets to Debt, Proprietary, Interest Coverage',
+          'Activity Ratios: Inventory Turnover, Trade Receivables/Payables Turnover, Working Capital Turnover',
+          'Profitability Ratios: Gross Profit, Operating, Net Profit, Return on Investment (ROI)',
+          'Cash Flow Statement: Operating, Investing, and Financing Activities (AS-3 Revised)'
         ]
       }
     ]
   },
 
-  // CLASS 12 ECONOMICS (MACROECONOMICS + INDIAN ECONOMIC DEVELOPMENT)
-  'Economics (Code 030)': {
-    name: 'Economics',
-    code: '030',
+  // 2. BUSINESS STUDIES (CODE 054) - COMPLETE RESTORED SUBTOPICS
+  'Business Studies (Code 054)': {
+    name: 'Business Studies',
+    code: '054',
     theoryMarks: 80,
     practicalMarks: 20,
     units: [
       {
-        unitTitle: 'Part A - Unit 1: National Income and Related Aggregates (10 Marks)',
+        unitTitle: 'Part A - Unit 1 & 2: Nature & Principles of Management',
         subTopics: [
-          'Circular Flow of Income (Two-Sector Model)',
-          'Basic Concepts: Normal Residents, Domestic Territory, Final & Intermediate Goods',
-          'Gross & Net Investment, Depreciation (Consumption of Fixed Capital)',
-          'Net Indirect Taxes (NIT) and Net Factor Income from Abroad (NFIA)',
-          'Aggregates: GDP, NDP, GNP, NNP at Market Price & Factor Cost',
-          'Measurement of National Income: Value Added (Product) Method',
-          'Measurement of National Income: Income Method & Factor Payments',
-          'Measurement of National Income: Expenditure Method',
-          'Real GDP vs Nominal GDP and GDP Deflator Index',
-          'GDP and Welfare: Limitations (Non-monetary transactions, Externalities, Distribution)'
+          'Management: Concept, Objectives, Importance, Management as Science/Art/Profession',
+          'Levels of Management (Top, Middle, Operational)',
+          'Coordination: Concept, Characteristics and Importance as the Essence of Management',
+          'Principles of Management: Fayol’s 14 Principles of General Management',
+          'Taylor’s Scientific Management: Principles and Scientific Techniques (Time, Motion, Fatigue Study)'
+        ],
+        experiments: [
+          {
+            expId: 'BST-EXP-01',
+            title: 'Field survey project analyzing consumer behavior or organizational principles in an enterprise',
+            unitRef: 'Part A',
+            vivaQueries: [
+              { q: 'Difference between Unity of Command and Unity of Direction?', a: 'Unity of Command: one boss per employee. Unity of Direction: one head and one plan for an activity group.' }
+            ]
+          }
         ]
       },
       {
-        unitTitle: 'Part A - Unit 2: Money and Banking (06 Marks)',
+        unitTitle: 'Part A - Unit 3, 4 & 5: Business Environment, Planning & Organizing',
         subTopics: [
-          'Money: Meaning and Supply of Money (Currency with public + Demand deposits)',
-          'Credit Creation / Money Multiplier Process by Commercial Banking System',
-          'Central Bank (RBI): Functions (Bank of Issue, Government Banker, Bankers’ Bank)',
-          'Quantitative Credit Control: Repo Rate, Reverse Repo Rate, Bank Rate, CRR, SLR',
-          'Qualitative Credit Control: Open Market Operations (OMO) and Margin Requirements'
+          'Business Environment: Dimensions (Economic, Social, Technological, Political, Legal)',
+          'Demonetization: Concept and Features',
+          'Planning: Importance, Limitations, Planning Process, Types of Plans (Single Use vs Standing)',
+          'Organizing: Process, Formal vs Informal Organization Structure (Functional vs Divisional)',
+          'Delegation: Elements (Authority, Responsibility, Accountability) vs Decentralization'
         ]
       },
       {
-        unitTitle: 'Part A - Unit 3: Determination of Income and Employment (12 Marks)',
+        unitTitle: 'Part A - Unit 6, 7 & 8: Staffing, Directing & Controlling',
         subTopics: [
-          'Aggregate Demand (AD) and its Components (C + I + G + X - M)',
-          'Propensity to Consume: Average (APC) and Marginal (MPC)',
-          'Propensity to Save: Average (APS) and Marginal (MPS)',
-          'Short-run Equilibrium Output: AD-AS Approach and S-I Approach',
-          'Investment Multiplier (k = 1/MPS = 1/(1-MPC)) and its Stepwise Working',
-          'Full Employment and Involuntary Unemployment Concept',
-          'Problems of Excess Demand (Inflationary Gap) and Deficient Demand (Deflationary Gap)',
-          'Fiscal Measures and Monetary Measures to Correct Excess & Deficient Demand'
+          'Staffing: Need, Staffing Process, Recruitment Sources (Internal vs External)',
+          'Selection Process and Methods of Training (On-the-job vs Off-the-job)',
+          'Directing: Principles, Supervision, Motivation (Maslow’s Hierarchy), Financial & Non-Financial Incentives',
+          'Leadership Styles (Autocratic, Democratic, Laissez-faire) and Communication Barriers',
+          'Controlling: Importance, Controlling Process, Management by Exception (MBE) & Critical Point Control'
         ]
       },
       {
-        unitTitle: 'Part A - Unit 4: Government Budget and the Economy (06 Marks)',
+        unitTitle: 'Part B - Unit 9 & 10: Financial Management & Financial Markets',
         subTopics: [
-          'Government Budget: Meaning, Objectives, and Fiscal Allocation of Resources',
-          'Classification of Receipts: Revenue Receipts (Tax & Non-Tax) vs Capital Receipts',
-          'Classification of Expenditure: Revenue Expenditure vs Capital Expenditure',
-          'Budgetary Deficits: Revenue Deficit, Fiscal Deficit, Primary Deficit'
+          'Financial Management: Objectives, Financial Decisions (Investment, Financing, Dividend)',
+          'Financial Planning: Capital Structure (Trading on Equity), Fixed and Working Capital Factors',
+          'Financial Markets: Money Market Instruments (Treasury Bills, Commercial Paper, Call Money, CD)',
+          'Capital Market: Primary vs Secondary Market, Stock Exchange Trading Procedure on NSE/BSE',
+          'Securities and Exchange Board of India (SEBI): Objectives, Regulatory and Developmental Functions'
         ]
       },
       {
-        unitTitle: 'Part A - Unit 5: Balance of Payments (06 Marks)',
+        unitTitle: 'Part B - Unit 11 & 12: Marketing Management & Consumer Protection',
         subTopics: [
-          'Balance of Payments (BoP) Account: Meaning and Components',
-          'Current Account (Visible & Invisible Trade, Unilateral Transfers)',
-          'Capital Account (FDI, FII, External Commercial Borrowings, NRI Deposits)',
-          'BoP Deficit, BoP Surplus, and Official Reserve Transactions',
-          'Foreign Exchange Rate: Fixed, Flexible, and Managed Floating Systems'
-        ]
-      },
-      {
-        unitTitle: 'Part B - Unit 6: Development Experience (1947-90) & Economic Reforms (12 Marks)',
-        subTopics: [
-          'State of Indian Economy on the Eve of Independence (Agriculture, Industry, Trade, Demography)',
-          'Common Goals of Five Year Plans: Growth, Modernisation, Self-reliance and Equity',
-          'Agrarian Reforms: Land Ceilings, Abolition of Intermediaries, and Green Revolution',
-          'Industrial Policy Resolution 1956 (IPR 1956) and Small-Scale Industries',
-          'Foreign Trade Strategy: Inward-Looking Trade Policy (Import Substitution)',
-          'Economic Crisis of 1991 and Origin of New Economic Policy (NEP)',
-          'Liberalisation, Privatisation (Disinvestment), and Globalisation (LPG)'
-        ]
-      },
-      {
-        unitTitle: 'Part B - Unit 7: Current Challenges Facing Indian Economy (20 Marks)',
-        subTopics: [
-          'Human Capital Formation: Sources (Education, Health, On-the-job Training, Migration)',
-          'Human Capital vs Physical Capital and Role in Economic Growth',
-          'Rural Development: Credit and Marketing Systems, Role of NABARD and Micro-Credit (SHGs)',
-          'Agricultural Diversification: Horticulture, Dairy, Fisheries, Animal Husbandry',
-          'Organic Farming: Benefits, Process, and Contemporary Limitations',
-          'Employment: Worker-Population Ratio, Formal vs Informal Sector Employment (Informalisation)',
-          'Sustainable Economic Development: Functions of Environment, Carrying Capacity, Renewable Energy'
-        ]
-      },
-      {
-        unitTitle: 'Part B - Unit 8: Development Experience of India: A Comparison with Neighbours (08 Marks)',
-        subTopics: [
-          'Historical Trajectory: India, Pakistan and China (Starting Points and Five Year Plans)',
-          'China’s Economic Path: Great Leap Forward (1958), Special Economic Zones (SEZs)',
-          'Demographic Indicators: Population Growth, Fertility Rate, Sex Ratio, Urbanisation',
-          'Sectoral GDP Contribution and Employment Share across Sectors',
-          'Human Development Indicators (HDI): Life Expectancy, Mean Years of Schooling, Ranks'
+          'Marketing Management Philosophies: Production, Product, Selling, Marketing, Societal Concept',
+          'Marketing Mix: 4 Ps (Product, Price, Place, Promotion)',
+          'Product: Branding, Labelling and Packaging (Functions & Levels)',
+          'Pricing: Factors Determining Price of a Product or Service',
+          'Physical Distribution: Channels of Distribution and Components of Physical Distribution',
+          'Promotion Mix: Advertising, Personal Selling, Sales Promotion, Public Relations',
+          'Consumer Protection Act 2019: Meaning of Consumer, Consumer Rights and Responsibilities',
+          'Three-Tier Redressal Machinery: District Commission, State Commission, National Commission'
         ]
       }
     ]
   },
 
-  // YOGA (CODE 841)
+  // 3. YOGA (CODE 841)
   'Yoga (Code 841)': {
     name: 'Yoga',
     code: '841',
@@ -245,6 +236,16 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
           'Pranayama Practices: Anulom-Vilom, Bhastrika, Sheetali, Sheetkari, Bhramari, Ujjayi',
           'Dhyana & Meditation Techniques for Psychosomatic Stress Reduction',
           'Surya Namaskara: 12 Steps Sequence, Mantras, and Breathing Coordination'
+        ],
+        experiments: [
+          {
+            expId: 'YOG-EXP-01',
+            title: 'Demonstration and assessment of 12-step Surya Namaskara with breathing synchronization',
+            unitRef: 'Unit 1',
+            vivaQueries: [
+              { q: 'Benefits of Bhujangasana?', a: 'Expands thoracic cavity, strengthens lumbar spine, and stimulates abdominal digestive organs.' }
+            ]
+          }
         ]
       },
       {
@@ -270,7 +271,7 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
     ]
   },
 
-  // PHYSICAL EDUCATION (CODE 048)
+  // 4. PHYSICAL EDUCATION (CODE 048)
   'Physical Education (Code 048)': {
     name: 'Physical Education',
     code: '048',
@@ -286,6 +287,16 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
           'Fixtures: League Tournament Procedure (Cyclic and Staircase Methods)',
           'Intramural & Extramural Competitions: Meaning, Objectives and Significance',
           'Community Sports Programs (Sports Day, Health Run, Run for Fun, Run for Unity)'
+        ],
+        experiments: [
+          {
+            expId: 'PE-EXP-01',
+            title: 'Draw a complete fixture of 21 teams on Knock-Out basis showing calculation of Byes and rounds',
+            unitRef: 'Unit I',
+            vivaQueries: [
+              { q: 'Formula to calculate total matches in knock-out tournament?', a: 'Total Matches = N - 1.' }
+            ]
+          }
         ]
       },
       {
@@ -375,7 +386,108 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
     ]
   },
 
-  // MATHEMATICS (CODE 041)
+  // 5. ECONOMICS (CODE 030)
+  'Economics (Code 030)': {
+    name: 'Economics',
+    code: '030',
+    theoryMarks: 80,
+    practicalMarks: 20,
+    units: [
+      {
+        unitTitle: 'Part A - Unit 1: National Income and Related Aggregates (10 Marks)',
+        subTopics: [
+          'Circular Flow of Income (Two-Sector Model)',
+          'Basic Concepts: Normal Residents, Domestic Territory, Final & Intermediate Goods',
+          'Gross & Net Investment, Depreciation (Consumption of Fixed Capital)',
+          'Net Indirect Taxes (NIT) and Net Factor Income from Abroad (NFIA)',
+          'Aggregates: GDP, NDP, GNP, NNP at Market Price & Factor Cost',
+          'Measurement of National Income: Value Added Method',
+          'Measurement of National Income: Income Method & Factor Payments',
+          'Measurement of National Income: Expenditure Method',
+          'Real GDP vs Nominal GDP and GDP Deflator Index',
+          'GDP and Welfare: Limitations (Non-monetary transactions, Externalities, Distribution)'
+        ]
+      },
+      {
+        unitTitle: 'Part A - Unit 2: Money and Banking (06 Marks)',
+        subTopics: [
+          'Money: Meaning and Supply of Money (Currency with public + Demand deposits)',
+          'Credit Creation / Money Multiplier Process by Commercial Banking System',
+          'Central Bank (RBI): Functions (Bank of Issue, Government Banker, Bankers’ Bank)',
+          'Quantitative Credit Control: Repo Rate, Reverse Repo Rate, Bank Rate, CRR, SLR',
+          'Qualitative Credit Control: Open Market Operations (OMO) and Margin Requirements'
+        ]
+      },
+      {
+        unitTitle: 'Part A - Unit 3: Determination of Income and Employment (12 Marks)',
+        subTopics: [
+          'Aggregate Demand (AD) and its Components (C + I + G + X - M)',
+          'Propensity to Consume: Average (APC) and Marginal (MPC)',
+          'Propensity to Save: Average (APS) and Marginal (MPS)',
+          'Short-run Equilibrium Output: AD-AS Approach and S-I Approach',
+          'Investment Multiplier (k = 1/MPS = 1/(1-MPC)) and its Stepwise Working',
+          'Full Employment and Involuntary Unemployment Concept',
+          'Problems of Excess Demand (Inflationary Gap) and Deficient Demand (Deflationary Gap)',
+          'Fiscal Measures and Monetary Measures to Correct Excess & Deficient Demand'
+        ]
+      },
+      {
+        unitTitle: 'Part A - Unit 4: Government Budget and the Economy (06 Marks)',
+        subTopics: [
+          'Government Budget: Meaning, Objectives, and Fiscal Allocation of Resources',
+          'Classification of Receipts: Revenue Receipts (Tax & Non-Tax) vs Capital Receipts',
+          'Classification of Expenditure: Revenue Expenditure vs Capital Expenditure',
+          'Budgetary Deficits: Revenue Deficit, Fiscal Deficit, Primary Deficit'
+        ]
+      },
+      {
+        unitTitle: 'Part A - Unit 5: Balance of Payments (06 Marks)',
+        subTopics: [
+          'Balance of Payments (BoP) Account: Meaning and Components',
+          'Current Account (Visible & Invisible Trade, Unilateral Transfers)',
+          'Capital Account (FDI, FII, External Commercial Borrowings, NRI Deposits)',
+          'BoP Deficit, BoP Surplus, and Official Reserve Transactions',
+          'Foreign Exchange Rate: Fixed, Flexible, and Managed Floating Systems'
+        ]
+      },
+      {
+        unitTitle: 'Part B - Unit 6: Development Experience (1947-90) & Economic Reforms (12 Marks)',
+        subTopics: [
+          'State of Indian Economy on the Eve of Independence (Agriculture, Industry, Trade, Demography)',
+          'Common Goals of Five Year Plans: Growth, Modernisation, Self-reliance and Equity',
+          'Agrarian Reforms: Land Ceilings, Abolition of Intermediaries, and Green Revolution',
+          'Industrial Policy Resolution 1956 (IPR 1956) and Small-Scale Industries',
+          'Foreign Trade Strategy: Inward-Looking Trade Policy (Import Substitution)',
+          'Economic Crisis of 1991 and Origin of New Economic Policy (NEP)',
+          'Liberalisation, Privatisation (Disinvestment), and Globalisation (LPG)'
+        ]
+      },
+      {
+        unitTitle: 'Part B - Unit 7: Current Challenges Facing Indian Economy (20 Marks)',
+        subTopics: [
+          'Human Capital Formation: Sources (Education, Health, On-the-job Training, Migration)',
+          'Human Capital vs Physical Capital and Role in Economic Growth',
+          'Rural Development: Credit and Marketing Systems, Role of NABARD and Micro-Credit (SHGs)',
+          'Agricultural Diversification: Horticulture, Dairy, Fisheries, Animal Husbandry',
+          'Organic Farming: Benefits, Process, and Contemporary Limitations',
+          'Employment: Worker-Population Ratio, Formal vs Informal Sector Employment (Informalisation)',
+          'Sustainable Economic Development: Functions of Environment, Carrying Capacity, Renewable Energy'
+        ]
+      },
+      {
+        unitTitle: 'Part B - Unit 8: Development Experience of India: A Comparison with Neighbours (08 Marks)',
+        subTopics: [
+          'Historical Trajectory: India, Pakistan and China (Starting Points and Five Year Plans)',
+          'China’s Economic Path: Great Leap Forward (1958), Special Economic Zones (SEZs)',
+          'Demographic Indicators: Population Growth, Fertility Rate, Sex Ratio, Urbanisation',
+          'Sectoral GDP Contribution and Employment Share across Sectors',
+          'Human Development Indicators (HDI): Life Expectancy, Mean Years of Schooling, Ranks'
+        ]
+      }
+    ]
+  },
+
+  // 6. MATHEMATICS (CODE 041)
   'Mathematics (Code 041)': {
     name: 'Mathematics',
     code: '041',
@@ -431,6 +543,56 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
           'Linear Programming: Graphical Method of Solving LPP in Two Variables',
           'Conditional Probability and Multiplication Rule',
           'Bayes’ Theorem and Probability Distributions'
+        ]
+      }
+    ]
+  },
+
+  // 7. COMPUTER SCIENCE (CODE 083)
+  'Computer Science (Code 083)': {
+    name: 'Computer Science',
+    code: '083',
+    theoryMarks: 70,
+    practicalMarks: 30,
+    units: [
+      {
+        unitTitle: 'Unit I: Computational Thinking and Programming - 2',
+        subTopics: [
+          'Revision of Python Basics (Tokens, Operators, Expressions)',
+          'Flow of Control (Conditional & Looping Constructs)',
+          'Strings: Slicing, Traversal and Built-in String Methods',
+          'Lists: Creation, Slicing, Mutability and List Operations',
+          'Tuples: Immutability, Operations and Tuple Slicing',
+          'Dictionary: Keys, Values, Mutability and Dictionary Methods',
+          'Functions: Scope (Local vs Global), Parameter Passing & Default Arguments',
+          'File Handling: Text File Read/Write Operations',
+          'Binary File Handling: pickle module, dump() and load() serialization',
+          'CSV File Handling: csv module, reader() and writer() functions',
+          'Data Structures: Implementation of Linear Stack using Python Lists'
+        ]
+      },
+      {
+        unitTitle: 'Unit II: Computer Networks',
+        subTopics: [
+          'Evolution of Networking: ARPANET, NSFNET, Internet Architecture',
+          'Data Communication Terminologies: Bandwidth, Baud, Data Transfer Rate',
+          'Transmission Media: Twisted Pair, Coaxial, Optical Fiber, Radio, Micro Waves',
+          'Network Devices: NIC, Repeater, Hub, Switch, Bridge, Gateway, Router',
+          'Network Topologies: Bus, Star, Tree, Mesh and Ring Topologies',
+          'Network Protocols: TCP/IP, FTP, PPP, HTTP, HTTPS, SMTP, POP3, VoIP',
+          'Network Security: Cyber Threats, Phishing, Firewalls, Cookies, Hackers'
+        ]
+      },
+      {
+        unitTitle: 'Unit III: Database Management & SQL Integration',
+        subTopics: [
+          'Relational Data Model: Relation, Tuple, Attribute, Degree, Cardinality',
+          'Keys in Relational Database: Primary, Candidate, Alternate, Foreign Key',
+          'SQL DDL Commands: CREATE TABLE, ALTER TABLE, DROP TABLE',
+          'SQL DML Commands: INSERT INTO, UPDATE SET, DELETE FROM, SELECT',
+          'SQL Aggregate Functions: COUNT(), SUM(), AVG(), MIN(), MAX()',
+          'SQL Grouping & Joins: GROUP BY, HAVING, Equi-Join between Two Tables',
+          'Python-MySQL Connectivity: mysql.connector, connect(), cursor(), execute(), commit()'
         ]
       }
     ]
