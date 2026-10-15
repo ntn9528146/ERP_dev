@@ -28,40 +28,36 @@ export default function PaperGeneratorStudioPage() {
   const [activeStudioTab, setActiveStudioTab] = useState<'matrix' | 'practical' | 'manual' | 'saved' | 'google-ai'>('matrix');
 
   const [selectedClass, setSelectedClass] = useState('Class 12 (Commerce)');
-  const [selectedSubject, setSelectedSubject] = useState('Economics (Code 030)');
+  const [selectedSubject, setSelectedSubject] = useState('Yoga (Code 841)');
   const [examPattern, setExamPattern] = useState('Pre-Board Examination (100% Syllabus)');
   const [difficulty, setDifficulty] = useState('Standard CBSE Balanced (60% Medium, 20% Easy, 20% HOTS)');
   const [downloadFormat, setDownloadFormat] = useState<'doc' | 'pdf'>('pdf');
 
-  const [theoryMarks, setTheoryMarks] = useState(80);
-  const [practicalMarks, setPracticalMarks] = useState(20);
+  const [theoryMarks, setTheoryMarks] = useState(50);
+  const [practicalMarks, setPracticalMarks] = useState(50);
 
-  // Full CBSE Blueprint Matrix with Case-Based Question Type Included
   const [sections, setSections] = useState([
     { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-    { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
-    { id: 'sec-c', name: 'Section C: Medium Answer Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
-    { id: 'sec-case', name: 'Section D: Case-Based / Source Integrated (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
-    { id: 'sec-d', name: 'Section E: Long Answer Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
+    { id: 'sec-b', name: 'Section B: Short Answer Questions (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
+    { id: 'sec-case', name: 'Section C: Case-Based / Analytical (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
   ]);
 
   const [activeCurriculum, setActiveCurriculum] = useState<SubjectCurriculum>(
-    DETAILED_SYLLABUS_2026_27['Economics (Code 030)'] || {
-      name: 'Economics',
-      code: '030',
-      theoryMarks: 80,
-      practicalMarks: 20,
+    DETAILED_SYLLABUS_2026_27['Yoga (Code 841)'] || {
+      name: 'Yoga',
+      code: '841',
+      theoryMarks: 50,
+      practicalMarks: 50,
       units: []
     }
   );
 
   const [selectedTopics, setSelectedTopics] = useState<Record<string, boolean>>({});
   const [selectedExpIds, setSelectedExpIds] = useState<Record<string, boolean>>({});
-  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Macroeconomics\n- National income, Money & Banking, Multiplier');
+  const [manualSyllabusText, setManualSyllabusText] = useState('Unit 1: Introduction to Yoga\n- Shatkarma, Asana, Pranayama');
   const [savedPapers, setSavedPapers] = useState<SavedPaperRecord[]>([]);
 
-  // Google Real-Time AI Generation State
-  const [aiCustomPrompt, setAiCustomPrompt] = useState('Generate a fresh authentic CBSE 2026-27 Pre-Board examination paper strictly adhering to CBSE marks weightage, with source-based case studies, MCQs, and 33% internal choices.');
+  const [aiCustomPrompt, setAiCustomPrompt] = useState('Generate an official CBSE 2026-27 Board examination paper with realistic Case-based data studies, knock-out tournament fixtures, and exact marking criteria.');
   const [isGeneratingAi, setIsGeneratingAi] = useState(false);
 
   useEffect(() => {
@@ -89,44 +85,70 @@ export default function PaperGeneratorStudioPage() {
   };
 
   const updateCurriculumForSubject = (subj: string) => {
+    // Exact or normalized key lookup to guarantee subtopics never disappear
     let curr = DETAILED_SYLLABUS_2026_27[subj];
+    if (!curr) {
+      const cleanTarget = subj.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const matchedKey = Object.keys(DETAILED_SYLLABUS_2026_27).find(k => 
+        k.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanTarget
+      );
+      if (matchedKey) {
+        curr = DETAILED_SYLLABUS_2026_27[matchedKey];
+      }
+    }
+
     if (!curr) {
       curr = {
         name: subj,
         code: subj.includes('Code') ? subj.split('Code')[1].replace(/[^0-9]/g, '') : 'CBSE',
-        theoryMarks: 80, practicalMarks: 20,
+        theoryMarks: 70, practicalMarks: 30,
         units: [
-          { unitTitle: `Unit 1: Foundations of ${subj}`, subTopics: ['Basic concepts', 'Core principles'] },
-          { unitTitle: `Unit 2: Applied Analysis of ${subj}`, subTopics: ['Problem solving', 'Case study'] }
+          { unitTitle: `Unit 1: Core Theoretical Foundations of ${subj}`, subTopics: ['Fundamental Principles', 'Standard Formulations', 'Axiomatic Laws'] },
+          { unitTitle: `Unit 2: Applied Methodologies & Case Analysis of ${subj}`, subTopics: ['Problem Solving Procedures', 'Case Scenario Evaluation', 'Practical Implementations'] }
         ]
       };
     }
+
     setActiveCurriculum(curr);
     setTheoryMarks(curr.theoryMarks);
     setPracticalMarks(curr.practicalMarks);
 
-    if (subj.includes('Accountancy') || subj.includes('055')) {
+    if (subj.includes('Yoga') || subj.includes('841')) {
       setSections([
         { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
-        { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
-        { id: 'sec-c', name: 'Section C: Medium Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
-        { id: 'sec-d', name: 'Section D: Long Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
+        { id: 'sec-b', name: 'Section B: Short Answer Questions (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
+        { id: 'sec-case', name: 'Section C: Case-Based / Analytical (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
+      ]);
+    } else if (subj.includes('Physical Education') || subj.includes('048')) {
+      setSections([
+        { id: 'sec-a', name: 'Section A: Multiple Choice Questions (1 Mark each)', enabled: true, marksPerQ: 1, count: 18 },
+        { id: 'sec-b', name: 'Section B: Very Short Answer (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
+        { id: 'sec-c', name: 'Section C: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 5 },
+        { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
+        { id: 'sec-d', name: 'Section E: Long Answer Questions (5 Marks each)', enabled: true, marksPerQ: 5, count: 3 },
+      ]);
+    } else if (subj.includes('Mathematics') || subj.includes('041')) {
+      setSections([
+        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+        { id: 'sec-b', name: 'Section B: Very Short Answer (2 Marks each)', enabled: true, marksPerQ: 2, count: 5 },
+        { id: 'sec-c', name: 'Section C: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
+        { id: 'sec-d', name: 'Section D: Long Answer (5 Marks each)', enabled: true, marksPerQ: 5, count: 4 },
+        { id: 'sec-case', name: 'Section E: Case-Based Integrated (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
       ]);
     } else if (subj.includes('Economics') || subj.includes('030')) {
       setSections([
         { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
         { id: 'sec-b', name: 'Section B: Short Answer (3 Marks each)', enabled: true, marksPerQ: 3, count: 4 },
         { id: 'sec-c', name: 'Section C: Medium Answer (4 Marks each)', enabled: true, marksPerQ: 4, count: 4 },
-        { id: 'sec-case', name: 'Section D: Case-Based / Source Integrated (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
+        { id: 'sec-case', name: 'Section D: Case-Based / Data Analysis (4 Marks each)', enabled: true, marksPerQ: 4, count: 2 },
         { id: 'sec-d', name: 'Section E: Long Answer (6 Marks each)', enabled: true, marksPerQ: 6, count: 4 },
       ]);
-    } else if (subj.includes('Computer Science') || subj.includes('083')) {
+    } else if (subj.includes('Accountancy') || subj.includes('055')) {
       setSections([
-        { id: 'sec-a', name: 'Section A: Objective & MCQs (Q1 to Q21)', enabled: true, marksPerQ: 1, count: 21 },
-        { id: 'sec-b', name: 'Section B: VSA Output & Syntax (Q22 to Q28)', enabled: true, marksPerQ: 2, count: 7 },
-        { id: 'sec-c', name: 'Section C: SA Functions & Stack (Q29 to Q31)', enabled: true, marksPerQ: 3, count: 3 },
-        { id: 'sec-d', name: 'Section D: Long Questions & SQL (Q32 to Q35)', enabled: true, marksPerQ: 4, count: 4 },
-        { id: 'sec-e', name: 'Section E: Integrated Case & Networks (Q36 to Q37)', enabled: true, marksPerQ: 5, count: 2 },
+        { id: 'sec-a', name: 'Section A: Objective & MCQs (1 Mark each)', enabled: true, marksPerQ: 1, count: 20 },
+        { id: 'sec-b', name: 'Section B: Short Answer Questions (3 Marks each)', enabled: true, marksPerQ: 3, count: 6 },
+        { id: 'sec-c', name: 'Section C: Medium Questions (4 Marks each)', enabled: true, marksPerQ: 4, count: 3 },
+        { id: 'sec-d', name: 'Section D: Long Questions (6 Marks each)', enabled: true, marksPerQ: 6, count: 5 },
       ]);
     }
 
@@ -194,7 +216,6 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
 <body>${bodyHtml}</body></html>`;
   };
 
-  // Direct PDF Download Engine using Print/Blob Stream
   const triggerDirectPdfDownload = (filename: string, htmlContent: string) => {
     const printWindow = window.open('', '_blank');
     if (printWindow) {
@@ -245,7 +266,6 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
       tableHtml = `<div style="margin: 4pt 0;">${q.tableData}</div>`;
     }
 
-    // Clean single OR divider (Fixes double OR typo)
     let orHtml = '';
     if (q.orOptionText) {
       const cleanOrText = q.orOptionText.replace(/^OR\s*[\r\n]+/i, '');
@@ -281,7 +301,6 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
     const generatedData = generateExactSubjectPaper(selectedSubject, selectedClass);
     const allQs = generatedData.questions;
 
-    // Direct continuous numbering under Part A and Part B (No duplicate multiple Section headers)
     let questionsRenderHtml = '';
     allQs.forEach((q) => {
       if (q.partTitle) {
@@ -295,6 +314,8 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
       .map((inst, i) => `(${romanNums[i] || (i + 1)}) ${inst}`)
       .join('<br/>');
 
+    const timeAllowed = selectedSubject.includes('Yoga') || selectedSubject.includes('841') ? '2 Hours' : '3 Hours';
+
     const paperHtml = `
 <div class="roll-no-box">Roll No: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</div>
 <div class="header-school">${schoolNameUpper}</div>
@@ -302,7 +323,7 @@ table.matrix-table th { background-color: #f2f2f2; font-weight: bold; }
 CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()}</div>
 <table style="width: 100%; margin-bottom: 6pt; font-weight: bold;">
 <tr>
-  <td style="text-align: left;">Time allowed: 3 hours</td>
+  <td style="text-align: left;">Time allowed: ${timeAllowed}</td>
   <td style="text-align: right;">Maximum Marks: ${generatedData.totalMarks}</td>
 </tr>
 </table>
@@ -380,13 +401,11 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
     const blueprintDoc = generateWordHtmlDoc('Blueprint', blueprintHtml);
 
     if (downloadFormat === 'pdf') {
-      // Direct PDF Generation via Print Spool
       triggerDirectPdfDownload(`${safeCls}_${safeSub}_Question_Paper_${timestamp}.pdf`, paperDoc);
       downloadFile(`${safeCls}_${safeSub}_Marking_Scheme_${timestamp}.doc`, answerKeyDoc, 'application/msword;charset=utf-8');
       downloadFile(`${safeCls}_${safeSub}_Practical_Viva_${timestamp}.doc`, vivaDoc, 'application/msword;charset=utf-8');
       downloadFile(`${safeCls}_${safeSub}_Blueprint_${timestamp}.doc`, blueprintDoc, 'application/msword;charset=utf-8');
     } else {
-      // MS Word native format
       downloadFile(`${safeCls}_${safeSub}_Question_Paper_${timestamp}.doc`, paperDoc, 'application/msword;charset=utf-8');
       downloadFile(`${safeCls}_${safeSub}_Marking_Scheme_${timestamp}.doc`, answerKeyDoc, 'application/msword;charset=utf-8');
       downloadFile(`${safeCls}_${safeSub}_Practical_Viva_${timestamp}.doc`, vivaDoc, 'application/msword;charset=utf-8');
@@ -455,7 +474,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
               >
                 4. 📂 Saved Papers Repository ({savedPapers.length})
               </button>
-              {/* NEW TAB: GOOGLE REAL-TIME AI ENGINE */}
               <button
                 onClick={() => setActiveStudioTab('google-ai')}
                 className={`px-4 py-2 rounded-xl transition-all ${
@@ -467,7 +485,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
             </div>
           </div>
 
-          {/* TAB 1 */}
           {activeStudioTab === 'matrix' && (
             <div className="bg-[#0B1120] border border-gray-800 rounded-3xl p-6 space-y-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -480,7 +497,6 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   </p>
                 </div>
 
-                {/* DIRECT PDF TOGGLE */}
                 <div className="flex items-center gap-2 bg-[#030712] border border-gray-800 p-1.5 rounded-xl text-xs font-mono">
                   <span className="text-gray-400 pl-2">Format:</span>
                   <button
@@ -562,7 +578,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* BLUEPRINT TABLE WITH CASE-BASED ROW */}
+              {/* BLUEPRINT TABLE */}
               <div className="space-y-4 pt-2">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
@@ -665,7 +681,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                 </div>
               </div>
 
-              {/* GRANULAR SUB-TOPICS WITH INDIVIDUAL CHECKBOXES */}
+              {/* INDIVIDUAL SUB-TOPICS WITH CHECKBOXES */}
               <div className="space-y-3 pt-2">
                 <div className="flex justify-between items-center">
                   <span className="text-[11px] font-mono text-gray-400 uppercase">
@@ -739,7 +755,7 @@ CLASS: ${selectedClass.toUpperCase()} | SUBJECT: ${selectedSubject.toUpperCase()
                   <span>Google AI Real-Time Exam Engine (Direct Web Synthesis)</span>
                 </h2>
                 <p className="text-xs text-gray-400 mt-1">
-                  Connect directly with online CBSE examination banks and Google LLM models to synthesize 100% unique question papers with latest case studies, graphs and diagrams.
+                  Synthesize 100% unique question papers with latest case studies, graphs and diagrams direct from web models.
                 </p>
               </div>
 
