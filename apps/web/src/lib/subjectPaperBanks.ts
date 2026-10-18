@@ -33,77 +33,114 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   const cleanSub = subjectName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   // =========================================================================
-  // 1. ECONOMICS (CODE 030) - 100% DYNAMIC PROCEDURAL GENERATOR (CBSE 80M)
+  // 1. CHEMISTRY (CODE 043) - STRICT CBSE 2026-27 (70 MARKS, EXACT 33 QS)
   // =========================================================================
-  if (cleanSub.includes('030') || cleanSub.includes('economics')) {
-    // Dynamic Numericals Parameters
-    const mpcVal = getRandomChoice([0.5, 0.6, 0.75, 0.8]);
-    const multiplierVal = (1 / (1 - mpcVal)).toFixed(1);
-    const primDeposit = getRandomChoice([1000, 2000, 3000, 5000, 8000]);
-    const lrrVal = getRandomChoice([10, 12.5, 20, 25]);
-    const moneyMult = (100 / lrrVal).toFixed(1);
-    const totalCredit = Math.round(primDeposit * (100 / lrrVal)).toLocaleString('en-IN');
+  if (cleanSub.includes('043') || cleanSub.includes('chemistry')) {
+    // Dynamic Chemical Parameters
+    const soluteMass = getRandomChoice([3.5, 4.2, 5.0, 6.3, 7.5]);
+    const solventMass = getRandomChoice([50, 65, 75, 80, 100]);
+    const kfVal = 3.9;
+    const deltaTf = ((kfVal * soluteMass * 1000) / (176 * solventMass)).toFixed(2);
 
-    const cBar = getRandomChoice([100, 150, 200, 250, 300]);
-    const mpsVal = getRandomChoice([0.2, 0.25, 0.4]);
-    const invI = getRandomChoice([200, 300, 400, 500]);
-    const eqIncome = Math.round((cBar + invI) / mpsVal);
-    const eqCons = Math.round(cBar + (1 - mpsVal) * eqIncome);
+    const kRate1 = getRandomChoice(['1.15 x 10⁻³', '2.30 x 10⁻³', '3.45 x 10⁻³']);
+    const tempT1 = getRandomChoice([298, 300, 310]);
+    const tempT2 = tempT1 + 10;
+    const factorTriples = getRandomChoice(['doubles', 'triples', 'quadruples']);
 
-    const gdpMp = getRandomChoice([7200, 8500, 9400, 10200, 11500]);
-    const nfiaVal = getRandomChoice([-250, -180, -120, 150, 200]);
-    const nitVal = getRandomChoice([520, 640, 720, 810]);
-    const depNat = getRandomChoice([320, 410, 490, 550]);
-    const gnpFc = gdpMp + nfiaVal - nitVal;
-
-    // Macroeconomics MCQs Bank (25 Items)
-    const macroMCQPool = [
-      { text: 'Which of the following is NOT included in the estimation of Domestic Income?', opts: { optA: 'Old-age pension received by senior citizens', optB: 'Wages and salaries paid to resident workers', optC: 'Operating surplus of domestic enterprises', optD: 'Mixed income of self-employed traders' }, ans: '(A) Old-age pension is a unilateral transfer payment.' },
-      { text: `If Marginal Propensity to Consume (MPC) is ${mpcVal}, the numerical value of Investment Multiplier (k) will be:`, opts: { optA: `${multiplierVal}`, optB: `${(parseFloat(multiplierVal) + 1).toFixed(1)}`, optC: `${(parseFloat(multiplierVal) - 0.5).toFixed(1)}`, optD: '1.0' }, ans: `(A) k = 1 / (1 - MPC) = ${multiplierVal}.` },
-      { text: 'Which tool of RBI monetary policy involves buying and selling of government securities in open market?', opts: { optA: 'Open Market Operations (OMO)', optB: 'Cash Reserve Ratio (CRR)', optC: 'Statutory Liquidity Ratio (SLR)', optD: 'Margin Requirement' }, ans: '(A) Open Market Operations.' },
-      { text: 'When Aggregate Demand exceeds Aggregate Supply at full employment output, the economy experiences:', opts: { optA: 'Inflationary Gap (Excess Demand)', optB: 'Deflationary Gap', optC: 'Deficient Demand', optD: 'Under-employment Equilibrium' }, ans: '(A) Inflationary Gap.' },
-      { text: 'Which of the following constitutes a Capital Receipt for the Central Government?', opts: { optA: 'Disinvestment proceeds from sale of PSU shares', optB: 'Goods and Services Tax (GST) collected', optC: 'Court fines and penalties', optD: 'Dividends from public enterprises' }, ans: '(A) Disinvestment reduces government assets.' },
-      { text: 'Balance of Payments (BoP) on Current Account records transactions relating to:', opts: { optA: 'Exports & Imports of goods, services and transfer payments', optB: 'Foreign Direct Investment (FDI) inflows', optC: 'External Commercial Borrowings', optD: 'Gold transactions by RBI' }, ans: '(A) Current Account items.' },
-      { text: 'The relationship between Average Propensity to Consume (APC) and Average Propensity to Save (APS) is:', opts: { optA: 'APC + APS = 1', optB: 'APC - APS = 1', optC: 'APC x APS = 1', optD: 'APC / APS = 0' }, ans: '(A) APC + APS = 1.' },
-      { text: 'Assertion (A): GDP growth may not always indicate an improvement in public welfare.\nReason (R): GDP excludes non-monetary transactions and ignores negative externalities like environmental pollution.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true and (R) correctly explains (A).' },
-      { text: `In an economy, when autonomous consumption C_bar = ${cBar} and MPC = 0.8, consumption expenditure at income Y = 1000 is:`, opts: { optA: `${cBar + 800}`, optB: `${cBar + 600}`, optC: '1000', optD: '700' }, ans: `(A) C = ${cBar} + 0.8(1000) = ${cBar + 800}.` },
-      { text: 'Fiscal Deficit measures:', opts: { optA: 'Total borrowing requirements of the government', optB: 'Interest payments of the government', optC: 'Trade deficit of the economy', optD: 'Revenue deficit only' }, ans: '(A) Total government borrowing needs.' },
-      { text: 'Money Supply (M1) includes which of the following components?', opts: { optA: 'Currency with public + Demand deposits with banks + Other deposits with RBI', optB: 'Time deposits with commercial banks', optC: 'Post office recurring savings deposits', optD: 'Total national debt certificates' }, ans: '(A) M1 definition.' },
-      { text: 'Primary Deficit is calculated as:', opts: { optA: 'Fiscal Deficit - Interest Payments', optB: 'Revenue Deficit - Capital Expenditure', optC: 'Fiscal Deficit + Borrowings', optD: 'Budget Deficit - Tax Revenue' }, ans: '(A) Fiscal Deficit - Interest Payments.' },
-      { text: 'Depreciation of domestic currency in foreign exchange market leads to:', opts: { optA: 'Increase in exports of domestic goods', optB: 'Increase in imports of foreign goods', optC: 'Fall in foreign tourism inside country', optD: 'Decrease in domestic output' }, ans: '(A) Boosts exports by making domestic goods cheaper for foreigners.' },
-      { text: 'Which of the following items is treated as an intermediate product?', opts: { optA: 'Milk purchased by a sweet maker for making sweets', optB: 'Refrigerator installed in a household', optC: 'Printing machine purchased by a publishing firm', optD: 'Car purchased by a consumer' }, ans: '(A) Raw material consumed in production.' },
-      { text: 'The value of Marginal Propensity to Save (MPS) is always:', opts: { optA: 'Between 0 and 1', optB: 'Greater than 1', optC: 'Negative', optD: 'Infinite' }, ans: '(A) 0 <= MPS <= 1.' }
-    ];
-
-    // Indian Economic Development MCQs Bank (25 Items)
-    const iedMCQPool = [
-      { text: 'In Indian Economic History, the "Green Revolution" initially targeted which major grain crops in Punjab and Haryana?', opts: { optA: 'High-Yielding Varieties of Wheat and Rice', optB: 'Cotton and Jute', optC: 'Tea and Coffee', optD: 'Sugarcane and Pulses' }, ans: '(A) Wheat and Rice.' },
-      { text: 'NABARD was set up in which year to supervise rural credit and agricultural financing in India?', opts: { optA: '1982', optB: '1991', optC: '1975', optD: '1969' }, ans: '(A) 1982.' },
-      { text: 'The Great Leap Forward (GLF) campaign was launched in China in 1958 with the prime objective of:', opts: { optA: 'Widespread rapid industrialization in backyards and rural communes', optB: 'Privatizing commercial banks', optC: 'Inviting foreign multinational firms', optD: 'Abolishing state farms' }, ans: '(A) Rapid industrialization and rural communes.' },
-      { text: 'Which of the following is considered a primary source of Human Capital Formation?', opts: { optA: 'Expenditure on Education, Healthcare, and On-the-job training', optB: 'Construction of commercial highways', optC: 'Importing finished consumer electronic items', optD: 'Purchase of automated mining drills' }, ans: '(A) Investment in human health and education.' },
-      { text: 'In India, the Micro, Small and Medium Enterprises Development (MSMED) Act was enacted in:', opts: { optA: '2006', optB: '1991', optC: '2014', optD: '1980' }, ans: '(A) 2006.' },
-      { text: 'What is the full form of NITI Aayog?', opts: { optA: 'National Institution for Transforming India', optB: 'National Institute for Technical Innovation', optC: 'National Industrial Trade Initiative', optD: 'New India Technical Institute' }, ans: '(A) National Institution for Transforming India.' },
-      { text: 'Which economic system was adopted by post-independence India under Jawaharlal Nehru and P.C. Mahalanobis?', opts: { optA: 'Mixed Economic System with leading role to public sector', optB: 'Pure Free-Market Capitalist Economy', optC: 'Command Socialist Soviet System', optD: 'Feudal Agricultural System' }, ans: '(A) Mixed Economic System.' },
-      { text: 'Which of the following is an informal source of rural credit in India associated with high interest exploitation?', opts: { optA: 'Village Moneylenders & Commission Agents', optB: 'Regional Rural Banks (RRBs)', optC: 'Commercial Banks', optD: 'Cooperative Credit Societies' }, ans: '(A) Village Moneylenders.' },
-      { text: 'Pakistan initiated its first Five Year Plan in which year?', opts: { optA: '1956', optB: '1951', optC: '1960', optD: '1947' }, ans: '(A) 1956.' },
-      { text: 'Which agricultural pricing mechanism guarantees minimum remunerative returns to farmers before crop sowing?', opts: { optA: 'Minimum Support Price (MSP)', optB: 'Open Mandi Auction', optC: 'Futures Commodity Exchange', optD: 'Export Subsidy System' }, ans: '(A) Minimum Support Price.' },
-      { text: 'Organic farming is eco-friendly because it promotes:', opts: { optA: 'Sustainable agriculture without synthetic fertilizers and chemical pesticides', optB: 'Heavy chemical weedicides', optC: 'Excessive groundwater drawal', optD: 'Deforestation for cattle feed' }, ans: '(A) Chemical-free sustainable farming.' },
-      { text: 'Informalisation of workforce in India refers to:', opts: { optA: 'Growth in proportion of informal sector workers without social security benefits', optB: 'Shift from agricultural to software sector', optC: 'Rise in regular salaried government jobs', optD: 'Compulsory trade union membership' }, ans: '(A) Increase in unorganized/informal employment.' },
-      { text: 'Which country introduced the "One Child Norm" policy in 1979 to control demographic growth?', opts: { optA: 'China', optB: 'India', optC: 'Pakistan', optD: 'Bangladesh' }, ans: '(A) China.' },
-      { text: 'Disguised unemployment in India is most prominently observed in:', opts: { optA: 'Agriculture and rural family farming', optB: 'Organized software IT sector', optC: 'Commercial civil aviation', optD: 'Heavy capital equipment manufacturing' }, ans: '(A) Agricultural sector.' }
+    // MCQs Pool (Patterned after CBSE SQP 043)
+    const chemMCQPool = [
+      {
+        text: 'Which of the following reactions will lead to the formation of ethyl methyl ketone (butan-2-one)?',
+        opts: { optA: 'Ozonolysis of CH3-CH2-C(CH3)=CH-CH3 followed by Zn/H2O cleavage', optB: 'Heating 2-methylpropan-1-ol with acidified Na2Cr2O7', optC: 'Passing 2-methylpropan-2-ol vapors over heated copper at 573 K', optD: 'Hydration of ethyne in the presence of HgSO4 and dil. H2SO4' },
+        ans: '(A) Ozonolysis of 3-methylpent-2-ene yields butan-2-one.'
+      },
+      {
+        text: 'The counter ion present outside the coordination sphere in [Co(NH3)5(NO2)]Cl2 is:',
+        opts: { optA: 'Chloride ion (Cl⁻)', optB: 'Ammine (NH3)', optC: 'Cobalt ion', optD: 'Nitro group (NO2⁻)' },
+        ans: '(A) Chloride ion is ionizable counter ion outside coordination sphere.'
+      },
+      {
+        text: 'Which of the following carbohydrates is distinctly laevorotatory in aqueous solution?',
+        opts: { optA: 'beta-D-Fructose', optB: 'alpha-D-Glucose', optC: 'beta-D-Glucose', optD: 'Sucrose' },
+        ans: '(A) D-Fructose exhibits specific laevorotation of -92.4°.'
+      },
+      {
+        text: 'In o-cresol (2-methylphenol), the -OH group is directly attached to a carbon atom that is:',
+        opts: { optA: 'sp² hybridised', optB: 'sp³ hybridised', optC: 'sp hybridised', optD: 'dsp² hybridised' },
+        ans: '(A) sp² hybridized aromatic ring carbon.'
+      },
+      {
+        text: 'Which of the following organic compounds will form an orange-yellow precipitate with 2,4-Dinitrophenylhydrazine (2,4-DNP)?',
+        opts: { optA: 'Both Propanal and Propanone', optB: 'Propanoic acid only', optC: 'Propan-1-ol', optD: 'Ethyl ethanoate' },
+        ans: '(A) Aldehydes and ketones contain carbonyl group reacting with 2,4-DNP.'
+      },
+      {
+        text: 'Which of the following haloalkanes undergoes nucleophilic substitution via SN1 mechanism at the fastest rate?',
+        opts: { optA: '2-Bromo-2-methylpropane (tert-butyl bromide)', optB: '2-Bromopropane', optC: '1-Bromopropane', optD: 'Bromomethane' },
+        ans: '(A) Forms most stable tertiary carbocation.'
+      },
+      {
+        text: 'The limiting molar conductivity of acetic acid (CH3COOH) can be computed using Kohlrausch’s law from the values of:',
+        opts: { optA: 'Λ°m(HCl) + Λ°m(CH3COONa) - Λ°m(NaCl)', optB: 'Λ°m(NaOH) + Λ°m(CH3COOK) - Λ°m(KCl)', optC: 'Λ°m(H2SO4) + Λ°m(Na2SO4) - Λ°m(CH3COONa)', optD: 'Λ°m(NaCl) + Λ°m(HCl)' },
+        ans: '(A) Kohlrausch independent ionic migration law.'
+      },
+      {
+        text: 'Transition metal ions form colored complexes primarily due to:',
+        opts: { optA: 'd-d electronic transitions in partially filled d-orbitals', optB: 'Presence of completely filled d-subshell', optC: 'High heat of atomization', optD: 'High lattice energy' },
+        ans: '(A) d-d transition absorption in visible spectrum.'
+      },
+      {
+        text: 'Assertion (A): Boiling point of ethanol is significantly higher than that of methoxymethane.\nReason (R): Ethanol molecules associate via intermolecular hydrogen bonding whereas ethers lack hydrogen bonding.',
+        opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' },
+        ans: '(A) Both are true and (R) correctly explains (A).'
+      },
+      {
+        text: 'Assertion (A): Solutions injected into human bloodstream must possess the same osmotic pressure as that of blood plasma.\nReason (R): Hypotonic solutions cause haemolysis (swelling & bursting) of red blood cells.',
+        opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' },
+        ans: '(A) Both are true and (R) explains (A).'
+      },
+      {
+        text: 'Assertion (A): Secondary galvanic cells are widely used in home inverters and automobiles.\nReason (R): Secondary cells can be recharged by passing direct current through them in the reverse direction.',
+        opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' },
+        ans: '(A) Both are true and (R) explains (A).'
+      },
+      {
+        text: 'The linkage connecting consecutive amino acid units in a primary protein chain is:',
+        opts: { optA: 'Peptide linkage (-CONH-)', optB: 'Glycosidic linkage', optC: 'Phosphodiester linkage', optD: 'Disulfide linkage' },
+        ans: '(A) Peptide linkage.'
+      },
+      {
+        text: 'Which transition metal from the 3d series exhibits maximum number of variable oxidation states?',
+        opts: { optA: 'Manganese (+2 to +7)', optB: 'Chromium', optC: 'Iron', optD: 'Scandium' },
+        ans: '(A) Manganese has maximum unpaired d-electrons ([Ar] 3d⁵ 4s²).'
+      },
+      {
+        text: 'Which reagent is deployed in the Lucas test to distinguish between primary, secondary, and tertiary alcohols?',
+        opts: { optA: 'Anhydrous ZnCl2 + concentrated HCl', optB: 'Alkaline KMnO4 solution', optC: 'Acidified K2Cr2O7', optD: 'Pyridinium Chlorochromate (PCC)' },
+        ans: '(A) Anhydrous ZnCl2 and conc. HCl.'
+      },
+      {
+        text: 'The unit of rate constant (k) for a zero-order chemical reaction is:',
+        opts: { optA: 'mol L⁻¹ s⁻¹', optB: 's⁻¹', optC: 'L mol⁻¹ s⁻¹', optD: 'L² mol⁻² s⁻¹' },
+        ans: '(A) mol L⁻¹ s⁻¹.'
+      },
+      {
+        text: 'Which of the following amines will react with benzene sulphonyl chloride (Hinsberg reagent) to form a precipitate that is completely insoluble in aqueous NaOH?',
+        opts: { optA: 'Secondary aliphatic amine', optB: 'Primary aliphatic amine', optC: 'Tertiary aliphatic amine', optD: 'Aromatic quaternary salt' },
+        ans: '(A) Secondary amines lack acidic hydrogen on nitrogen after sulfonamide formation.'
+      }
     ];
 
     const questions: FullGeneratedQuestion[] = [];
     let qCount = 1;
 
     // -------------------------------------------------------------
-    // PART A: INTRODUCTORY MACROECONOMICS (Q1 TO Q17 = 40 MARKS)
+    // SECTION A: Q1 TO Q16 (16 MCQs x 1 Mark = 16 Marks)
     // -------------------------------------------------------------
-    // Q1 to Q10: 10 MCQs x 1 Mark = 10 Marks
-    shuffleArray(macroMCQPool).slice(0, 10).forEach((q, idx) => {
+    shuffleArray(chemMCQPool).slice(0, 16).forEach((q, idx) => {
       questions.push({
         qNum: qCount++,
-        partTitle: idx === 0 ? 'PART - A: INTRODUCTORY MACROECONOMICS (40 MARKS)' : undefined,
+        partTitle: idx === 0 ? 'SECTION - A: MULTIPLE CHOICE QUESTIONS (16 MARKS)' : undefined,
         typeBadge: '1 Mark MCQ',
         marks: 1,
         text: q.text,
@@ -112,227 +149,175 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       });
     });
 
-    // Q11 to Q12: 2 Questions x 3 Marks = 6 Marks (Rotated Pool)
-    const macro3MPool = [
-      {
-        text: `Explain the process of Money Creation / Credit Creation by commercial banks with an initial primary cash deposit of ₹${primDeposit.toLocaleString('en-IN')} and Legal Reserve Ratio (LRR) of ${lrrVal}%.`,
-        or: `Explain the "Lender of the Last Resort" and "Banker to the Government" functions of the Central Bank (Reserve Bank of India).`,
-        ans: `Money Multiplier = 1 / LRR = ${moneyMult}. Total credit created = ₹${primDeposit} x ${moneyMult} = ₹${totalCredit}. Show deposit schedule.`
-      },
-      {
-        text: 'Distinguish between Final Goods and Intermediate Goods with two suitable empirical examples of each.',
-        or: 'Explain the circular flow of income in a two-sector economy with the help of a labeled diagram.',
-        ans: 'Final goods: for consumption or investment. Intermediate goods: used as raw materials in same year.'
-      },
-      {
-        text: 'Explain how the Central Bank uses the Repo Rate and Reverse Repo Rate to stabilize liquidity in the commercial banking system.',
-        or: 'State any three precautions that must be taken while estimating National Income by the Value Added (Product) Method.',
-        ans: 'Repo rate controls lending cost; Reverse repo absorbs surplus liquidity.'
-      },
-      {
-        text: 'Distinguish between Real Gross Domestic Product (Real GDP) and Nominal Gross Domestic Product (Nominal GDP). Which of the two is a superior indicator of economic growth and why?',
-        or: 'Define Externalities. Differentiate between positive externalities and negative externalities with an illustrative example of each.',
-        ans: 'Real GDP evaluated at constant base year prices eliminates price inflation bias.'
-      }
-    ];
-
-    shuffleArray(macro3MPool).slice(0, 2).forEach(q => {
-      questions.push({
-        qNum: qCount++,
-        typeBadge: '3 Marks Short Answer',
-        marks: 3,
-        text: q.text,
-        orOptionText: q.or,
-        answerKey: q.ans
-      });
+    // -------------------------------------------------------------
+    // SECTION B: Q17 TO Q21 (5 VSA x 2 Marks = 10 Marks)
+    // -------------------------------------------------------------
+    questions.push({
+      qNum: qCount++,
+      partTitle: 'SECTION - B: VERY SHORT ANSWER QUESTIONS (10 MARKS)',
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: `When 50 mL of phenol and 50 mL of aniline are mixed:\n(i) Predict whether the total volume of the resulting solution will be equal to, greater than, or less than 100 mL. Give reason.\n(ii) State the type of deviation from Raoult's Law exhibited by this mixture.`,
+      orOptionText: `Answer the following:\n(i) Why does water stop boiling immediately when common salt or sugar is added to vigorously boiling water?\n(ii) If aqueous BaCl2 and Na2SO4 are placed on opposite sides of a semi-permeable membrane, will a white precipitate of BaSO4 appear in the cell? Justify.`,
+      answerKey: '(i) Volume will be less than 100 mL due to stronger intermolecular H-bonding between phenol and aniline. (ii) Exhibits negative deviation from Raoult law.'
     });
 
-    // Q13 to Q15: 3 Questions x 4 Marks = 12 Marks (Rotated Pool)
-    const macro4MPool = [
-      {
-        text: 'Distinguish between Revenue Receipts and Capital Receipts of the Central Government. Give two examples of each.',
-        or: 'Distinguish between Revenue Deficit and Fiscal Deficit. What are the economic implications of a high fiscal deficit on national debt?',
-        ans: 'Revenue receipts neither create liabilities nor reduce assets. Capital receipts create liabilities or reduce assets.'
-      },
-      {
-        text: `From the following data, calculate Gross National Product at Factor Cost (GNP_FC):\n- GDP at MP: ₹${gdpMp.toLocaleString('en-IN')} Crores\n- Net Factor Income from Abroad (NFIA): ${nfiaVal < 0 ? '(-)' : ''} ₹${Math.abs(nfiaVal).toLocaleString('en-IN')} Crores\n- Net Indirect Taxes (NIT): ₹${nitVal.toLocaleString('en-IN')} Crores\n- Consumption of Fixed Capital (Depreciation): ₹${depNat.toLocaleString('en-IN')} Crores.`,
-        or: `Explain the problem of "Double Counting" in calculating National Income. Describe the two methods to avoid it.`,
-        ans: `GNP_FC = GDP_MP + NFIA - NIT = ${gdpMp} + (${nfiaVal}) - ${nitVal} = ₹${gnpFc.toLocaleString('en-IN')} Crores.`
-      },
-      {
-        text: `CASE STUDY - MONETARY POLICY & INFLATION CONTROL IN INDIA:\nRead the following excerpt and answer the questions:\n"During the post-recovery phase, persistent global commodity price surges exerted pressure on domestic retail inflation. To anchor inflation expectations and suck out excess liquidity from the financial system, the Monetary Policy Committee (MPC) of the Reserve Bank of India sequentially raised the policy Repo Rate by 250 basis points."\n\n(i) Explain how an increase in Repo Rate curbs inflationary pressures in an economy. [2]\n(ii) Differentiate between Repo Rate and Reverse Repo Rate. [2]`,
-        or: undefined,
-        ans: '(i) Hike in Repo Rate raises borrowing cost for banks, contracting credit demand and checking inflation. (ii) Repo is lending rate by RBI; Reverse Repo is borrowing rate by RBI.'
-      },
-      {
-        text: `CASE STUDY - MANAGED FLOATING & FOREIGN EXCHANGE RESERVES:\n"The Reserve Bank of India intervenes actively in the spot foreign exchange market by selling US dollars from its official foreign currency assets whenever the domestic rupee undergoes acute speculative depreciation."\n\n(i) Identify and explain the foreign exchange rate system described above. [2]\n(ii) How does central bank sale of foreign currency in open market arrest rupee depreciation? [2]`,
-        or: undefined,
-        ans: '(i) Managed Floating Exchange Rate System (Dirty Floating). (ii) Selling foreign currency increases supply of foreign exchange in domestic market, checking depreciation.'
-      }
-    ];
-
-    shuffleArray(macro4MPool).slice(0, 3).forEach(q => {
-      questions.push({
-        qNum: qCount++,
-        typeBadge: '4 Marks Medium Answer',
-        marks: 4,
-        text: q.text,
-        orOptionText: q.or,
-        answerKey: q.ans
-      });
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: `For a chemical reaction H2(g) + I2(g) <=> 2HI(g), the potential energy of reactants is 100 kJ/mol, activation energy for forward reaction is 40 kJ/mol, and enthalpy of reaction ΔH is -20 kJ/mol.\n(i) Calculate the activation energy for the backward reaction.\n(ii) How will the addition of a suitable catalyst influence the value of activation energy?`,
+      answerKey: '(i) Ea(backward) = Ea(forward) - ΔH = 40 - (-20) = 60 kJ/mol. (ii) A catalyst lowers activation energy by providing an alternative pathway.'
     });
 
-    // Q16 to Q17: 2 Questions x 6 Marks = 12 Marks (Rotated Pool)
-    const macro6MPool = [
-      {
-        text: `In an economy, autonomous consumption C_bar = ₹${cBar} Crores, Marginal Propensity to Save (MPS) = ${mpsVal}, and planned autonomous investment I = ₹${invI} Crores:\n(i) Derive the Aggregate Consumption Function equation.\n(ii) Calculate the Equilibrium Level of National Income (Y).\n(iii) Calculate total consumption expenditure at equilibrium income.`,
-        or: `Explain the working of the Investment Multiplier with a diagrammatic illustration. What happens to the numerical value of multiplier if MPC increases?`,
-        ans: `MPC = 1 - ${mpsVal} = ${(1 - mpsVal).toFixed(2)}. Consumption equation C = ${cBar} + ${(1 - mpsVal).toFixed(2)}Y. Equilibrium Y = ₹${eqIncome.toLocaleString('en-IN')} Crores. C = ₹${eqCons.toLocaleString('en-IN')} Crores.`
-      },
-      {
-        text: 'Differentiate between Autonomous items and Accommodating items in the Balance of Payments (BoP). Explain the meaning of BoP Deficit and Surplus with reference to official reserve transactions.',
-        or: 'Explain the concept of Deflationary Gap (Deficient Demand) with a suitable diagram. State two monetary measures and two fiscal measures to correct it.',
-        ans: 'Autonomous items take place for economic profit; Accommodating items cover surplus/deficit in autonomous transactions.'
-      },
-      {
-        text: 'Explain the determination of Equilibrium National Income using Aggregate Demand (AD) and Aggregate Supply (AS) approach. What adjustments take place when planned AD exceeds planned AS?',
-        or: 'What is meant by Inflationary Gap? Explain how increasing the Cash Reserve Ratio (CRR) and reducing government public expenditure helps in restoring full employment equilibrium.',
-        ans: 'AD-AS equilibrium condition and inventory adjustment mechanism.'
-      }
-    ];
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: `Carry out the following organic conversions in not more than two steps:\n(i) Nitrobenzene to 4-Bromoaniline\n(ii) Chlorophenylmethane (Benzyl chloride) to 2-Phenylethanamine`,
+      answerKey: '(i) Nitrobenzene -> Aniline (Fe/HCl) -> Bromination with Br2/H2O. (ii) Benzyl chloride + KCN -> Benzyl cyanide -> Reduction (LiAlH4) to 2-Phenylethanamine.'
+    });
 
-    shuffleArray(macro6MPool).slice(0, 2).forEach(q => {
-      questions.push({
-        qNum: qCount++,
-        typeBadge: '6 Marks Long Answer',
-        marks: 6,
-        text: q.text,
-        orOptionText: q.or,
-        answerKey: q.ans
-      });
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: `Write the chemical formulas of the following coordination complexes:\n(i) Diaquasilver(I) dicyanidoargentate(I)\n(ii) Dihydroxidobis(triphenylphosphine)nickel(II)`,
+      answerKey: '(i) [Ag(H2O)2][Ag(CN)2]. (ii) [Ni(OH)2(PPh3)2].'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: `What are essential and non-essential amino acids? Give one example of each. Why do amino acids possess amphoteric behavior in aqueous solution?`,
+      answerKey: 'Essential cannot be synthesized in human body (e.g. Valine); Non-essential can be synthesized (e.g. Glycine). Amphoteric due to dipolar Zwitter ion.'
     });
 
     // -------------------------------------------------------------
-    // PART B: INDIAN ECONOMIC DEVELOPMENT (Q18 TO Q34 = 40 MARKS)
+    // SECTION C: Q22 TO Q28 (7 SA x 3 Marks = 21 Marks)
     // -------------------------------------------------------------
-    // Q18 to Q27: 10 MCQs x 1 Mark = 10 Marks
-    shuffleArray(iedMCQPool).slice(0, 10).forEach((q, idx) => {
-      questions.push({
-        qNum: qCount++,
-        partTitle: idx === 0 ? 'PART - B: INDIAN ECONOMIC DEVELOPMENT (40 MARKS)' : undefined,
-        typeBadge: '1 Mark MCQ',
-        marks: 1,
-        text: q.text,
-        options: q.opts,
-        answerKey: q.ans
-      });
+    questions.push({
+      qNum: qCount++,
+      partTitle: 'SECTION - C: SHORT ANSWER QUESTIONS (21 MARKS)',
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Calculate the mass of ascorbic acid (Vitamin C, C6H8O6, molar mass = 176 g/mol) to be dissolved in ${solventMass} g of acetic acid to lower its freezing point by ${deltaTf} K. (Kf for acetic acid = ${kfVal} K kg mol⁻¹).`,
+      answerKey: `ΔTf = Kf x (w2 x 1000) / (M2 x w1). w2 = (${deltaTf} x 176 x ${solventMass}) / (${kfVal} x 1000) = ${soluteMass} g.`
     });
 
-    // Q28 to Q29: 2 Questions x 3 Marks = 6 Marks (Rotated Pool)
-    const ied3MPool = [
-      {
-        text: 'Discuss any three positive contributions of the British Colonial Rule in India.',
-        or: 'What were the main causes of stagnation in the agricultural sector during the colonial British rule in India?',
-        ans: 'Contributions: Introduction of Railways, postal and telegraph networks, ports, and commercialization of agriculture.'
-      },
-      {
-        text: 'Explain the role of Micro-Credit and Self-Help Groups (SHGs) in promoting rural finance and empowering rural women in India.',
-        or: 'Differentiate between Formal Sector and Informal Sector employment in India with reference to social security benefits and regulatory protection.',
-        ans: 'SHGs mobilize rural savings, provide collateral-free micro-credit, and reduce dependence on informal moneylenders.'
-      },
-      {
-        text: 'Explain any three major challenges confronting the agricultural marketing system in rural India.',
-        or: 'State the importance of diversification of agricultural activities into allied non-farm enterprises (such as animal husbandry, fisheries, and horticulture).',
-        ans: 'Lack of cold storage, presence of exploitative middlemen, and distress sales by small farmers.'
-      }
-    ];
-
-    shuffleArray(ied3MPool).slice(0, 2).forEach(q => {
-      questions.push({
-        qNum: qCount++,
-        typeBadge: '3 Marks Short Answer',
-        marks: 3,
-        text: q.text,
-        orOptionText: q.or,
-        answerKey: q.ans
-      });
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Represent the cell and write the Nernst equation for the following electrochemical reactions at 298 K:\n(i) Ni(s) + Cu²⁺(aq) -> Ni²⁺(aq) + Cu(s)\n(ii) Mg(s) + 2Ag⁺(aq) -> Mg²⁺(aq) + 2Ag(s)\n(iii) Calculate E_cell if standard electrode potentials are E°(Ni²⁺/Ni) = -0.25 V and E°(Cu²⁺/Cu) = +0.34 V with [Ni²⁺]=0.1M and [Cu²⁺]=0.01M.`,
+      answerKey: 'E°cell = 0.34 - (-0.25) = 0.59 V. Nernst: Ecell = 0.59 - (0.0591/2) log([Ni²⁺]/[Cu²⁺]) = 0.59 - 0.0295 = 0.56 V.'
     });
 
-    // Q30 to Q32: 3 Questions x 4 Marks = 12 Marks (Rotated Pool)
-    const ied4MPool = [
-      {
-        text: 'Explain the "Outsourcing" boom during the post-1991 economic reforms. Why has India emerged as a leading global BPO/KPO destination?',
-        or: 'What were the prime objectives behind introducing the New Economic Policy (NEP) in 1991 in India? Discuss the key elements of Liberalisation.',
-        ans: 'Availability of skilled English-speaking workforce, low labor cost, and advanced IT infrastructure.'
-      },
-      {
-        text: `CASE STUDY - RURAL DIVERSIFICATION AND ORGANIC FARMING:\nRead the following case text and answer the questions:\n"Over-dependence on conventional chemical-intensive agriculture led to soil depletion, groundwater salinization, and debt traps for small farmers. In response, sustainable initiatives promoted organic farming and allied non-farm activities such as dairying, fisheries, and horticulture."\n\n(i) State two benefits and two challenges associated with adopting organic farming in India. [2]\n(ii) Why is occupational diversification into non-farm sectors necessary for rural livelihoods? [2]`,
-        or: `Compare the developmental strategies and structural economic shifts between India and China from 1980 to 2024.`,
-        ans: '(i) Benefits: Eco-friendly, chemical-free food, enhances soil fertility. Challenges: Lower initial yields, shorter shelf-life, marketing channels. (ii) Reduces agricultural disguised unemployment.'
-      },
-      {
-        text: 'Define Human Capital Formation. Explain how expenditure on education and preventive healthcare contributes to national economic growth.',
-        or: 'Discuss the concept of "Worker-Population Ratio". Why is the worker-population ratio higher in rural areas compared to urban areas in India?',
-        ans: 'Human capital formation builds productive capabilities. Education increases workforce productivity and health reduces absenteeism.'
-      },
-      {
-        text: `CASE STUDY - SUSTAINABLE DEVELOPMENT & ENVIRONMENTAL CRISIS:\n"The carrying capacity of the environment implies that the resource extraction is not above the rate of regeneration of the resource and the wastes generated are within the assimilating capacity of the environment. When this threshold is breached, environmental degradation ensues."\n\n(i) Differentiate between Renewable Resources and Non-Renewable Resources. [2]\n(ii) State any two corrective strategies adopted in India to achieve sustainable development. [2]`,
-        or: undefined,
-        ans: '(i) Renewable replenish naturally (solar, wind); Non-renewable exhaust over time (coal, petroleum). (ii) Promoting solar/wind power, bio-pest control, cleaner fuels like CNG/LPG.'
-      }
-    ];
-
-    shuffleArray(ied4MPool).slice(0, 3).forEach(q => {
-      questions.push({
-        qNum: qCount++,
-        typeBadge: '4 Marks Medium Answer',
-        marks: 4,
-        text: q.text,
-        orOptionText: q.or,
-        answerKey: q.ans
-      });
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Assign plausible chemical explanations for the following observations:\n(i) Toluene on chlorination with Cl2 in presence of sunlight yields benzyl chloride, whereas with Cl2 in presence of FeCl3 in dark yields o- and p-chlorotoluene.\n(ii) Finkelstein reaction of alkyl chlorides with NaI is carried out strictly in dry acetone.\n(iii) Neopentyl chloride has a lower boiling point than n-pentyl chloride.`,
+      answerKey: '(i) Sunlight favors free radical side-chain substitution; dark FeCl3 promotes electrophilic aromatic substitution. (ii) NaCl precipitates in dry acetone driving reaction forward. (iii) Branching decreases surface area and van der Waals forces.'
     });
 
-    // Q33 to Q34: 2 Questions x 6 Marks = 12 Marks (Rotated Pool)
-    const ied6MPool = [
-      {
-        text: 'Compare and contrast the demographic indicators and human development performance of India, China, and Pakistan based on Fertility Rate, Sex Ratio, and HDI ranking.',
-        or: `Elaborate upon the inward-looking trade strategy (Import Substitution) adopted by India during 1950-1990. Evaluate its merits and critical limitations.`,
-        ans: 'China: low fertility rate and high HDI. India: replacement level fertility and intermediate HDI. Pakistan: higher fertility and low HDI.'
-      },
-      {
-        text: 'Critically appraise the Economic Reforms of 1991 in India (LPG Policy). Highlight three major achievements and three significant failures.',
-        or: 'What is Sustainable Economic Development? State any four environmental challenges confronting India and explain four strategies to achieve sustainable growth.',
-        ans: 'Achievements: Foreign exchange reserve surge, private sector expansion, GDP growth. Failures: Agricultural neglect, jobless growth, disinvestment undervaluation.'
-      },
-      {
-        text: 'Trace the developmental trajectory of China from 1958 to 2024. How did the Great Leap Forward (GLF) and Special Economic Zones (SEZs) catalyze rapid industrial transformation?',
-        or: 'Discuss the state of Indian Agriculture on the eve of Independence. Explain the land reforms and the Green Revolution implemented post-independence to attain food self-sufficiency.',
-        ans: 'China structural transformation through rural communes, state capitalism, and export-oriented SEZ corridors.'
-      }
-    ];
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Account for the following trends in 3d transition metal chemistry:\n(i) Enthalpy of atomization of zinc is the lowest in 3d series (126 kJ/mol).\n(ii) Sc³⁺ and Zn²⁺ salts are completely white and diamagnetic, whereas Ti³⁺ and Cu²⁺ salts are colored.\n(iii) Transition metals act as excellent industrial catalysts.`,
+      answerKey: '(i) Zinc has no unpaired d-electrons ([Ar] 3d¹⁰ 4s²), metallic bonding is weak. (ii) Sc³⁺ (3d⁰) and Zn²⁺ (3d¹⁰) have no unpaired electrons for d-d transition. (iii) Variable oxidation states and vacant d-orbitals.'
+    });
 
-    shuffleArray(ied6MPool).slice(0, 2).forEach(q => {
-      questions.push({
-        qNum: qCount++,
-        typeBadge: '6 Marks Long Answer',
-        marks: 6,
-        text: q.text,
-        orOptionText: q.or,
-        answerKey: q.ans
-      });
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Arrange the following compounds as directed:\n(a) Increasing order of acidic strength: Formic acid, Acetic acid, Chloroacetic acid, Trichloroacetic acid [1]\n(b) Increasing order of boiling point: Butan-1-ol, Butanal, Butane, Ethoxyethane [1]\n(c) Increasing order of basic strength in aqueous solution: (CH3)3N, (CH3)2NH, CH3NH2, NH3 [1]`,
+      answerKey: '(a) Acetic < Formic < Chloroacetic < Trichloroacetic. (b) Butane < Ethoxyethane < Butanal < Butan-1-ol. (c) NH3 < (CH3)3N < CH3NH2 < (CH3)2NH.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Write the chemical reaction mechanism for acid-catalyzed hydration of ethene to yield ethanol showing all three distinct mechanistic steps.`,
+      orOptionText: `How will you bring about the following transformations:\n(i) Butan-2-one to 3-Methylpentan-3-ol\n(ii) Anisole to 4-Methoxytoluene\n(iii) Phenol to Salicylaldehyde (Reimer-Tiemann Reaction)`,
+      answerKey: 'Step 1: Electrophilic attack of H3O⁺ forming carbocation. Step 2: Nucleophilic attack of water. Step 3: Deprotonation.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `A first-order thermal decomposition reaction has a rate constant of ${kRate1} s⁻¹. How long will 5.0 g of this reactant take to reduce to 3.0 g? (Given log 5 = 0.6990, log 3 = 0.4771).`,
+      answerKey: 't = (2.303 / k) x log([A0]/[A]). Calculate t using log(5/3) = 0.2219.'
+    });
+
+    // -------------------------------------------------------------
+    // SECTION D: Q29 TO Q30 (2 Case-Based x 4 Marks = 8 Marks)
+    // -------------------------------------------------------------
+    questions.push({
+      qNum: qCount++,
+      partTitle: 'SECTION - D: CASE-BASED QUESTIONS (8 MARKS)',
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - CONDUCTIVITY & DEGREE OF DISSOCIATION OF ELECTROLYTES:\nElectrical conductivity in aqueous solutions depends on ion mobility and ion concentration. Strong electrolytes (HCl, NaOH, NaCl) dissociate completely even at high concentrations, exhibiting a gradual linear increase in molar conductivity with dilution described by Kohlrausch equation: Λm = Λ°m - A√c. In contrast, weak electrolytes (CH3COOH, NH4OH) have a very low degree of dissociation at high concentrations, but dilute solutions show a sharp parabolic upsurge as dissociation approaches unity.\n\n(i) Explain why molar conductivity of both strong and weak electrolytes increases on dilution. [1]\n(ii) State Kohlrausch’s Law of Independent Migration of Ions. [1]\n(iii) The molar conductivity of 0.025 mol L⁻¹ methanoic acid is 46.1 S cm² mol⁻¹. Calculate its degree of dissociation (α) and dissociation constant (Ka). Given λ°(H⁺) = 349.6 S cm² mol⁻¹ and λ°(HCOO⁻) = 54.6 S cm² mol⁻¹. [2]`,
+      orOptionText: `CASE STUDY - CORROSION AS AN ELECTROCHEMICAL PHENOMENON:\n(i) Write the anodic and cathodic chemical reactions occurring during atmospheric rusting of iron. [2]\n(ii) Why is rusting accelerated in saline seawater? [1]\n(iii) Explain how sacrificial cathodic protection using zinc blocks prevents underground iron pipes from rusting. [1]`,
+      answerKey: '(i) Dilution increases ionic mobility and increases ionization of weak electrolytes. (ii) Λ°m equals sum of ionic conductivities. (iii) Λ°m = 404.2 S cm²/mol, α = 46.1 / 404.2 = 0.114. Ka = cα²/(1-α) = 3.67 x 10⁻⁴ mol/L.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - IRON-EDTA COMPLEX & CHELATION IN FOOD FORTIFICATION:\nMicronutrient malnutrition affects over 40% of populations in developing regions. To combat iron deficiency anaemia, staple food products are fortified with iron fortificants. While common ferrous sulphate precipitates and absorbs poorly in the presence of polyphenols in tea, the synthetic complex Sodium Iron(III) Ethylenediaminetetraacetate [Fe(III)-EDTA] remains completely soluble and bioavailable. EDTA is a hexadentate chelating ligand that wraps around the central iron ion forming five-membered chelate rings, imparting extraordinary thermodynamic stability.\n\n(i) What is the denticity of EDTA ligand and through which coordinating donor atoms does it bind to Fe³⁺? [1]\n(ii) Why is [Fe(III)-EDTA] complex thermodynamically much more stable than simple ferrous sulphate salt? [1]\n(iii) Draw the coordination geometry or write the IUPAC name of the complex ion [Fe(EDTA)]⁻. [2]`,
+      answerKey: '(i) Hexadentate ligand binding through 2 nitrogen atoms and 4 carboxylate oxygen atoms. (ii) Chelate effect: formation of stable five-membered rings with high entropy change. (iii) Ethylenediaminetetraacetatoferrate(III) ion.'
+    });
+
+    // -------------------------------------------------------------
+    // SECTION E: Q31 TO Q33 (3 Long Answer x 5 Marks = 15 Marks)
+    // -------------------------------------------------------------
+    questions.push({
+      qNum: qCount++,
+      partTitle: 'SECTION - E: LONG ANSWER QUESTIONS (15 MARKS)',
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: `(a) An organic compound (A) with molecular formula C8H8O gives an orange-red precipitate with 2,4-DNP reagent and a yellow precipitate of iodoform on heating with I2 and NaOH. It does not reduce Tollens’ reagent or Fehling’s solution. On drastic oxidation with acidified KMnO4, it gives a carboxylic acid (B) having formula C7H6O2. Identify compounds (A) and (B) and write all chemical equations involved. [3]\n(b) Write chemical equations to illustrate the following reactions:\n(i) Cannizzaro reaction of benzaldehyde\n(ii) Wolff-Kishner reduction of propanal [2]`,
+      orOptionText: `(a) Describe the stepwise mechanism of nucleophilic addition of HCN to acetaldehyde in weakly alkaline medium. [2]\n(b) Give simple chemical tests to distinguish between:\n(i) Pentan-2-one and Pentan-3-one\n(ii) Benzaldehyde and Acetophenone\n(iii) Phenol and Benzoic acid [3]`,
+      answerKey: '(a) Compound A is Acetophenone (C6H5COCH3); Compound B is Benzoic acid (C6H5COOH). (b) Cannizzaro: 2 C6H5CHO + conc NaOH -> C6H5CH2OH + C6H5COONa. Wolff-Kishner: CH3CH2CHO + NH2NH2 -> CH3CH2CH3.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: `(a) Using Crystal Field Theory (CFT), explain why [Co(NH3)6]³⁺ is a diamagnetic low-spin complex whereas [CoF6]³⁻ is a paramagnetic high-spin complex. (Atomic number of Co = 27). [3]\n(b) Write the IUPAC name and state the type of isomerism shown by the pair:\n[Co(NH3)5(SO4)]Br and [Co(NH3)5Br]SO4. [2]`,
+      orOptionText: `(a) What is Lanthanoid Contraction? State its two critical chemical consequences on the properties of 4d and 5d transition series. [3]\n(b) Write balanced ionic equations for the oxidizing action of acidified potassium dichromate (K2Cr2O7) on:\n(i) Fe²⁺ (Ferrous ions)\n(ii) I⁻ (Iodide ions) [2]`,
+      answerKey: '(a) NH3 is strong field ligand, Δo > P, pairs electrons in t2g⁶ eg⁰ (diamagnetic). F⁻ is weak field ligand, Δo < P, t2g⁴ eg² (paramagnetic, 4 unpaired electrons). (b) Ionization isomerism.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: `(a) The rate of a chemical reaction ${factorTriples} when the temperature increases from ${tempT1} K to ${tempT2} K. Calculate the activation energy (Ea) of the reaction. (Given R = 8.314 J K⁻¹ mol⁻¹, log 2 = 0.3010, log 3 = 0.4771). [3]\n(b) Consider the first-order gas phase thermal decomposition: A(g) -> 2B(g) + C(g). The initial pressure was 100 mm Hg and total pressure after 10 minutes was 180 mm Hg. Calculate the rate constant (k). [2]`,
+      orOptionText: `(a) Define order and molecularity of a reaction. Why can molecularity of an elementary reaction never be zero or fractional? [2]\n(b) Differentiate between fibrous proteins and globular proteins with one biological example of each. What chemical changes occur during the denaturation of proteins? [3]`,
+      answerKey: '(a) log(k2/k1) = Ea/(2.303 R) x [1/T1 - 1/T2]. Calculate Ea in kJ/mol. (b) Gas phase rate constant formula k = (2.303/t) log(pi / (2pi - pt)).'
     });
 
     return {
       questions,
-      totalMarks: 80,
+      totalMarks: 70,
       instructions: [
-        'This question paper contains 34 questions divided into two Parts – Part A (Macroeconomics - 40 Marks) and Part B (Indian Economic Development - 40 Marks).',
-        'Questions 1 to 10 and 18 to 27 are 1-mark Multiple Choice Questions.',
-        'Questions 11 to 12 and 28 to 29 are 3-marks Short Answer Questions.',
-        'Questions 13 to 15 and 30 to 32 are 4-marks Medium Answer & Case-based Questions.',
-        'Questions 16 to 17 and 33 to 34 are 6-marks Long Answer Questions.',
-        'Internal choices have been provided in questions of 3, 4, and 6 marks. All working notes must be clearly shown.'
+        'There are 33 questions in this question paper with internal choice.',
+        'SECTION A consists of 16 multiple-choice questions carrying 1 mark each.',
+        'SECTION B consists of 5 short answer questions carrying 2 marks each.',
+        'SECTION C consists of 7 short answer questions carrying 3 marks each.',
+        'SECTION D consists of 2 case-based questions carrying 4 marks each.',
+        'SECTION E consists of 3 long answer questions carrying 5 marks each.',
+        'All questions are compulsory. Use of log tables and calculators is not allowed.'
       ]
     };
   }
@@ -909,7 +894,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   }
 
   // =========================================================================
-  // 4. FALLBACK FOR OTHER SUBJECTS
+  // 4. FALLBACK FOR REMAINING SUBJECTS
   // =========================================================================
   const subCode = cleanSub.match(/\d+/)?.[0] || '2026';
   const genericQuestions: FullGeneratedQuestion[] = [];
