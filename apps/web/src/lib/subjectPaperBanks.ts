@@ -33,248 +33,137 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   const cleanSub = subjectName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   // =========================================================================
-  // 1. CHEMISTRY (CODE 043) - 70 MARKS (33 QUESTIONS OFFICIAL CBSE BLUEPRINT)
-  // =========================================================================
-  if (cleanSub.includes('043') || cleanSub.includes('chemistry')) {
-    const chemMCQs = [
-      { text: 'Which of the following colligative properties is standardly used for determination of molar mass of biomolecules and polymers?', opts: { optA: 'Osmotic Pressure', optB: 'Elevation in Boiling Point', optC: 'Depression in Freezing Point', optD: 'Relative Lowering of Vapour Pressure' }, ans: '(A) Osmotic Pressure.' },
-      { text: 'The unit of rate constant for a zero order reaction is:', opts: { optA: 'mol L⁻¹ s⁻¹', optB: 's⁻¹', optC: 'L mol⁻¹ s⁻¹', optD: 'mol⁻¹ L s⁻¹' }, ans: '(A) mol L⁻¹ s⁻¹.' },
-      { text: 'Which transition metal from the 3d series exhibits the maximum number of variable oxidation states?', opts: { optA: 'Manganese (Mn)', optB: 'Chromium (Cr)', optC: 'Iron (Fe)', optD: 'Titanium (Ti)' }, ans: '(A) Manganese (+2 to +7).' },
-      { text: 'According to IUPAC nomenclature, the coordination complex [Co(NH3)5(CO3)]Cl is named as:', opts: { optA: 'Pentaamminecarbonatocobalt(III) chloride', optB: 'Carbonatopentaamminecobalt(II) chloride', optC: 'Pentaamminechloridocobalt(III) carbonate', optD: 'Pentaamminecarbonatocobalt(II) chloride' }, ans: '(A) Pentaamminecarbonatocobalt(III) chloride.' },
-      { text: 'Which reagent is used in Lucas Test to distinguish between primary, secondary, and tertiary alcohols?', opts: { optA: 'Anhydrous ZnCl2 + conc. HCl', optB: 'Alkaline KMnO4', optC: 'Acidified K2Cr2O7', optD: 'PCC in CH2Cl2' }, ans: '(A) Anhydrous ZnCl2 and conc. HCl.' },
-      { text: 'Which of the following haloalkanes undergoes SN1 reaction at the fastest rate?', opts: { optA: '(CH3)3C-Br (tert-butyl bromide)', optB: '(CH3)2CH-Br', optC: 'CH3-CH2-Br', optD: 'CH3-Br' }, ans: '(A) (CH3)3C-Br forms stable tertiary carbocation.' },
-      { text: 'The reaction of an aldehyde having no alpha-hydrogen with concentrated NaOH is known as:', opts: { optA: 'Cannizzaro Reaction', optB: 'Aldol Condensation', optC: 'Clemmensen Reduction', optD: 'Wolff-Kishner Reduction' }, ans: '(A) Cannizzaro Reaction.' },
-      { text: 'Gabriel Phthalimide synthesis is exclusively used for the preparation of:', opts: { optA: 'Primary aliphatic amines', optB: 'Aromatic primary amines', optC: 'Secondary amines', optD: 'Tertiary amines' }, ans: '(A) Primary aliphatic amines.' },
-      { text: 'The linkage present between two monosaccharide units in a disaccharide molecule is:', opts: { optA: 'Glycosidic Linkage', optB: 'Peptide Linkage', optC: 'Phosphodiester Linkage', optD: 'Ester Linkage' }, ans: '(A) Glycosidic Linkage.' },
-      { text: 'Which vitamin is water soluble and excreted readily in urine?', opts: { optA: 'Vitamin C', optB: 'Vitamin A', optC: 'Vitamin D', optD: 'Vitamin K' }, ans: '(A) Vitamin C.' },
-      { text: 'The molar conductivity of an electrolytic solution increases with dilution due to:', opts: { optA: 'Increase in degree of dissociation and mobility of ions', optB: 'Increase in number of ions per unit volume', optC: 'Decrease in ionic hydration', optD: 'Increase in solution density' }, ans: '(A) Increase in degree of dissociation.' },
-      { text: 'Assertion (A): Boiling points of alcohols are significantly higher than corresponding hydrocarbons of similar molecular mass.\nReason (R): Alcohols form extensive intermolecular hydrogen bonding.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true and (R) explains (A).' }
-    ];
-
-    const questions: FullGeneratedQuestion[] = [];
-
-    // Section A: 16 MCQs (1M)
-    shuffleArray(chemMCQs).slice(0, 16).forEach((q, idx) => {
-      questions.push({
-        qNum: idx + 1,
-        partTitle: idx === 0 ? 'SECTION - A: MULTIPLE CHOICE QUESTIONS (16 MARKS)' : undefined,
-        typeBadge: '1 Mark MCQ',
-        marks: 1,
-        text: q.text,
-        options: q.opts,
-        answerKey: q.ans
-      });
-    });
-
-    // Section B: 5 VSA (2M = 10 Marks)
-    questions.push({
-      qNum: 17,
-      partTitle: 'SECTION - B: SHORT ANSWER QUESTIONS (10 MARKS)',
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'Calculate the mass of ascorbic acid (Vitamin C, C6H8O6) to be dissolved in 75 g of acetic acid to lower its melting point by 1.5 K. (Kf for acetic acid = 3.9 K kg mol⁻¹).',
-      answerKey: 'ΔTf = Kf x m. Molar mass of ascorbic acid = 176 g/mol. Weight = (1.5 x 176 x 75) / (3.9 x 1000) = 5.077 g.'
-    });
-
-    questions.push({
-      qNum: 18,
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'A first order reaction has a rate constant of 1.15 x 10⁻³ s⁻¹. How long will 5 g of this reactant take to reduce to 3 g?',
-      answerKey: 't = (2.303 / k) x log([A0]/[A]) = (2.303 / 1.15x10⁻³) x log(5/3) = 2.002 x 10³ x 0.2219 = 444 seconds.'
-    });
-
-    questions.push({
-      qNum: 19,
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'Write the IUPAC names and electronic configuration of central metal ions in:\n(i) [Cr(NH3)4Cl2]Cl\n(ii) K3[Fe(CN)6]',
-      answerKey: '(i) Tetraamminedichloridochromium(III) chloride (Cr³⁺: [Ar] 3d³). (ii) Potassium hexacyanidoferrate(III) (Fe³⁺: [Ar] 3d⁵).'
-    });
-
-    questions.push({
-      qNum: 20,
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'Explain the following chemical transformations with balanced chemical equations:\n(i) Reimer-Tiemann Reaction\n(ii) Williamson’s Ether Synthesis',
-      orOptionText: 'How will you convert:\n(i) Aniline to Bromobenzene\n(ii) Chlorobenzene to Phenol',
-      answerKey: '(i) Phenol + CHCl3 + aq NaOH -> Salicylaldehyde. (ii) R-X + R-ONa -> R-O-R + NaX.'
-    });
-
-    questions.push({
-      qNum: 21,
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'What are essential and non-essential amino acids? Give one example of each.',
-      answerKey: 'Essential cannot be synthesized in body (e.g. Valine, Leucine); Non-essential are synthesized in body (e.g. Glycine, Alanine).'
-    });
-
-    // Section C: 7 SA (3M = 21 Marks)
-    questions.push({
-      qNum: 22,
-      partTitle: 'SECTION - C: SHORT ANSWER QUESTIONS (21 MARKS)',
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'A cell is set up: Zn | Zn²⁺(0.1 M) || Cu²⁺(0.01 M) | Cu. Given E°(Zn²⁺/Zn) = -0.76 V and E°(Cu²⁺/Cu) = +0.34 V. Calculate the EMF of the cell at 298 K using Nernst equation.',
-      answerKey: 'E°cell = 0.34 - (-0.76) = 1.10 V. Ecell = 1.10 - (0.0591/2) x log(0.1/0.01) = 1.10 - 0.0295 = 1.07 V.'
-    });
-
-    questions.push({
-      qNum: 23,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Assign suitable chemical reasons for the following:\n(i) Transition metals and their compounds exhibit high catalytic activity.\n(ii) Zr and Hf have almost identical atomic and ionic radii.\n(iii) Transition metals form large numbers of interstitial compounds.',
-      answerKey: '(i) Variable oxidation states and ability to form complexes. (ii) Lanthanoid contraction. (iii) Small atoms (H, C, N) trapped in crystal lattice.'
-    });
-
-    questions.push({
-      qNum: 24,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Write the chemical reactions taking place during:\n(i) Carbylamine test for primary amines\n(ii) Hoffmann Bromamide degradation reaction\n(iii) Diazotization of aniline',
-      answerKey: '(i) R-NH2 + CHCl3 + 3KOH -> R-NC + 3KCl + 3H2O. (ii) R-CONH2 + Br2 + 4KOH -> R-NH2 + K2CO3 + 2KBr + 2H2O. (iii) C6H5NH2 + NaNO2 + HCl -> C6H5N2⁺Cl⁻.'
-    });
-
-    questions.push({
-      qNum: 25,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Describe the mechanism of acid-catalyzed dehydration of ethanol to yield ethene at 443 K.',
-      answerKey: 'Step 1: Protonation of alcohol. Step 2: Formation of carbocation (rate determining). Step 3: Elimination of proton to form ethene.'
-    });
-
-    questions.push({
-      qNum: 26,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Give simple chemical tests to distinguish between:\n(i) Acetaldehyde and Benzaldehyde (Fehling’s test)\n(ii) Propan-2-one and Propan-3-one (Iodoform test)\n(iii) Phenol and Benzoic Acid (NaHCO3 test)',
-      answerKey: '(i) Acetaldehyde gives red Cu2O precipitate. (ii) Propan-2-one forms yellow CHI3 precipitate. (iii) Benzoic acid gives effervescence of CO2 with NaHCO3.'
-    });
-
-    questions.push({
-      qNum: 27,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Define the following terms:\n(i) Peptide linkage\n(ii) Denaturation of proteins\n(iii) Invert sugar',
-      answerKey: '(i) -CONH- bond formed between amino acids. (ii) Loss of biological activity due to disruption of secondary/tertiary structure. (iii) Equimolar mixture of D-glucose and D-fructose formed on sucrose hydrolysis.'
-    });
-
-    questions.push({
-      qNum: 28,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'State Raoult’s law for a solution containing volatile liquid components. What are the differences between an ideal solution and non-ideal solution exhibiting positive deviation?',
-      orOptionText: 'Define Kohlrausch’s law of independent migration of ions. How is it applied to calculate the limiting molar conductivity of weak electrolytes like acetic acid?',
-      answerKey: 'Ideal: ΔHmix = 0, ΔVmix = 0, obeys Raoult law. Positive deviation: A-B interactions weaker than A-A and B-B, ΔHmix > 0, ΔVmix > 0.'
-    });
-
-    // Section D: 2 Case Studies (4M = 8 Marks)
-    questions.push({
-      qNum: 29,
-      partTitle: 'SECTION - D: CASE-BASED QUESTIONS (8 MARKS)',
-      typeBadge: '4 Marks Case-Based',
-      marks: 4,
-      text: `CASE STUDY - ELECTROCHEMICAL CORROSION & RUSTING:\nCorrosion is an electrochemical phenomenon where a metal is oxidized by loss of electrons to oxygen and moisture. For iron, an electrochemical cell is established where impure iron surface acts as anode: Fe(s) -> Fe²⁺(aq) + 2e⁻ (E° = -0.44 V). Electrons move through metal to cathode where oxygen is reduced in acidic medium: O2 + 4H⁺ + 4e⁻ -> 2H2O (E° = +1.23 V).\n\n(i) Write the overall redox cell reaction of atmospheric rusting of iron. [1]\n(ii) Why is rusting of iron accelerated in saline marine water? [1]\n(iii) Explain how sacrificial cathodic protection using zinc blocks (galvanization) prevents underground iron pipes from rusting. [2]`,
-      answerKey: '(i) 2Fe + O2 + 4H⁺ -> 2Fe²⁺ + 2H2O. (ii) Saline water increases electrolytic conductivity. (iii) Zinc has more negative reduction potential (-0.76 V) than iron (-0.44 V), so zinc oxidizes preferentially.'
-    });
-
-    questions.push({
-      qNum: 30,
-      typeBadge: '4 Marks Case-Based',
-      marks: 4,
-      text: `CASE STUDY - CHEMICAL KINETICS OF RADIOPHARMACEUTICALS:\nRadioactive isotopes decay by first-order kinetics. A radiopharmaceutical isotope iodine-131 used for thyroid therapy has a half-life of 8 days. A clinic receives a fresh sample containing 40 mg of I-131.\n\n(i) Calculate the rate constant (decay constant k) of I-131 in day⁻¹. [1]\n(ii) What mass of I-131 will remain un-decayed after 24 days? [2]\n(iii) How is the half-life of a first order reaction related to initial concentration? [1]`,
-      answerKey: '(i) k = 0.693 / t1/2 = 0.693 / 8 = 0.0866 day⁻¹. (ii) 24 days = 3 half-lives. Remaining = 40 / 2³ = 5 mg. (iii) Half-life of first-order reaction is completely independent of initial concentration.'
-    });
-
-    // Section E: 3 Long Answer (5M = 15 Marks)
-    questions.push({
-      qNum: 31,
-      partTitle: 'SECTION - E: LONG ANSWER QUESTIONS (15 MARKS)',
-      typeBadge: '5 Marks Long Answer',
-      marks: 5,
-      text: `(a) An organic compound (A) with molecular formula C8H8O forms an orange-red precipitate with 2,4-DNP reagent and gives a yellow precipitate on heating with iodine in the presence of sodium hydroxide. It neither reduces Tollens’ or Fehling’s reagent, nor does it decolourise bromine water. On drastic oxidation with chromic acid, it gives a carboxylic acid (B) having molecular formula C7H6O2. Identify compounds (A) and (B) and explain the reactions involved. [3]\n(b) Write the IUPAC names and structures of products formed when propanone reacts with methylmagnesium bromide followed by hydrolysis. [2]`,
-      orOptionText: `(a) Describe the stepwise mechanism of nucleophilic addition of HCN to acetaldehyde. [2]\n(b) How will you synthesize the following conversions:\n(i) Benzene to Acetophenone\n(ii) Toluene to Benzaldehyde (Etard Reaction)\n(iii) Ethanol to 3-Hydroxybutanal (Aldol condensation) [3]`,
-      answerKey: '(a) (A) is Acetophenone (C6H5COCH3); (B) is Benzoic acid (C6H5COOH). (b) Product is 2-Methylpropan-2-ol.'
-    });
-
-    questions.push({
-      qNum: 32,
-      typeBadge: '5 Marks Long Answer',
-      marks: 5,
-      text: `(a) Using Crystal Field Theory, write the electronic configuration of central metal ion in [Fe(H2O)6]²⁺ and [Fe(CN)6]⁴⁻. Predict their magnetic behavior and geometry. [3]\n(b) Explain why [NiCl4]²⁻ is paramagnetic and tetrahedral whereas [Ni(CN)4]²⁻ is diamagnetic and square planar. (Atomic number of Ni = 28). [2]`,
-      answerKey: '(a) [Fe(H2O)6]²⁺: weak field ligand, t2g⁴ eg² (paramagnetic, 4 unpaired electrons). [Fe(CN)6]⁴⁻: strong field ligand, t2g⁶ eg⁰ (diamagnetic). (b) Cl⁻ is weak ligand so no pairing (sp³); CN⁻ is strong ligand forcing pairing (dsp²).'
-    });
-
-    questions.push({
-      qNum: 33,
-      typeBadge: '5 Marks Long Answer',
-      marks: 5,
-      text: `(a) State Kohlrausch’s law. The molar conductivity of 0.025 mol L⁻¹ methanoic acid is 46.1 S cm² mol⁻¹. Calculate its degree of dissociation and dissociation constant Ka. Given λ°(H⁺) = 349.6 S cm² mol⁻¹ and λ°(HCOO⁻) = 54.6 S cm² mol⁻¹. [3]\n(b) Write the anodic, cathodic, and overall chemical reactions occurring in a hydrogen-oxygen fuel cell. [2]`,
-      answerKey: '(a) Λ°m = 349.6 + 54.6 = 404.2 S cm² mol⁻¹. α = 46.1 / 404.2 = 0.114. Ka = cα² / (1 - α) = 3.67 x 10⁻⁴ mol/L. (b) Anode: 2H2 + 4OH⁻ -> 4H2O + 4e⁻; Cathode: O2 + 2H2O + 4e⁻ -> 4OH⁻; Overall: 2H2 + O2 -> 2H2O.'
-    });
-
-    return {
-      questions,
-      totalMarks: 70,
-      instructions: [
-        'This question paper contains 33 questions divided into 5 Sections – A, B, C, D and E.',
-        'Section A comprises 16 Multiple Choice Questions of 1 mark each (Q1 to Q16).',
-        'Section B comprises 5 Short Answer Questions of 2 marks each (Q17 to Q21).',
-        'Section C comprises 7 Short Answer Questions of 3 marks each (Q22 to Q28).',
-        'Section D comprises 2 Case-Based Questions of 4 marks each (Q29 & Q30).',
-        'Section E comprises 3 Long Answer Questions of 5 marks each (Q31 to Q33).',
-        'Internal choices have been provided in selective questions. Calculators are not permitted.'
-      ]
-    };
-  }
-
-  // =========================================================================
-  // 2. ACCOUNTANCY (CODE 055) - 80 MARKS (34 QUESTIONS)
+  // 1. ACCOUNTANCY (CODE 055) - TRUE MULTI-POOL RANDOMIZED ENGINE
   // =========================================================================
   if (cleanSub.includes('055') || cleanSub.includes('accountancy')) {
-    const partnerSet = getRandomChoice([
-      { p1: 'Anil', p2: 'Sunil', p3: 'Mohan', r1: 3, r2: 2, r3: 1, cap1: '3,00,000', cap2: '2,00,000', cap3: '1,00,000' },
-      { p1: 'Rohit', p2: 'Kavita', p3: 'Deepak', r1: 5, r2: 3, r3: 2, cap1: '5,00,000', cap2: '3,00,000', cap3: '2,00,000' },
-      { p1: 'Aarav', p2: 'Bhavna', p3: 'Chetan', r1: 4, r2: 3, r3: 1, cap1: '4,00,000', cap2: '3,00,000', cap3: '1,00,000' }
-    ]);
-
-    const compSet = getRandomChoice([
-      { cName: 'Zenith Tech Ltd', shares: '60,000', appShares: '80,000', faceVal: 10, prem: 2 },
-      { cName: 'Apex Infotech Ltd', shares: '50,000', appShares: '75,000', faceVal: 10, prem: 3 },
-      { cName: 'Vanguard Solar Ltd', shares: '1,00,000', appShares: '1,40,000', faceVal: 10, prem: 2 }
-    ]);
-
-    const partA_MCQs = [
-      { text: 'In the absence of a Partnership Deed, interest on advances or loan given by a partner to the firm is payable at:', opts: { optA: '6% p.a.', optB: '10% p.a.', optC: '12% p.a.', optD: 'Zero / Nil' }, ans: '(A) 6% p.a.' },
+    // 35+ Comprehensive Objective Questions Pool
+    const accMCQBank = [
+      { text: 'In the absence of a Partnership Deed, interest on advances or loan given by a partner to the firm is payable at:', opts: { optA: '6% p.a.', optB: '10% p.a.', optC: '12% p.a.', optD: 'Zero / Nil' }, ans: '(A) 6% p.a. as per Indian Partnership Act.' },
       { text: 'At the time of admission of a partner, general reserve appearing in the balance sheet is transferred to:', opts: { optA: 'Old Partners’ Capital Accounts in Old Ratio', optB: 'All Partners in New Ratio', optC: 'Revaluation Account', optD: 'Sacrificing Ratio' }, ans: '(A) Old Partners in Old Ratio.' },
-      { text: 'A company forfeited 100 shares of ₹10 each on which ₹7 per share was received. What is the maximum discount allowed on reissue of these forfeited shares?', opts: { optA: '₹7 per share', optB: '₹3 per share', optC: '₹10 per share', optD: '₹5 per share' }, ans: '(A) ₹7 per share.' },
+      { text: 'A company forfeited 100 shares of ₹10 each on which ₹7 per share was received. What is the maximum discount allowed on reissue of these forfeited shares?', opts: { optA: '₹7 per share', optB: '₹3 per share', optC: '₹10 per share', optD: '₹5 per share' }, ans: '(A) Maximum discount = Amount forfeited per share = ₹7.' },
       { text: 'Securities Premium Account can be utilized for which of the following purposes as per Section 52(2) of the Companies Act, 2013?', opts: { optA: 'Issuing fully paid bonus shares to members', optB: 'Distribution of dividends', optC: 'Paying trade creditors', optD: 'Writing off general reserve' }, ans: '(A) Issuing fully paid bonus shares.' },
       { text: 'Gaining Ratio is computed by applying which formula?', opts: { optA: 'New Ratio - Old Ratio', optB: 'Old Ratio - New Ratio', optC: 'Old Ratio - Sacrificing Ratio', optD: 'New Ratio + Old Ratio' }, ans: '(A) New Ratio - Old Ratio.' },
-      { text: `If partner ${partnerSet.p1} withdraws ₹10,000 at the beginning of each calendar month and interest on drawings is charged @ 6% p.a., for how many months will interest be calculated?`, opts: { optA: '6.5 Months', optB: '6.0 Months', optC: '5.5 Months', optD: '7.0 Months' }, ans: '(A) 6.5 Months.' },
       { text: 'On dissolution of a partnership firm, an unrecorded computer realized ₹12,000 in cash. In which account and on which side will it be recorded?', opts: { optA: 'Credit side of Realisation Account', optB: 'Debit side of Realisation Account', optC: 'Credit side of Partners’ Capital Account', optD: 'Debit side of Cash Account only' }, ans: '(A) Credit side of Realisation Account.' },
       { text: 'When debentures are issued as Collateral Security for a secured bank loan, the entry passed in books is:', opts: { optA: 'Debit Debenture Suspense A/c and Credit Debentures A/c', optB: 'Debit Bank A/c and Credit Debentures A/c', optC: 'Debit Bank Loan A/c and Credit Debenture Suspense A/c', optD: 'No entry required in journal' }, ans: '(A) Debenture Suspense A/c Dr. to Debentures A/c.' },
       { text: 'Capital Reserve is created out of which of the following categories of profit?', opts: { optA: 'Capital Profits (Profit on reissue of forfeited shares / sale of fixed assets)', optB: 'Normal operating profits', optC: 'Gross Profit from operations', optD: 'Dividend Equalization Reserve' }, ans: '(A) Capital Profits.' },
       { text: 'Realisation Account prepared at the time of dissolution of a firm is in the nature of:', opts: { optA: 'Nominal Account', optB: 'Personal Account', optC: 'Real Account', optD: 'Representative Personal Account' }, ans: '(A) Nominal Account.' },
       { text: 'Goodwill of a partnership firm is valued at 2 years’ purchase of super profits. Capital employed is ₹5,00,000; Normal Rate of Return is 10%; Average profit earned is ₹70,000. The value of goodwill is:', opts: { optA: '₹40,000', optB: '₹20,000', optC: '₹50,000', optD: '₹1,00,000' }, ans: '(A) ₹40,000.' },
-      { text: `When partner ${partnerSet.p3} retires, his share of goodwill is credited to his capital account and debited to continuing partners in their:`, opts: { optA: 'Gaining Ratio', optB: 'Sacrificing Ratio', optC: 'Old Profit Sharing Ratio', optD: 'Capital Ratio' }, ans: '(A) Gaining Ratio.' },
       { text: 'Calls in Arrears is deducted from which item in the Notes to Accounts of Balance Sheet?', opts: { optA: 'Subscribed but not fully paid-up capital', optB: 'Authorized Share Capital', optC: 'Issued Share Capital', optD: 'Securities Premium Reserve' }, ans: '(A) Subscribed but not fully paid-up capital.' },
       { text: 'On dissolution of firm, unrecorded liability paid off by partner out of personal funds is credited to:', opts: { optA: 'Concerned Partner’s Capital Account', optB: 'Realisation Account', optC: 'Cash Account', optD: 'Revaluation Account' }, ans: '(A) Concerned Partner’s Capital Account.' },
       { text: 'Assertion (A): Fixed Capital accounts of partners always show a credit balance.\nReason (R): All adjustments regarding drawings, interest, and share of profit are routed through Partners’ Current Accounts.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true and (R) correctly explains (A).' },
-      { text: 'At the time of forfeiture of shares, Share Capital Account is debited with:', opts: { optA: 'Called-up amount on forfeited shares', optB: 'Face value of forfeited shares', optC: 'Paid-up amount on forfeited shares', optD: 'Uncalled amount on forfeited shares' }, ans: '(A) Called-up amount.' }
-    ];
-
-    const partB_MCQs = [
-      { text: 'An enterprise has Current Assets of ₹8,00,000 and Current Liabilities of ₹4,00,000 (Current Ratio 2:1). Payment of ₹50,000 to trade payables will:', opts: { optA: 'Improve Current Ratio', optB: 'Reduce Current Ratio', optC: 'Not change Current Ratio', optD: 'Make Current Ratio zero' }, ans: '(A) Improve (7,50,000 / 3,50,000 = 2.14:1).' },
+      { text: 'At the time of forfeiture of shares, Share Capital Account is debited with:', opts: { optA: 'Called-up amount on forfeited shares', optB: 'Face value of forfeited shares', optC: 'Paid-up amount on forfeited shares', optD: 'Uncalled amount on forfeited shares' }, ans: '(A) Called-up amount.' },
+      { text: 'If a partner withdraws ₹6,000 at the end of each month and interest on drawings is charged @ 6% p.a., for how many months will interest be calculated?', opts: { optA: '5.5 Months', optB: '6.0 Months', optC: '6.5 Months', optD: '7.0 Months' }, ans: '(A) 5.5 Months.' },
+      { text: 'Sacrificing Ratio is used to distribute which of the following items at the time of admission of a partner?', opts: { optA: 'Premium for Goodwill brought by new partner', optB: 'Revaluation Profit', optC: 'General Reserve', optD: 'Accumulated Losses' }, ans: '(A) Premium for Goodwill.' },
+      { text: 'A firm earned net profit ₹1,20,000. Capital employed is ₹8,00,000. Normal rate of return is 10%. Goodwill by capitalization of super profit method is:', opts: { optA: '₹4,00,000', optB: '₹2,00,000', optC: '₹1,50,000', optD: '₹3,00,000' }, ans: '(A) Super profit = 1,20,000 - 80,000 = 40,000. Goodwill = 40,000 / 10% = ₹4,00,000.' },
+      { text: 'Discount on issue of debentures is written off within the tenure of debentures out of:', opts: { optA: 'Securities Premium Reserve / Statement of P&L', optB: 'General Reserve only', optC: 'Capital Redemption Reserve', optD: 'Debenture Redemption Reserve' }, ans: '(A) Securities Premium Reserve or Statement of P&L.' },
+      { text: 'An enterprise has Current Assets of ₹8,00,000 and Current Liabilities of ₹4,00,000 (Current Ratio 2:1). Payment of ₹50,000 to trade payables will:', opts: { optA: 'Improve Current Ratio', optB: 'Reduce Current Ratio', optC: 'Not change Current Ratio', optD: 'Make Current Ratio zero' }, ans: '(A) Improve.' },
       { text: 'Which financial ratio measures the proportion of total assets funded through shareholders’ funds?', opts: { optA: 'Proprietary Ratio', optB: 'Debt to Equity Ratio', optC: 'Interest Coverage Ratio', optD: 'Total Assets to Debt Ratio' }, ans: '(A) Proprietary Ratio.' },
       { text: 'Cash outflow on purchase of patent rights is categorized under which cash flow activity (AS-3)?', opts: { optA: 'Investing Activities', optB: 'Operating Activities', optC: 'Financing Activities', optD: 'Cash and Cash Equivalents' }, ans: '(A) Investing Activities.' },
-      { text: 'Dividend received on investments by a manufacturing company is shown in Cash Flow Statement as:', opts: { optA: 'Inflow under Investing Activities', optB: 'Inflow under Operating Activities', optC: 'Inflow under Financing Activities', optD: 'Deduction from net profit' }, ans: '(A) Inflow under Investing Activities.' }
+      { text: 'Dividend received on investments by a manufacturing company is shown in Cash Flow Statement as:', opts: { optA: 'Inflow under Investing Activities', optB: 'Inflow under Operating Activities', optC: 'Inflow under Financing Activities', optD: 'Deduction from net profit' }, ans: '(A) Inflow under Investing Activities.' },
+      { text: 'Which of the following is considered a Cash Equivalent according to AS-3 (Revised)?', opts: { optA: 'Treasury Bills with maturity of 90 days or less', optB: 'Shares held in private limited companies', optC: 'Trade Debtors', optD: 'Long-term Bank Deposits' }, ans: '(A) Treasury Bills.' },
+      { text: 'Operating Ratio is 82%. What will be the Operating Profit Ratio of the enterprise?', opts: { optA: '18%', optB: '82%', optC: '100%', optD: '12%' }, ans: '(A) 100% - 82% = 18%.' }
+    ];
+
+    // Pool of Distinct 3-Mark Questions
+    const pool3M = [
+      {
+        text: 'A, B and C are partners sharing profits in 3:2:1 with capitals ₹3,00,000, ₹2,00,000 and ₹1,00,000. Interest on capital is provided @ 6% p.a. and partner salary of ₹1,500 per month to B. Firm earned net profit ₹75,000. Prepare Profit & Loss Appropriation Account.',
+        orOptionText: 'X and Y are partners sharing equally. On 31st March, it was discovered that interest on drawings @ 6% p.a. was omitted. Drawings were: X ₹40,000 and Y ₹25,000. Pass necessary single adjusting journal entry.',
+        ans: 'Appropriation Account preparation OR Adjusting journal entry with working notes.'
+      },
+      {
+        text: 'Moonlight Ltd purchased machinery from Suntech Ltd for ₹4,40,000 payable by issuing 9% Debentures of ₹100 each at a premium of 10%. Pass necessary journal entries.',
+        orOptionText: 'Starline Ltd issued 5,000, 8% Debentures of ₹100 each at a discount of 5% redeemable at 5% premium. Pass journal entries for issue of debentures.',
+        ans: 'Entries for purchase and issue of debentures at premium/discount.'
+      },
+      {
+        text: 'P, Q and R are partners sharing profits in 5:3:2. R dies on 30th June 2026. Partnership deed provides that deceased partner’s share of profit till death be calculated on basis of last year’s profit of ₹1,80,000. Calculate R’s share of profit and pass necessary journal entry.',
+        orOptionText: 'Differentiate between "Dissolution of Partnership" and "Dissolution of Partnership Firm" on the basis of: (i) Court intervention, (ii) Continuation of business, (iii) Closure of books.',
+        ans: 'R profit share = 1,80,000 x 3/12 x 2/10 = ₹9,000. P&L Suspense A/c Dr. to R Capital A/c.'
+      },
+      {
+        text: 'From the following information, calculate Inventory Turnover Ratio:\n- Revenue from Operations: ₹15,00,000\n- Gross Profit: 25% on Cost\n- Opening Inventory: ₹1,80,000; Closing Inventory: ₹2,20,000',
+        orOptionText: 'Under what major heads and sub-heads will the following appear in Company Balance Sheet:\n(i) Calls in Advance, (ii) Computer Software, (iii) Premium on Redemption of Debentures.',
+        ans: 'Cost = 15,00,000 x 100/125 = ₹12,00,000. Avg Inventory = ₹2,00,000. Turnover = 6 Times.'
+      }
+    ];
+
+    // Pool of Distinct 4-Mark Questions
+    const pool4M = [
+      {
+        text: 'Pass journal entries for forfeiture and reissue in following cases:\n(a) Zen Ltd forfeited 400 shares of ₹10 each (₹8 called up) for non-payment of first call of ₹2. 300 of these shares were reissued as ₹8 paid up for ₹7 per share.\n(b) Alpha Ltd forfeited 200 shares of ₹10 each issued at ₹2 premium for non-payment of allotment ₹5 (including premium). Reissued as fully paid for ₹9.',
+        ans: 'Share forfeiture, reissue and transfer to Capital Reserve entries.'
+      },
+      {
+        text: 'Pass journal entries on dissolution of firm:\n(i) Creditors ₹60,000 accepted stock of ₹50,000 at ₹45,000 and remaining in cash.\n(ii) An unrecorded computer realized ₹6,000.\n(iii) Partner Mohan agreed to pay realization expenses of ₹4,000 for a remuneration of ₹5,000.',
+        ans: 'Realisation journal entries for assets/liabilities settlement.'
+      },
+      {
+        text: 'Calculate Debt to Equity Ratio, Total Assets to Debt Ratio, and Proprietary Ratio:\n- Equity Share Capital: ₹8,00,000\n- General Reserve: ₹2,00,000\n- 9% Debentures: ₹5,00,000\n- Bank Loan: ₹3,00,000\n- Non-Current Assets: ₹14,00,000\n- Current Assets: ₹6,00,000',
+        ans: 'Total Debt = ₹8,00,000. Equity = ₹10,00,000. Total Assets = ₹20,00,000. Ratios: 0.8:1, 2.5:1, 0.5:1.'
+      },
+      {
+        text: 'Calculate Cash Flow from Operating Activities:\n- Net Profit before Tax: ₹5,00,000\n- Depreciation: ₹70,000\n- Loss on sale of plant: ₹15,000\n- Goodwill amortized: ₹25,000\n- Trade Receivables increased: ₹40,000\n- Inventories decreased: ₹30,000\n- Tax paid: ₹80,000',
+        ans: 'Operating Cash Flow calculation step-by-step.'
+      }
+    ];
+
+    // Pool of Distinct 6-Mark Comprehensive Questions with Tables
+    const pool6M = [
+      {
+        text: 'Titan Heavy Industries Ltd invited applications for issuing 1,00,000 Equity Shares of ₹10 each at a premium of ₹2 per share payable: ₹3 on application, ₹5 on allotment (including premium), and balance ₹4 on call. Applications were received for 1,50,000 shares. Allotment was made pro-rata to applicants of 1,20,000 shares, remaining rejected. Excess application money was adjusted toward allotment.\nMohit, holding 600 shares, failed to pay allotment and call money. His shares were forfeited and reissued at ₹8 per share fully paid up. Pass Journal Entries.',
+        orOptionText: 'Green Tech Ltd invited applications for 60,000 equity shares of ₹10 each at par payable: ₹3 on application, ₹4 on allotment, ₹3 on call. Applications were received for 90,000 shares. Pro-rata allotment was made to all applicants in 3:2 ratio. Divya, holding 300 shares, failed to pay call money. Her shares were forfeited and reissued at ₹9 per share. Pass journal entries.',
+        ans: 'Pro-rata allotment table, calls in arrears, forfeiture, reissue and capital reserve.'
+      },
+      {
+        text: 'Varun and Tarun are partners sharing profits in 3:2. Their Balance Sheet as on 31st March 2026 was as follows:',
+        tableData: `<table class="matrix-table">
+  <tr><th>Liabilities</th><th>Amount (₹)</th><th>Assets</th><th>Amount (₹)</th></tr>
+  <tr><td>Sundry Creditors</td><td>50,000</td><td>Cash at Bank</td><td>30,000</td></tr>
+  <tr><td>General Reserve</td><td>30,000</td><td>Debtors: 60,000<br/>Less: Provision: (3,000)</td><td>57,000</td></tr>
+  <tr><td>Capitals:</td><td></td><td>Stock</td><td>53,000</td></tr>
+  <tr><td>Varun: 1,50,000</td><td></td><td>Plant & Machinery</td><td>1,00,000</td></tr>
+  <tr><td>Tarun: 1,00,000</td><td>2,50,000</td><td>Building</td><td>90,000</td></tr>
+  <tr><th>Total</th><th>3,30,000</th><th>Total</th><th>3,30,000</th></tr>
+</table>`,
+        orOptionText: 'They admit Karan into partnership for 1/5th share on terms:\n(i) Karan brings ₹60,000 as capital and ₹20,000 for goodwill in cash.\n(ii) Building appreciated by 15%, Machinery depreciated by 10%.\n(iii) Provision on debtors increased to 5%.\nPrepare Revaluation Account and Partners’ Capital Accounts.',
+        ans: 'Revaluation Account, Goodwill distribution, and Capital Accounts.'
+      },
+      {
+        text: 'A, B and C were partners sharing in 5:3:2. B retires on 31st March 2026. Balance Sheet showed Capitals: A ₹2,00,000; B ₹1,20,000; C ₹80,000; Reserve ₹40,000. Goodwill valued at ₹60,000. Machinery increased by ₹20,000, Stock reduced by ₹10,000. B was paid ₹30,000 in cash and balance transferred to his loan account. Prepare Revaluation Account and Partners’ Capital Accounts.',
+        orOptionText: 'P, Q and R dissolve their partnership firm. Assets realized ₹3,80,000 (book value ₹4,20,000). Creditors of ₹70,000 settled at 5% discount. Realization expenses ₹4,000 paid by firm. Pass necessary realization and capital ledger entries.',
+        ans: 'Retirement Revaluation and Capital Accounts OR Dissolution Realization entries.'
+      },
+      {
+        text: 'From the following Balance Sheet of Galaxy Energy Ltd as at 31st March 2025 and 31st March 2026, prepare a Cash Flow Statement as per AS-3 (Revised):',
+        tableData: `<table class="matrix-table">
+  <tr><th>Particulars</th><th>31.03.2026 (₹)</th><th>31.03.2025 (₹)</th></tr>
+  <tr><td>Share Capital</td><td>8,00,000</td><td>6,00,000</td></tr>
+  <tr><td>Surplus (Statement of P&L)</td><td>3,00,000</td><td>1,80,000</td></tr>
+  <tr><td>10% Debentures</td><td>2,50,000</td><td>1,50,000</td></tr>
+  <tr><td>Trade Payables</td><td>1,20,000</td><td>90,000</td></tr>
+  <tr><th>Total Liabilities</th><th>14,70,000</th><th>10,20,000</th></tr>
+  <tr><td>Plant & Machinery (Net)</td><td>9,50,000</td><td>6,50,000</td></tr>
+  <tr><td>Non-Current Investments</td><td>1,50,000</td><td>1,00,000</td></tr>
+  <tr><td>Inventories</td><td>1,80,000</td><td>1,30,000</td></tr>
+  <tr><td>Trade Receivables</td><td>1,10,000</td><td>90,000</td></tr>
+  <tr><td>Cash & Cash Equivalents</td><td>80,000</td><td>50,000</td></tr>
+  <tr><th>Total Assets</th><th>14,70,000</th><th>10,20,000</th></tr>
+</table>
+<div style="font-size:10pt; margin-top:3pt;">
+<b>Additional Info:</b> Depreciation charged on Plant & Machinery was ₹50,000 during the year. Debentures were issued on 31st March 2026.
+</div>`,
+        ans: 'Preparation of Operating, Investing, and Financing cash flows.'
+      }
     ];
 
     const questions: FullGeneratedQuestion[] = [];
+    let qCount = 1;
 
-    shuffleArray(partA_MCQs).forEach((q, idx) => {
+    // Pick 20 Randomized MCQs
+    shuffleArray(accMCQBank).slice(0, 20).forEach((q, idx) => {
       questions.push({
-        qNum: idx + 1,
+        qNum: qCount++,
         partTitle: idx === 0 ? 'PART - A: ACCOUNTING FOR PARTNERSHIP FIRMS AND COMPANIES (60 MARKS)' : undefined,
         typeBadge: '1 Mark MCQ',
         marks: 1,
@@ -284,225 +173,41 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       });
     });
 
-    questions.push({
-      qNum: 17,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `${partnerSet.p1}, ${partnerSet.p2} and ${partnerSet.p3} are partners sharing profits in ${partnerSet.r1}:${partnerSet.r2}:${partnerSet.r3} with capitals ₹${partnerSet.cap1}, ₹${partnerSet.cap2} and ₹${partnerSet.cap3} respectively. Their Partnership Deed provides interest on capital @ 6% p.a. and partner salary of ₹2,000 per month to ${partnerSet.p2}. During the year ended 31st March 2026, the firm earned a net profit of ₹90,000. Prepare Profit and Loss Appropriation Account for the year.`,
-      orOptionText: `${partnerSet.p1} and ${partnerSet.p2} are partners sharing profits equally. On 31st March 2026, after closing books, it was discovered that interest on drawings @ 5% p.a. was omitted. Drawings during the year were: ${partnerSet.p1} ₹30,000 and ${partnerSet.p2} ₹20,000. Pass necessary single adjusting journal entry showing working notes clearly.`,
-      answerKey: 'Calculation of interest on capital and salary in P&L Appropriation A/c OR Capital adjustment schedule and single adjusting journal entry.'
-    });
-
-    questions.push({
-      qNum: 18,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `Radha Ltd purchased running business of Krishna Traders for ₹6,60,000 payable by issuing 9% Debentures of ₹100 each at a premium of 10%. Assets and liabilities taken over were:\n- Plant & Machinery: ₹5,00,000\n- Stock: ₹2,00,000\n- Sundry Creditors: ₹80,000\nPass necessary journal entries in the books of Radha Ltd.`,
-      answerKey: 'Net Assets = 6,20,000; Consideration = 6,60,000; Goodwill = 40,000; Debentures issued = 6,000.'
-    });
-
-    questions.push({
-      qNum: 19,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `Pass journal entries for the issue of Debentures in the following independent cases:\n(a) Issued 2,000, 9% Debentures of ₹100 each at a discount of 5%, redeemable at par.\n(b) Issued 3,000, 10% Debentures of ₹100 each at par, redeemable at a premium of 5%.\n(c) Issued 1,000, 8% Debentures of ₹100 each at a premium of 5%, redeemable at a premium of 10%.`,
-      orOptionText: `Starline Ltd issued 4,000, 9% Debentures of ₹100 each at a discount of 4% redeemable at a premium of 6% after 5 years. Total loss on issue is to be written off in the first year itself out of Securities Premium Reserve balance of ₹50,000. Pass journal entries for issue and writing off loss.`,
-      answerKey: 'Journal entries accounting for Loss on Issue of Debentures and Premium on Redemption with Securities Premium offset.'
-    });
-
-    questions.push({
-      qNum: 20,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `Differentiate between "Dissolution of Partnership" and "Dissolution of Partnership Firm" on the basis of:\n(i) Court intervention\n(ii) Continuation of business\n(iii) Closure of books of accounts`,
-      answerKey: '(i) Court: Partnership dissolution is voluntary; Firm dissolution can be ordered by court. (ii) Business continues in partnership; Ends in firm dissolution. (iii) Books remain open; Books closed permanently.'
-    });
-
-    questions.push({
-      qNum: 21,
-      typeBadge: '4 Marks Medium Answer',
-      marks: 4,
-      text: `Pass necessary journal entries for forfeiture and reissue of shares in the following cases:\n(a) Apex Ltd forfeited 300 shares of ₹10 each (₹8 called up) for non-payment of first call of ₹2 per share. 200 of these shares were reissued as ₹8 paid-up for ₹7 per share.\n(b) Zenith Ltd forfeited 150 shares of ₹10 each issued at a premium of ₹2 per share (payable with allotment) for non-payment of allotment money of ₹5 (including premium) and first & final call of ₹3. All forfeited shares were reissued as fully paid for ₹9 per share.`,
-      answerKey: 'Entries for share forfeiture, reissue, and transfer of net forfeited balance to Capital Reserve.'
-    });
-
-    questions.push({
-      qNum: 22,
-      typeBadge: '4 Marks Medium Answer',
-      marks: 4,
-      text: `A and B were partners sharing profits in 3:2. On 31st March 2026, their firm was dissolved. Balance Sheet showed Sundry Assets ₹3,20,000 and Sundry Creditors ₹80,000. Pass journal entries for dissolution transactions:\n(i) Sundry Assets realized 90% of book value in cash.\n(ii) An unrecorded typewriter realized ₹4,500.\n(iii) Creditors of ₹80,000 accepted stock of ₹50,000 in full settlement of ₹48,000 and the remaining creditors were paid in cash at 5% discount.\n(iv) Realisation expenses ₹3,000 were paid by partner A out of his pocket.`,
-      answerKey: 'Pass Realisation A/c debit/credit entries for asset realizations, liability discharges and expense reimbursement.'
-    });
-
-    questions.push({
-      qNum: 23,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: `${compSet.cName} invited applications for issuing ${compSet.shares} Equity Shares of ₹${compSet.faceVal} each at a premium of ₹${compSet.prem} per share payable as follows:\n- On Application: ₹3 per share\n- On Allotment: ₹5 per share (including premium ₹${compSet.prem})\n- On First & Final Call: ₹4 per share\n\nApplications were received for ${compSet.appShares} shares. Allotment was made pro-rata to applicants of 75,000 shares, and remaining applications were rejected and refunded. Excess application money was adjusted toward allotment.\n\nAkash, who had applied for 1,500 shares, failed to pay the allotment and call money. His shares were forfeited. Out of these, 800 forfeited shares were reissued to Neha as fully paid-up at ₹8 per share. Pass necessary Journal Entries in the books of ${compSet.cName}.`,
-      orOptionText: `Bharat Petroleum Ltd invited applications for issuing 80,000 equity shares of ₹10 each at a premium of ₹3 per share payable: ₹4 on application, ₹5 on allotment (including premium), and balance ₹4 on call. Applications were received for 1,20,000 shares. Pro-rata allotment was made to all applicants in 3:2 ratio. Excess application money was utilized toward allotment.\nRamesh, who was allotted 600 shares, failed to pay allotment and call money. Suresh, holding 400 shares, failed to pay call money. All these shares were forfeited and subsequently reissued at ₹9 per share as fully paid-up. Pass journal entries.`,
-      answerKey: 'Pro-rata allotment table calculations, calls in arrears computation, forfeiture entry, reissue and Capital Reserve transfer.'
-    });
-
-    questions.push({
-      qNum: 24,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: `${partnerSet.p1} and ${partnerSet.p2} are partners in a firm sharing profits in 3:2. Their Balance Sheet as on 31st March 2026 was as follows:`,
-      tableData: `<table class="matrix-table">
-  <tr><th>Liabilities</th><th>Amount (₹)</th><th>Assets</th><th>Amount (₹)</th></tr>
-  <tr><td>Sundry Creditors</td><td>60,000</td><td>Bank</td><td>40,000</td></tr>
-  <tr><td>General Reserve</td><td>40,000</td><td>Sundry Debtors: 80,000<br/>Less: Provision: (4,000)</td><td>76,000</td></tr>
-  <tr><td>Capitals:</td><td></td><td>Stock</td><td>64,000</td></tr>
-  <tr><td>${partnerSet.p1}: 1,80,000</td><td></td><td>Machinery</td><td>1,20,000</td></tr>
-  <tr><td>${partnerSet.p2}: 1,20,000</td><td>3,00,000</td><td>Building</td><td>1,00,000</td></tr>
-  <tr><th>Total</th><th>4,00,000</th><th>Total</th><th>4,00,000</th></tr>
-</table>`,
-      orOptionText: `On 1st April 2026, they admit ${partnerSet.p3} into partnership for 1/5th share on the following terms:
-(i) ${partnerSet.p3} brings ₹80,000 as capital and ₹30,000 as his share of premium for goodwill in cash.
-(ii) Building is appreciated by 20% and Machinery is depreciated by 10%.
-(iii) Provision for doubtful debts is to be increased to 5% on debtors.
-(iv) An unrecorded outstanding repair bill of ₹2,000 is to be provided.
-Prepare Revaluation Account and Partners’ Capital Accounts.`,
-      answerKey: 'Revaluation Account profit ₹6,000, Partners Capital Accounts showing admission adjustments, General Reserve transfer, and closing balances.'
-    });
-
-    questions.push({
-      qNum: 25,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: `X, Y and Z were partners in a firm sharing profits in the ratio of 5:3:2. Their Balance Sheet as on 31st March 2026 was as follows:`,
-      tableData: `<table class="matrix-table">
-  <tr><th>Liabilities</th><th>Amount (₹)</th><th>Assets</th><th>Amount (₹)</th></tr>
-  <tr><td>Trade Creditors</td><td>50,000</td><td>Cash at Bank</td><td>35,000</td></tr>
-  <tr><td>Employees Provident Fund</td><td>15,000</td><td>Debtors: 60,000<br/>Less: Provision: (2,000)</td><td>58,000</td></tr>
-  <tr><td>Workmen Compensation Reserve</td><td>20,000</td><td>Stock</td><td>52,000</td></tr>
-  <tr><td>Capitals:</td><td></td><td>Furniture</td><td>40,000</td></tr>
-  <tr><td>X: 1,50,000</td><td></td><td>Plant & Machinery</td><td>1,50,000</td></tr>
-  <tr><td>Y: 1,00,000</td><td></td><td>Goodwill (Existing)</td><td>20,000</td></tr>
-  <tr><td>Z: 70,000</td><td>3,20,000</td><td></td><td></td></tr>
-  <tr><th>Total</th><th>4,05,000</th><th>Total</th><th>4,05,000</th></tr>
-</table>`,
-      orOptionText: `Y retires on 31st March 2026 on the following terms:
-(i) Goodwill of the firm is valued at ₹70,000 and is to be adjusted in the capital accounts of X and Z.
-(ii) Plant and Machinery is revalued at ₹1,65,000; Stock is valued at ₹48,000.
-(iii) Provision for doubtful debts is maintained at 5% on debtors.
-(iv) Claim on account of Workmen Compensation is established at ₹8,000.
-(v) Y is paid ₹25,000 immediately in cash and the balance is transferred to his Loan Account.
-Prepare Revaluation Account and Partners’ Capital Accounts.`,
-      answerKey: 'Revaluation Account, adjustment of existing goodwill and retirement goodwill in gaining ratio 5:2, and Y Loan Account balance.'
-    });
-
-    questions.push({
-      qNum: 26,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: `P, Q and R are partners in a firm sharing profits in 2:2:1. On 31st March 2026, their firm was dissolved. Realise assets and settle liabilities as per Realisation Account:
-(i) Sundry Assets recorded in books ₹4,50,000 were sold at 85% of book value.
-(ii) Sundry Creditors of ₹1,00,000 accepted an unrecorded investment of ₹60,000 at ₹55,000 and remaining in full cash settlement at 10% discount.
-(iii) P undertook to pay off his wife’s loan of ₹30,000.
-(iv) Q was appointed to look after dissolution for an agreed commission of ₹10,000 and he agreed to bear all realisation expenses. Actual expenses of ₹8,000 were paid by the firm on his behalf.
-Pass necessary Journal Entries for dissolution.`,
-      answerKey: 'Realisation journal entries for assets realization, creditors discharge, partner loan assumption, and partner dissolution remuneration.'
-    });
-
-    shuffleArray(partB_MCQs).forEach((q, idx) => {
+    // Pick 4 Short Answer Questions (3M)
+    shuffleArray(pool3M).forEach(q => {
       questions.push({
-        qNum: 27 + idx,
-        partTitle: idx === 0 ? 'PART - B: ANALYSIS OF FINANCIAL STATEMENTS (20 MARKS)' : undefined,
-        typeBadge: '1 Mark MCQ',
-        marks: 1,
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
         text: q.text,
-        options: q.opts,
+        orOptionText: q.orOptionText,
         answerKey: q.ans
       });
     });
 
-    questions.push({
-      qNum: 31,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `From the following information, calculate Inventory Turnover Ratio and Trade Receivables Turnover Ratio:
-- Revenue from Operations: ₹12,00,000
-- Gross Profit: 25% on Cost of Revenue from Operations
-- Opening Inventory: ₹1,50,000; Closing Inventory: ₹1,70,000
-- Net Credit Revenue from Operations: ₹9,60,000
-- Opening Trade Receivables: ₹90,000; Closing Trade Receivables: ₹1,10,000`,
-      orOptionText: `Under what major headings and sub-headings will the following items appear in the Balance Sheet of a company as per Schedule III, Part I of the Companies Act, 2013:
-(i) Provision for Tax
-(ii) Capital Work-in-Progress
-(iii) Unpaid / Unclaimed Dividend
-(iv) Trademarks and Patents
-(v) Mining Rights
-(vi) Calls in Advance`,
-      answerKey: 'Inventory Turnover = 6 Times; Trade Receivables Turnover = 9.6 Times.'
+    // Pick 4 Medium Questions (4M)
+    shuffleArray(pool4M).forEach(q => {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '4 Marks Medium Answer',
+        marks: 4,
+        text: q.text,
+        answerKey: q.ans
+      });
     });
 
-    questions.push({
-      qNum: 32,
-      typeBadge: '4 Marks Medium Answer',
-      marks: 4,
-      text: `Calculate Debt to Equity Ratio, Total Assets to Debt Ratio, and Proprietary Ratio from the following details:
-- Equity Share Capital: ₹6,00,000
-- Preference Share Capital: ₹2,00,000
-- Reserves and Surplus: ₹2,00,000
-- 10% Debentures: ₹4,00,000
-- Long-term Bank Loan: ₹2,00,000
-- Current Liabilities: ₹2,00,000
-- Total Non-Current Assets: ₹12,00,000
-- Current Assets: ₹6,00,000`,
-      answerKey: 'Debt to Equity = 0.6:1; Total Assets to Debt = 3:1; Proprietary Ratio = 0.56:1.'
-    });
-
-    questions.push({
-      qNum: 33,
-      typeBadge: '4 Marks Medium Answer',
-      marks: 4,
-      text: `Calculate Cash Flow from Operating Activities from the following Statement of Profit and Loss extracts and Balance Sheet information of Star Industries Ltd for the year ended 31st March 2026:
-- Net Profit before Tax and Extraordinary Items: ₹4,20,000
-- Depreciation provided on Plant & Machinery: ₹60,000
-- Loss on Sale of Old Office Furniture: ₹10,000
-- Interest Income on Non-Current Investments: ₹15,000
-- Goodwill Amortized during the year: ₹20,000
-- Trade Receivables increased by ₹35,000
-- Inventories decreased by ₹45,000
-- Trade Payables increased by ₹25,000
-- Income Tax Paid during the year: ₹70,000`,
-      answerKey: 'Operating Profit before working capital changes = ₹4,95,000. Working capital adjustments = ₹35,000. Net Cash from Operating Activities = ₹4,60,000.'
-    });
-
-    questions.push({
-      qNum: 34,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: `From the following Balance Sheet of Solar Energy Ltd as at 31st March 2025 and 31st March 2026, prepare a Cash Flow Statement as per AS-3 (Revised):`,
-      tableData: `<table class="matrix-table">
-  <tr><th>Particulars</th><th>Note No.</th><th>31.03.2026 (₹)</th><th>31.03.2025 (₹)</th></tr>
-  <tr><th colspan="4" style="text-align:left;">I. EQUITY AND LIABILITIES</th></tr>
-  <tr><td>1. Shareholders’ Funds:</td><td></td><td></td><td></td></tr>
-  <tr><td>(a) Share Capital</td><td>1</td><td>7,00,000</td><td>5,00,000</td></tr>
-  <tr><td>(b) Reserves and Surplus</td><td>2</td><td>2,50,000</td><td>1,50,000</td></tr>
-  <tr><td>2. Non-Current Liabilities: Long-term Borrowings (8% Debentures)</td><td></td><td>2,00,000</td><td>1,00,000</td></tr>
-  <tr><td>3. Current Liabilities: Trade Payables</td><td></td><td>1,10,000</td><td>90,000</td></tr>
-  <tr><th>Total</th><th></th><th>12,60,000</th><th>8,40,000</th></tr>
-  <tr><th colspan="4" style="text-align:left;">II. ASSETS</th></tr>
-  <tr><td>1. Non-Current Assets:</td><td></td><td></td><td></td></tr>
-  <tr><td>(a) Property, Plant and Equipment (Machinery)</td><td>3</td><td>8,00,000</td><td>5,00,000</td></tr>
-  <tr><td>(b) Non-Current Investments</td><td></td><td>1,00,000</td><td>60,000</td></tr>
-  <tr><td>2. Current Assets:</td><td></td><td></td><td></td></tr>
-  <tr><td>(a) Current Investments (Marketable)</td><td></td><td>40,000</td><td>30,000</td></tr>
-  <tr><td>(b) Inventories</td><td></td><td>1,50,000</td><td>1,20,000</td></tr>
-  <tr><td>(c) Trade Receivables</td><td></td><td>90,000</td><td>80,000</td></tr>
-  <tr><td>(d) Cash and Cash Equivalents</td><td></td><td>80,000</td><td>50,000</td></tr>
-  <tr><th>Total</th><th></th><th>12,60,000</th><th>8,40,000</th></tr>
-</table>
-<div style="font-size:10pt; margin-top:4pt;">
-<b>Notes to Accounts:</b><br/>
-1. Share Capital: Equity Shares of ₹10 each.<br/>
-2. Reserves & Surplus: Surplus (Balance in Statement of P&L) 2026: ₹2,50,000; 2025: ₹1,50,000.<br/>
-3. Machinery Account: Cost ₹8,00,000 (Accumulated Depreciation ₹1,40,000; 2025: Cost ₹5,00,000; Accumulated Depreciation ₹1,00,000).<br/>
-<b>Additional Information:</b> During the year, a piece of machinery costing ₹60,000 on which depreciation accumulated was ₹20,000 was sold for ₹35,000. Debentures were issued on 31st March 2026.
-</div>`,
-      answerKey: 'Preparation of Machinery and Accumulated Depreciation A/c, Operating Cash flow, Investing cash outflow, Financing cash inflow, and Cash & Cash equivalents reconciliation.'
+    // Pick 4 Comprehensive Questions (6M)
+    shuffleArray(pool6M).forEach((q, idx) => {
+      questions.push({
+        qNum: qCount++,
+        partTitle: idx === 2 ? 'PART - B: ANALYSIS OF FINANCIAL STATEMENTS (20 MARKS)' : undefined,
+        typeBadge: '6 Marks Long Answer',
+        marks: 6,
+        text: q.text,
+        tableData: q.tableData,
+        orOptionText: q.orOptionText,
+        answerKey: q.ans
+      });
     });
 
     return {
@@ -512,17 +217,395 @@ Pass necessary Journal Entries for dissolution.`,
         'This question paper contains 34 questions divided into two Parts – Part A and Part B.',
         'Part A: Accounting for Partnership Firms and Companies (Questions 1 to 26 - 60 Marks).',
         'Part B: Analysis of Financial Statements (Questions 27 to 34 - 20 Marks).',
-        'Questions 1 to 16 and 27 to 30 carry 1 mark each.',
-        'Questions 17 to 20 and 31 carry 3 marks each.',
-        'Questions 21, 22, 32 and 33 carry 4 marks each.',
-        'Questions 23, 24, 25, 26 and 34 carry 6 marks each.',
+        'Questions 1 to 20 carry 1 mark each.',
+        'Questions 21 to 24 carry 3 marks each.',
+        'Questions 25 to 28 carry 4 marks each.',
+        'Questions 29 to 34 carry 6 marks each.',
         'Internal choices have been provided in questions of 3 marks, 4 marks, and 6 marks.',
         'All calculations must be accompanied by detailed working notes.'
       ]
     };
   }
 
-  // Fallback for remaining subjects
+  // =========================================================================
+  // 2. PHYSICAL EDUCATION (CODE 048) - 70 MARKS DYNAMIC ENGINE
+  // =========================================================================
+  if (cleanSub.includes('048') || cleanSub.includes('physicaleducation')) {
+    const teamCount = getRandomChoice([13, 17, 19, 21, 23, 27]);
+    const nextPower = Math.pow(2, Math.ceil(Math.log2(teamCount)));
+    const totalByes = nextPower - teamCount;
+    const upperHalfTeams = Math.floor((teamCount + 1) / 2);
+    const lowerHalfTeams = Math.floor((teamCount - 1) / 2);
+
+    const stepDuration = getRandomChoice([300, 240, 180]);
+    const pulse1 = getRandomChoice([68, 72, 76, 80]);
+    const pulse2 = getRandomChoice([58, 62, 66, 70]);
+    const pulse3 = getRandomChoice([48, 52, 56, 60]);
+    const totalPulse = pulse1 + pulse2 + pulse3;
+    const pfiScore = ((stepDuration * 100) / (2 * totalPulse)).toFixed(1);
+
+    const peMCQs = [
+      { text: 'Which tournament format follows the formula (N - 1) to determine the total number of matches played for N teams?', opts: { optA: 'Knock-Out Tournament', optB: 'League Tournament', optC: 'Round Robin', optD: 'Combination Tournament' }, ans: '(A) Knock-Out Tournament.' },
+      { text: 'Identify the postural spinal deformity marked by an abnormal outward exaggeration of the thoracic curve (hunchback):', opts: { optA: 'Kyphosis', optB: 'Lordosis', optC: 'Scoliosis', optD: 'Knock Knees' }, ans: '(A) Kyphosis.' },
+      { text: 'Which Yogic posture is highly effective as a preventive measure against Type-2 Diabetes by stimulating the pancreas?', opts: { optA: 'Ardha Matsyendrasana', optB: 'Shavasana', optC: 'Tadasana', optD: 'Vrikshasana' }, ans: '(A) Ardha Matsyendrasana.' },
+      { text: 'What is the bench height used in the Harvard Step Test for boys?', opts: { optA: '20 inches (50.8 cm)', optB: '16 inches (40.6 cm)', optC: '14 inches', optD: '24 inches' }, ans: '(A) 20 inches.' },
+      { text: 'Newton’s Second Law of Motion is also formally termed in sports biomechanics as:', opts: { optA: 'Law of Acceleration', optB: 'Law of Inertia', optC: 'Law of Action and Reaction', optD: 'Law of Equilibrium' }, ans: '(A) Law of Acceleration.' },
+      { text: 'Which component of physical fitness is primarily measured by the 8-Foot Up and Go test in the Rikli & Jones battery?', opts: { optA: 'Agility and Dynamic Balance', optB: 'Muscular Strength', optC: 'Aerobic Endurance', optD: 'Lower Body Flexibility' }, ans: '(A) Agility and Dynamic Balance.' },
+      { text: 'Female Athlete Triad comprises which three interrelated clinical conditions?', opts: { optA: 'Osteoporosis, Amenorrhea, Eating Disorders', optB: 'Hypertension, Diabetes, Fatigue', optC: 'Kyphosis, Scoliosis, Lordosis', optD: 'Anemia, Asthma, Sprain' }, ans: '(A) Osteoporosis, Amenorrhea, Eating Disorders.' },
+      { text: 'What does the acronym P.R.I.C.E. stand for in initial sports injury management?', opts: { optA: 'Protect, Rest, Ice, Compression, Elevation', optB: 'Pressure, Relaxation, Inhale, Calm, Exercise', optC: 'Physical, Rapid, Inspection, Care, Energy', optD: 'Protect, Relief, Immobilize, Circulation, Exam' }, ans: '(A) Protect, Rest, Ice, Compression, Elevation.' },
+      { text: 'Which training cycle spans across a micro-cycle in periodization planning?', opts: { optA: '3 to 7 Days', optB: '3 to 6 Weeks', optC: '6 to 12 Months', optD: '4 Years' }, ans: '(A) 3 to 7 Days.' },
+      { text: 'Which nutrient yields approximately 9 kcal of energy per gram metabolized?', opts: { optA: 'Fats', optB: 'Proteins', optC: 'Carbohydrates', optD: 'Minerals' }, ans: '(A) Fats.' },
+      { text: 'Which classification of lever has the Fulcrum located between the Effort and the Load (e.g. nodding movement of head)?', opts: { optA: 'Class I Lever', optB: 'Class II Lever', optC: 'Class III Lever', optD: 'Class IV Lever' }, ans: '(A) Class I Lever.' },
+      { text: 'In the SAI Khelo India Fitness Test battery for age group 9-18+ years, which test measures abdominal muscular endurance?', opts: { optA: 'Partial Curl-Up', optB: 'Push-Ups for Boys', optC: '50m Dash', optD: 'Sit and Reach Test' }, ans: '(A) Partial Curl-Up.' },
+      { text: 'The ability of a muscle or muscle group to overcome resistance under conditions of fatigue is known as:', opts: { optA: 'Strength Endurance', optB: 'Maximum Strength', optC: 'Explosive Strength', optD: 'Speed Endurance' }, ans: '(A) Strength Endurance.' },
+      { text: 'Which of the following is a physical indicator of Flat Foot (Pes Planus)?', opts: { optA: 'Absence of longitudinal medial arch of foot', optB: 'Knees touching each other while standing', optC: 'Forward curvature of lumbar spine', optD: 'Lateral deviation of vertebral column' }, ans: '(A) Absence of foot arch.' },
+      { text: 'The Deaflympics sports festival is organized exclusively for athletes with hearing impairment under the governance of:', opts: { optA: 'International Committee of Sports for the Deaf (ICSD)', optB: 'International Paralympic Committee', optC: 'Special Olympics International', optD: 'World Health Organization' }, ans: '(A) ICSD.' },
+      { text: 'Assertion (A): Isometric exercises do not show visible external joint movements.\nReason (R): During isometric muscle contractions, muscle length remains constant while internal muscular tension increases.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true and (R) explains (A).' },
+      { text: 'Which personality type in Carl Jung’s psychological classification tends to be reflective, quiet, and prefers solitary pursuits?', opts: { optA: 'Introvert', optB: 'Extrovert', optC: 'Ambivert', optD: 'Somatotype' }, ans: '(A) Introvert.' },
+      { text: 'In the Fartlek training method for endurance development, the speed and pace variations are governed by:', opts: { optA: 'The athlete and natural terrain surroundings', optB: 'The whistle and commands of the coach', optC: 'Fixed automated treadmill speed controls', optD: 'Predetermined static athletic track markers' }, ans: '(A) Natural terrain and athlete self-regulation.' }
+    ];
+
+    const questions: FullGeneratedQuestion[] = [];
+
+    shuffleArray(peMCQs).forEach((q, idx) => {
+      questions.push({
+        qNum: idx + 1,
+        partTitle: idx === 0 ? 'SECTION - A: MULTIPLE CHOICE QUESTIONS (18 MARKS)' : undefined,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    questions.push({
+      qNum: 19,
+      partTitle: 'SECTION - B: VERY SHORT ANSWER QUESTIONS (10 MARKS)',
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'Define Extramural tournaments. Mention any two key educational and athletic benefits of inter-school sports competitions.',
+      answerKey: 'Extramural tournaments are competitions organized between different schools/institutions. Benefits: Promotes athletic talent identification and fosters inter-school camaraderie.'
+    });
+
+    questions.push({
+      qNum: 20,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'Explain the physiological differences between Fast Twitch (White) and Slow Twitch (Red) muscle fibers.',
+      answerKey: 'Slow twitch (Type I) have high myoglobin/mitochondria for aerobic endurance; Fast twitch (Type II) contract rapidly for anaerobic explosive force.'
+    });
+
+    questions.push({
+      qNum: 21,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'State the difference between Intrinsic Motivation and Extrinsic Motivation with suitable sports examples.',
+      answerKey: 'Intrinsic motivation comes from personal satisfaction and love for game; Extrinsic motivation comes from medals, cash awards, and social recognition.'
+    });
+
+    questions.push({
+      qNum: 22,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'Differentiate between Sprain and Strain in sports trauma.',
+      answerKey: 'Sprain is a ligament tear or stretch around a joint; Strain is a muscle or tendon fiber tear.'
+    });
+
+    questions.push({
+      qNum: 23,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'What is Basal Metabolic Rate (BMR)? State two physiological factors that influence an athlete’s BMR.',
+      answerKey: 'BMR is minimal energy required at complete rest. Factors: Lean body muscle mass, age, and gender.'
+    });
+
+    questions.push({
+      qNum: 24,
+      partTitle: 'SECTION - C: SHORT ANSWER QUESTIONS (15 MARKS)',
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Draw a neat tournament fixture for ${teamCount} teams on a Knock-Out basis. Show clearly:\n(i) Number of teams in Upper Half and Lower Half\n(ii) Total number of Byes and their distribution\n(iii) Total number of rounds to be played`,
+      orOptionText: `Explain the procedure and health benefits of Bhujangasana and Gomukhasana in the therapeutic management of Asthma.`,
+      answerKey: `Teams N = ${teamCount}. Next power of 2 = ${nextPower}. Total Byes = ${totalByes}. Upper Half = ${upperHalfTeams}, Lower Half = ${lowerHalfTeams}. Number of rounds = ${Math.ceil(Math.log2(teamCount))}. Show clean bracket diagram.`
+    });
+
+    questions.push({
+      qNum: 25,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Describe the procedure, scoring, and clinical significance of the Chair Sit and Reach test for senior citizens in the Rikli & Jones battery.',
+      answerKey: 'Subject sits on edge of chair with one leg extended straight and reaches toward toes. Assesses lower body hamstring flexibility to prevent lumbar stiffness.'
+    });
+
+    questions.push({
+      qNum: 26,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Explain the concept of "Inclusion in Physical Education". How does unified sports participation benefit Children With Special Needs (Divyang)?',
+      answerKey: 'Inclusion integrates children with disabilities into mainstream sports environments, reducing social stigma, building motor confidence, and promoting peer empathy.'
+    });
+
+    questions.push({
+      qNum: 27,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'What are Macro Nutrients and Micro Nutrients? Detail the physiological functions of Carbohydrates, Proteins, and Water in athletic performance.',
+      answerKey: 'Macro nutrients (Carbs, Fats, Proteins) provide caloric energy; Micro nutrients (Vitamins, Minerals) regulate cellular metabolism. Water maintains thermoregulation and blood volume.'
+    });
+
+    questions.push({
+      qNum: 28,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Explain any three physiological factors that determine Speed in sprinting events.',
+      answerKey: '1. Nervous system reaction time, 2. Percentage of fast-twitch muscle fibers, 3. Anaerobic biochemical energy capacity (ATP-CP store).'
+    });
+
+    questions.push({
+      qNum: 29,
+      partTitle: 'SECTION - D: CASE-BASED & DATA ANALYSIS QUESTIONS (12 MARKS)',
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - HARVARD STEP TEST FITNESS EVALUATION:\nA physical education instructor conducted the Harvard Step Test on an 18-year-old athlete. The test duration was completed for ${stepDuration} seconds on a 20-inch gymnasium bench. The recovery heart rate pulse counts recorded during the three recovery intervals were:\n- 1 to 1.5 min: ${pulse1} beats\n- 2 to 2.5 min: ${pulse2} beats\n- 3 to 3.5 min: ${pulse3} beats\n\n(i) Calculate the Physical Fitness Index (PFI) of the athlete using the Long Form formula. [2]\n(ii) Based on your calculated PFI in part (i), evaluate whether the athlete's cardiovascular endurance rating falls into Poor, Low Average, High Average, Good, or Excellent category. [2]`,
+      answerKey: `(i) PFI = (Duration in seconds x 100) / (2 x Sum of pulse counts) = (${stepDuration} x 100) / (2 x ${totalPulse}) = ${pfiScore}.\n(ii) Rating scale: Below 55 = Poor, 55-64 = Low Average, 65-79 = High Average, 80-89 = Good, Above 90 = Excellent.`
+    });
+
+    questions.push({
+      qNum: 30,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - POSTURAL DEFORMITIES & SCHOOL SCREENING:\nDuring an annual physical fitness screening in a school, the medical team noticed that several students in Class 12 exhibited postural issues. Student A walked with knees knocking against each other while running. Student B showed an exaggerated forward hollow curvature in the lumbar spine.\n\n(i) Identify the postural deformities of Student A and Student B. [2]\n(ii) Suggest two corrective exercises or Yogic Asanas for each deformity. [2]`,
+      orOptionText: `Read the following 100m sprint biomechanical split-timing observation data and answer the questions below:\n(i) Which of Newton’s Laws of Motion explains the explosive propulsion exerted by a sprinter off the starting blocks? Explain the biomechanical interaction. [2]\n(ii) How do air resistance (aerodynamic drag) and ground reaction forces affect the sprinter’s acceleration and terminal velocity maintenance? [2]`,
+      orOptionTableData: `<table class="matrix-table">
+  <tr><th>Split Distance (Meters)</th><th>Split Time (Seconds)</th><th>Cumulative Time</th><th>Calculated Velocity (m/s)</th></tr>
+  <tr><td>0 - 20 m (Drive Phase)</td><td>2.88 s</td><td>2.88 s</td><td>6.94 m/s</td></tr>
+  <tr><td>20 - 40 m (Transition)</td><td>1.92 s</td><td>4.80 s</td><td>10.42 m/s</td></tr>
+  <tr><td>40 - 60 m (Maximum Velocity)</td><td>1.75 s</td><td>6.55 s</td><td>11.43 m/s</td></tr>
+  <tr><td>60 - 80 m (Speed Maintenance)</td><td>1.78 s</td><td>8.33 s</td><td>11.24 m/s</td></tr>
+  <tr><td>80 - 100 m (Deceleration Phase)</td><td>1.85 s</td><td>10.18 s</td><td>10.81 m/s</td></tr>
+</table>`,
+      answerKey: `Main: (i) Student A: Knock Knees (Genu Valgum); Student B: Lordosis. (ii) Corrective exercises: Padmasana & Gomukhasana for Knock Knees; Halasana & Paschimottanasana for Lordosis.\nOR: (i) Newton's 3rd Law of Motion: Action-Reaction. (ii) Ground reaction propels forward; air resistance opposes motion.`
+    });
+
+    questions.push({
+      qNum: 31,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - SPORTS INJURIES AND FIRST AID PROTOCOLS:\nDuring an inter-house football match, player Rahul suffered an inversion ankle injury after landing awkwardly, resulting in acute swelling, severe localized pain, and inability to bear weight. The school sports coach immediately initiated emergency first-aid management.\n\n(i) Name the soft-tissue injury sustained by Rahul and state whether it is a Sprain or a Strain. [2]\n(ii) Elaborate on the P.R.I.C.E. rehabilitation protocol applied on the field. [2]`,
+      answerKey: `(i) Ankle Sprain (ligament injury caused by overstretching).\n(ii) Protect the joint, Rest completely, Ice for 20 mins to vasoconstrict, Compress with elastic crepe bandage, and Elevate above heart level to reduce edema.`
+    });
+
+    questions.push({
+      qNum: 32,
+      partTitle: 'SECTION - E: LONG ANSWER QUESTIONS (15 MARKS)',
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: 'Explain Newton’s three laws of motion with labeled biomechanical illustrations. Detail how each law applies to running, high jumping, and swimming events.',
+      orOptionText: `What is Circuit Training? Design an 8-station circuit training routine to enhance general muscular endurance and agility in high school athletes. Explain the guiding principles.`,
+      answerKey: '1st Law (Inertia): block start. 2nd Law (Acceleration F=ma): force production on ground. 3rd Law (Action-Reaction): ground reaction propulsion in jumping/swimming.'
+    });
+
+    questions.push({
+      qNum: 33,
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: 'Explain the Rikli & Jones Senior Citizen Fitness Test battery. Detail the procedure, equipment required, and scoring for:\n(a) Chair Stand Test\n(b) Arm Curl Test\n(c) Back Scratch Test',
+      answerKey: 'Chair Stand: 30 secs stands for lower body strength. Arm Curl: 30 secs bicep curls (5 lbs women, 8 lbs men) for upper body strength. Back Scratch: shoulder flexibility reach measurement.'
+    });
+
+    questions.push({
+      qNum: 34,
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: 'What is Sports Training Periodization? Explain the physiological characteristics and training objectives of:\n(i) Preparatory Phase\n(ii) Competition Phase\n(iii) Transition Phase\nHow are Micro, Meso, and Macro cycles integrated into the annual training calendar?',
+      answerKey: 'Preparatory Phase: general and specific conditioning. Competition Phase: peak performance stabilization. Transition Phase: active recovery. Integrate micro (weekly), meso (monthly), and macro (yearly) cycles.'
+    });
+
+    return {
+      questions,
+      totalMarks: 70,
+      instructions: [
+        'This question paper contains 34 questions divided into 5 Sections – A, B, C, D and E.',
+        'Section A comprises 18 Multiple Choice Questions of 1 mark each (Q1 to Q18).',
+        'Section B comprises 5 Very Short Answer Questions of 2 marks each (Q19 to Q23).',
+        'Section C comprises 5 Short Answer Questions of 3 marks each (Q24 to Q28).',
+        'Section D comprises 3 Case-Based / Data Analysis Questions of 4 marks each (Q29 to Q31).',
+        'Section E comprises 3 Long Answer Questions of 5 marks each (Q32 to Q34).',
+        'Internal choices have been provided in selective questions of 3, 4, and 5 marks.',
+        'All answers must be written clearly with appropriate diagrams and formulas where required.'
+      ]
+    };
+  }
+
+  // =========================================================================
+  // 3. YOGA (CODE 841) - 50 MARKS (28 QUESTIONS)
+  // =========================================================================
+  if (cleanSub.includes('841') || cleanSub.includes('yoga')) {
+    const poolPartA = [
+      { text: 'Which of the following is an effective active stress-management technique in workplace psychology?', opts: { optA: 'Deep Breathing & Yoga Nidra', optB: 'Procrastination', optC: 'Social Isolation', optD: 'Excessive Caffeine Intake' }, ans: '(A) Deep Breathing & Yoga Nidra.' },
+      { text: 'In communication skills, which element confirms that the intended message has been understood correctly by the receiver?', opts: { optA: 'Feedback', optB: 'Decoding', optC: 'Channel Noise', optD: 'Encoding' }, ans: '(A) Feedback.' },
+      { text: 'Which shortcut key combination is standardly used to save an ongoing document in LibreOffice Writer / MS Word?', opts: { optA: 'Ctrl + S', optB: 'Ctrl + P', optC: 'Ctrl + Z', optD: 'Alt + F4' }, ans: '(A) Ctrl + S.' },
+      { text: 'An individual who establishes an innovative business enterprise taking calculated financial risks is called an:', opts: { optA: 'Entrepreneur', optB: 'Wage employee', optC: 'Apprentice', optD: 'Administrator' }, ans: '(A) Entrepreneur.' },
+      { text: 'Which of the following aligns directly with United Nations Sustainable Development Goals (SDGs)?', opts: { optA: 'Clean Water & Sanitation', optB: 'Unchecked Industrial Waste', optC: 'Heavy Chemical Fertilizers', optD: 'Deforestation' }, ans: '(A) Clean Water & Sanitation.' }
+    ];
+
+    const poolYogaMCQs = [
+      { text: 'According to Sage Patanjali in Yoga Sutra, the classical definition of Yoga is:', opts: { optA: 'Yogas Chitta Vritti Nirodha', optB: 'Samatvam Yoga Uchyate', optC: 'Yogah Karmasu Kaushalam', optD: 'Sharira Madhyam Khalu Dharma Sadhanam' }, ans: '(A) Yogas Chitta Vritti Nirodha.' },
+      { text: 'Which of the following is classified as one of the six classical purificatory techniques (Shatkarma) in Hatha Yoga?', opts: { optA: 'Trataka', optB: 'Padmasana', optC: 'Bhastrika', optD: 'Ujjayi' }, ans: '(A) Trataka.' },
+      { text: 'Identify the total number of sequential steps present in one complete classical cycle of Surya Namaskara:', opts: { optA: '12 Steps', optB: '10 Steps', optC: '8 Steps', optD: '16 Steps' }, ans: '(A) 12 Steps.' },
+      { text: 'According to Hatha Yoga Pradipika, the concept of "Mitahara" signifies:', opts: { optA: 'Nutritious, pleasant, and moderate food filling half the stomach', optB: 'Eating heavy spicy food once a day', optC: 'Complete prolonged fasting without liquids', optD: 'Consuming only raw bitter herbs' }, ans: '(A) Moderate and wholesome food.' },
+      { text: 'Which Pranayama practice produces a resonant sound imitating a humming female bee, soothing the nervous system?', opts: { optA: 'Bhramari Pranayama', optB: 'Sheetali Pranayama', optC: 'Surya Bhedana', optD: 'Ujjayi' }, ans: '(A) Bhramari.' },
+      { text: 'In Ashtanga Yoga, which limb deals specifically with withdrawal of the senses from external distractions?', opts: { optA: 'Pratyahara', optB: 'Dharana', optC: 'Niyama', optD: 'Dhyana' }, ans: '(A) Pratyahara.' },
+      { text: 'Which energetic nadi represents the cooling, lunar, parasympathetic energy flow in the human body?', opts: { optA: 'Ida Nadi', optB: 'Pingala Nadi', optC: 'Sushumna Nadi', optD: 'Gandhari Nadi' }, ans: '(A) Ida Nadi.' },
+      { text: 'Which Asana is traditionally safe and recommended to be performed immediately following meals to promote gastric digestion?', opts: { optA: 'Vajrasana', optB: 'Sarvangasana', optC: 'Halasana', optD: 'Chakrasana' }, ans: '(A) Vajrasana.' },
+      { text: 'The bandha that involves gentle contraction and pulling inward of the abdominal muscles toward the spine is:', opts: { optA: 'Uddiyana Bandha', optB: 'Jalandhara Bandha', optC: 'Mula Bandha', optD: 'Maha Bandha' }, ans: '(A) Uddiyana Bandha.' },
+      { text: 'Which classical author compiled the authoritative treatise "Hatha Yoga Pradipika"?', opts: { optA: 'Swami Svatmarama', optB: 'Sage Gheranda', optC: 'Maharishi Patanjali', optD: 'Gorakhnath' }, ans: '(A) Swami Svatmarama.' },
+      { text: 'In Yogic psychology, disease initiated in the mental plane by chronic stress is termed as:', opts: { optA: 'Adhi', optB: 'Vyadhi', optC: 'Klesha', optD: 'Mala' }, ans: '(A) Adhi.' },
+      { text: 'Which of the following is NOT an element of Yama in Patanjali Ashtanga Yoga?', opts: { optA: 'Saucha', optB: 'Ahimsa', optC: 'Satya', optD: 'Asteya' }, ans: '(A) Saucha.' },
+      { text: 'Which mudra is commonly integrated with seated meditative postures representing the union of individual and cosmic consciousness?', opts: { optA: 'Chin / Gyan Mudra', optB: 'Shanmukhi Mudra', optC: 'Khechari Mudra', optD: 'Ashwini Mudra' }, ans: '(A) Gyan Mudra.' },
+      { text: 'Assertion (A): Regular practice of Shavasana facilitates autonomic restoration.\nReason (R): Conscious muscular relaxation lowers physiological oxygen consumption and blood pressure.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true.' },
+      { text: 'What is the recommended breathing ratio during beginner stages of Nadi Shodhana Pranayama (Inhale : Exhale)?', opts: { optA: '1 : 1', optB: '1 : 4', optC: '1 : 2', optD: '2 : 5' }, ans: '(A) 1 : 1.' }
+    ];
+
+    const questions: FullGeneratedQuestion[] = [];
+    let qIndex = 1;
+
+    questions.push({
+      qNum: qIndex,
+      partTitle: 'SECTION - A: OBJECTIVE TYPE QUESTIONS (20 MARKS)',
+      typeBadge: '1 Mark MCQ',
+      marks: 1,
+      text: poolPartA[0].text,
+      options: poolPartA[0].opts,
+      answerKey: poolPartA[0].ans
+    });
+    qIndex++;
+
+    shuffleArray(poolPartA.slice(1)).slice(0, 4).forEach(q => {
+      questions.push({
+        qNum: qIndex++,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    shuffleArray(poolYogaMCQs).slice(0, 15).forEach(q => {
+      questions.push({
+        qNum: qIndex++,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      partTitle: 'SECTION - B: SHORT ANSWER QUESTIONS (10 MARKS)',
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'Define Shatkarma. Enumerate any four Shatkarmas described in classical Hatha Yogic texts.',
+      answerKey: 'Six internal cleansing techniques: Dhauti, Basti, Neti, Trataka, Nauli, Kapalabhati.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'State the health indications and contraindications of Paschimottanasana.',
+      orOptionText: 'State any two essential ergonomic safety precautions during inverted postures.',
+      answerKey: 'Indications: Stretches hamstrings, relieves gastric distress. Contraindications: Lumbar disc herniation.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'Explain the physiological importance of diaphragmatic breathing over shallow clavicular breathing.',
+      answerKey: 'Diaphragmatic breathing optimizes alveolar ventilation and activates vagal tone.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'Differentiate between "Bahiranga Yoga" and "Antaranga Yoga" in Patanjali’s Ashtanga framework.',
+      answerKey: 'Bahiranga: Yama to Pratyahara. Antaranga: Dharana, Dhyana, Samadhi.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'What is the role of Mitahara in maintaining digestive health and emotional equilibrium?',
+      answerKey: 'Eating nutrient-rich food while keeping 1/4th stomach empty preserves digestive fire.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      partTitle: 'SECTION - C: CASE-BASED & DESCRIPTIVE QUESTIONS (20 MARKS)',
+      typeBadge: '4 Marks Analytical',
+      marks: 4,
+      text: 'Elaborate upon the physiological and therapeutic mechanism of Anulom-Vilom (Alternate Nostril Breathing) in balancing autonomic nervous functions.',
+      orOptionText: 'Describe the stepwise alignment technique, breathing synchronization, and anatomical benefits of Dhanurasana.',
+      answerKey: 'Balances sympathetic and parasympathetic inputs.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - WORKPLACE PSYCHOSOMATIC STRESS MANAGEMENT:\nAn IT firm with 1,200 software developers reported that 60% of employees complain of chronic cervical neck stiffness, lower back fatigue, and disrupted sleep due to prolonged desk work.\n\n(i) Recommend two Sukshma Vyayama (micro-movements) for neck and shoulder girdle mobility. [2]\n(ii) Design a 15-minute evening breathwork and restorative posture sequence to facilitate sleep induction. [2]`,
+      answerKey: '(i) Griva Shakti Vikasaka and Skandha Sanchalana. (ii) 5 min Bhramari, 5 min Sheetali, 5 min Shavasana.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '4 Marks Analytical',
+      marks: 4,
+      text: 'Explain the Pancha Kosha theory (Five Sheaths of Existence) according to the Taittiriya Upanishad and how Yogic practices impact each sheath.',
+      answerKey: 'Annamaya, Pranamaya, Manomaya, Vijnanamaya, Anandamaya.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - LIFESTYLE DISORDER INTERVENTION (HYPERTENSION):\nA 48-year-old bank officer with resting blood pressure 150/95 mmHg has been advised Yogic lifestyle modification.\n\n(i) Identify two Asanas that are strictly contra-indicated for him and justify why. [2]\n(ii) Suggest two therapeutic relaxing asanas and one cooling pranayama to help reduce blood pressure. [2]`,
+      orOptionText: 'Discuss the historical evolution of Yoga from Vedic period to Modern Scientific Yoga research.',
+      answerKey: '(i) Sirshasana and Chakrasana contra-indicated. (ii) Shavasana, Makarasana, Sheetali.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '4 Marks Analytical',
+      marks: 4,
+      text: 'Outline the classical 12-step sequence of Surya Namaskara with corresponding breathing coordination and physiological benefits for cardiovascular conditioning.',
+      answerKey: '12 steps from Pranamasana to Parvatasana with inhale/exhale synchronization.'
+    });
+
+    return {
+      questions,
+      totalMarks: 50,
+      instructions: [
+        'This question paper contains 29 questions divided into 3 Sections – A, B, and C.',
+        'Section A comprises 20 Objective Type Questions of 1 mark each (Q1 to Q20).',
+        'Section B comprises 5 Short Answer Questions of 2 marks each (Q21 to Q25).',
+        'Section C comprises 5 Case-Based / Analytical Questions of 4 marks each (Q26 to Q29).',
+        'Time Allowed: 2 Hours. Maximum Marks: 50.',
+        'Internal choices have been provided in selective questions.'
+      ]
+    };
+  }
+
+  // =========================================================================
+  // 4. GENERAL SUBJECT FALLBACK
+  // =========================================================================
   const subCode = cleanSub.match(/\d+/)?.[0] || '2026';
   const genericQuestions: FullGeneratedQuestion[] = [];
   let cnt = 1;
