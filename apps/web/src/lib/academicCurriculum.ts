@@ -29,15 +29,15 @@ const SENIOR_SECONDARY_ALL_SUBJECTS = [
   'Accountancy (Code 055)',
   'Business Studies (Code 054)',
   'Economics (Code 030)',
-  'Physical Education (Code 048)',
-  'Yoga (Code 841)',
+  'Chemistry (Code 043)',
+  'Physics (Code 042)',
+  'Biology (Code 044)',
   'Mathematics (Code 041)',
   'Applied Mathematics (Code 241)',
+  'Physical Education (Code 048)',
+  'Yoga (Code 841)',
   'Computer Science (Code 083)',
   'Informatics Practices (Code 065)',
-  'Physics (Code 042)',
-  'Chemistry (Code 043)',
-  'Biology (Code 044)',
   'Political Science (Code 028)',
   'History (Code 027)',
   'Geography (Code 029)',
@@ -71,7 +71,89 @@ export const ALL_CBSE_CLASSES: AcademicClass[] = [
 export const ACADEMIC_CLASSES = ALL_CBSE_CLASSES;
 
 export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
-  // 1. ACCOUNTANCY (CODE 055) - COMPLETE RESTORED SUBTOPICS
+  // 1. CHEMISTRY (CODE 043) - 70 MARKS
+  'Chemistry (Code 043)': {
+    name: 'Chemistry',
+    code: '043',
+    theoryMarks: 70,
+    practicalMarks: 30,
+    units: [
+      {
+        unitTitle: 'Unit I: Solutions (07 Marks)',
+        subTopics: [
+          'Types of Solutions, Expression of Concentration of Solutions',
+          'Solubility of Gases in Liquids (Henry’s Law) and Liquids in Liquids',
+          'Raoult’s Law, Ideal and Non-ideal Solutions, Vapour Pressure Variations',
+          'Colligative Properties: Relative Lowering of Vapour Pressure, Elevation of Boiling Point',
+          'Depression of Freezing Point, Osmotic Pressure and Reverse Osmosis',
+          'Abnormal Molecular Mass and Van’t Hoff Factor (i)'
+        ]
+      },
+      {
+        unitTitle: 'Unit II: Electrochemistry (09 Marks)',
+        subTopics: [
+          'Redox Reactions, Conductance in Electrolytic Solutions, Specific and Molar Conductivity',
+          'Kohlrausch’s Law and its Applications',
+          'Galvanic Cells, EMF of a Cell, Standard Electrode Potential',
+          'Nernst Equation and its Application to Chemical Cells',
+          'Relation between Gibbs Energy Change and EMF of a Cell',
+          'Batteries: Primary and Secondary Cells, Fuel Cells and Corrosion'
+        ]
+      },
+      {
+        unitTitle: 'Unit III: Chemical Kinetics (07 Marks)',
+        subTopics: [
+          'Rate of a Reaction (Average and Instantaneous), Factors Affecting Reaction Rates',
+          'Order and Molecularity of a Reaction, Rate Law and Specific Rate Constant',
+          'Integrated Rate Equations and Half-Life Period for Zero and First Order Reactions',
+          'Concept of Collision Theory (Elementary Treatment), Activation Energy and Arrhenius Equation'
+        ]
+      },
+      {
+        unitTitle: 'Unit IV: d- and f-Block Elements (07 Marks)',
+        subTopics: [
+          'General Characteristics of Transition Metals: Electronic Configuration, Metallic Properties',
+          'Ionization Enthalpies, Variable Oxidation States, Colour, Catalytic Properties',
+          'Preparation, Properties and Oxidizing Action of K2Cr2O7 and KMnO4',
+          'Lanthanoids: Electronic Configuration, Oxidation States and Lanthanoid Contraction',
+          'Actinoids: Electronic Configuration and Comparison with Lanthanoids'
+        ]
+      },
+      {
+        unitTitle: 'Unit V: Coordination Compounds (07 Marks)',
+        subTopics: [
+          'Introduction, Ligands, Coordination Number, Colour, Magnetic Properties',
+          'IUPAC Nomenclature of Mononuclear Coordination Compounds',
+          'Isomerism (Structural and Stereo) in Coordination Compounds',
+          'Valence Bond Theory (VBT) and Crystal Field Theory (CFT)',
+          'Importance of Coordination Compounds in Extraction of Metals and Biological Systems'
+        ]
+      },
+      {
+        unitTitle: 'Unit VI & VII: Haloalkanes, Haloarenes, Alcohols, Phenols & Ethers (14 Marks)',
+        subTopics: [
+          'Haloalkanes and Haloarenes: Nomenclature, Nature of C-X Bond, SN1 and SN2 Mechanisms',
+          'Optical Rotation, Mechanism of Nucleophilic Substitution',
+          'Alcohols: Preparation, Properties, Identification of Primary, Secondary and Tertiary Alcohols',
+          'Phenols: Preparation from Cumene, Acidic Nature, Kolbe’s Reaction, Reimer-Tiemann Reaction',
+          'Ethers: Nomenclature, Williamson’s Synthesis, Cleavage of C-O Bond'
+        ]
+      },
+      {
+        unitTitle: 'Unit VIII, IX & X: Aldehydes, Ketones, Carboxylic Acids, Amines & Biomolecules (19 Marks)',
+        subTopics: [
+          'Aldehydes and Ketones: Nucleophilic Addition, Aldol Condensation, Cannizzaro Reaction',
+          'Carboxylic Acids: Acidic Strength, Hell-Volhard-Zelinsky (HVZ) Reaction',
+          'Amines: Gabriel Phthalimide Synthesis, Hoffmann Bromamide Reaction, Carbylamine Test',
+          'Carbohydrates: Classification (Aldoses and Ketoses), Monosaccharides (Glucose and Fructose)',
+          'Proteins: Amino acids, Peptide Bond, Polypeptides, Denaturation of Proteins',
+          'Nucleic Acids: DNA and RNA Structure and Biological Functions'
+        ]
+      }
+    ]
+  },
+
+  // 2. ACCOUNTANCY (CODE 055) - 80 MARKS
   'Accountancy (Code 055)': {
     name: 'Accountancy',
     code: '055',
@@ -87,16 +169,6 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
           'Division of Profit among Partners, Interest on Capital & Drawings',
           'Past Adjustments (Omissions and Errors in Interest/Profits)',
           'Guarantee of Minimum Profits to a Partner'
-        ],
-        experiments: [
-          {
-            expId: 'ACC-EXP-01',
-            title: 'Comprehensive accounting project for a partnership firm preparing final accounts and ratio analysis',
-            unitRef: 'Part A',
-            vivaQueries: [
-              { q: 'Maximum number of partners allowed in a partnership firm?', a: '50 partners as per Companies Rules.' }
-            ]
-          }
         ]
       },
       {
@@ -125,17 +197,16 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
           'Issue of Shares: At Par, At Premium, Calls in Arrears and Advance',
           'Over-subscription of Shares and Pro-rata Allotment Calculations',
           'Forfeiture of Shares and Reissue of Forfeited Shares (Capital Reserve)',
-          'Issue of Debentures: As Collateral Security, Consideration other than Cash',
-          'Writing off Discount / Loss on Issue of Debentures'
+          'Issue of Debentures: As Collateral Security, Consideration other than Cash'
         ]
       },
       {
-        unitTitle: 'Part B: Financial Statement Analysis (Deleted Topics Excluded)',
+        unitTitle: 'Part B: Financial Statement Analysis',
         subTopics: [
           'Financial Statements of a Company: Balance Sheet & Statement of P&L (Schedule III)',
           'Accounting Ratios: Liquidity Ratios (Current Ratio, Quick Ratio)',
           'Solvency Ratios: Debt to Equity, Total Assets to Debt, Proprietary, Interest Coverage',
-          'Activity Ratios: Inventory Turnover, Trade Receivables/Payables Turnover, Working Capital Turnover',
+          'Activity Ratios: Inventory Turnover, Trade Receivables/Payables Turnover',
           'Profitability Ratios: Gross Profit, Operating, Net Profit, Return on Investment (ROI)',
           'Cash Flow Statement: Operating, Investing, and Financing Activities (AS-3 Revised)'
         ]
@@ -143,7 +214,7 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
     ]
   },
 
-  // 2. BUSINESS STUDIES (CODE 054) - COMPLETE RESTORED SUBTOPICS
+  // 3. BUSINESS STUDIES (CODE 054) - 80 MARKS
   'Business Studies (Code 054)': {
     name: 'Business Studies',
     code: '054',
@@ -154,239 +225,49 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
         unitTitle: 'Part A - Unit 1 & 2: Nature & Principles of Management',
         subTopics: [
           'Management: Concept, Objectives, Importance, Management as Science/Art/Profession',
-          'Levels of Management (Top, Middle, Operational)',
-          'Coordination: Concept, Characteristics and Importance as the Essence of Management',
+          'Levels of Management (Top, Middle, Operational) and Coordination',
           'Principles of Management: Fayol’s 14 Principles of General Management',
-          'Taylor’s Scientific Management: Principles and Scientific Techniques (Time, Motion, Fatigue Study)'
-        ],
-        experiments: [
-          {
-            expId: 'BST-EXP-01',
-            title: 'Field survey project analyzing consumer behavior or organizational principles in an enterprise',
-            unitRef: 'Part A',
-            vivaQueries: [
-              { q: 'Difference between Unity of Command and Unity of Direction?', a: 'Unity of Command: one boss per employee. Unity of Direction: one head and one plan for an activity group.' }
-            ]
-          }
+          'Taylor’s Scientific Management: Principles and Scientific Techniques'
         ]
       },
       {
         unitTitle: 'Part A - Unit 3, 4 & 5: Business Environment, Planning & Organizing',
         subTopics: [
           'Business Environment: Dimensions (Economic, Social, Technological, Political, Legal)',
-          'Demonetization: Concept and Features',
-          'Planning: Importance, Limitations, Planning Process, Types of Plans (Single Use vs Standing)',
-          'Organizing: Process, Formal vs Informal Organization Structure (Functional vs Divisional)',
-          'Delegation: Elements (Authority, Responsibility, Accountability) vs Decentralization'
+          'Planning: Importance, Limitations, Planning Process, Types of Plans',
+          'Organizing: Process, Formal vs Informal Structure (Functional vs Divisional)',
+          'Delegation: Authority, Responsibility, Accountability vs Decentralization'
         ]
       },
       {
         unitTitle: 'Part A - Unit 6, 7 & 8: Staffing, Directing & Controlling',
         subTopics: [
-          'Staffing: Need, Staffing Process, Recruitment Sources (Internal vs External)',
-          'Selection Process and Methods of Training (On-the-job vs Off-the-job)',
-          'Directing: Principles, Supervision, Motivation (Maslow’s Hierarchy), Financial & Non-Financial Incentives',
-          'Leadership Styles (Autocratic, Democratic, Laissez-faire) and Communication Barriers',
-          'Controlling: Importance, Controlling Process, Management by Exception (MBE) & Critical Point Control'
+          'Staffing: Recruitment Sources (Internal vs External), Selection Process',
+          'Directing: Principles, Supervision, Motivation (Maslow’s Hierarchy), Leadership Styles',
+          'Controlling: Importance, Controlling Process, Management by Exception (MBE)'
         ]
       },
       {
-        unitTitle: 'Part B - Unit 9 & 10: Financial Management & Financial Markets',
+        unitTitle: 'Part B - Unit 9 & 10: Financial Management & Markets',
         subTopics: [
-          'Financial Management: Objectives, Financial Decisions (Investment, Financing, Dividend)',
-          'Financial Planning: Capital Structure (Trading on Equity), Fixed and Working Capital Factors',
-          'Financial Markets: Money Market Instruments (Treasury Bills, Commercial Paper, Call Money, CD)',
-          'Capital Market: Primary vs Secondary Market, Stock Exchange Trading Procedure on NSE/BSE',
-          'Securities and Exchange Board of India (SEBI): Objectives, Regulatory and Developmental Functions'
+          'Financial Management: Decisions (Investment, Financing, Dividend)',
+          'Capital Structure: Trading on Equity, Factors Affecting Working Capital',
+          'Financial Markets: Money Market Instruments, Primary vs Secondary Capital Market',
+          'Securities and Exchange Board of India (SEBI): Objectives and Functions'
         ]
       },
       {
         unitTitle: 'Part B - Unit 11 & 12: Marketing Management & Consumer Protection',
         subTopics: [
-          'Marketing Management Philosophies: Production, Product, Selling, Marketing, Societal Concept',
           'Marketing Mix: 4 Ps (Product, Price, Place, Promotion)',
-          'Product: Branding, Labelling and Packaging (Functions & Levels)',
-          'Pricing: Factors Determining Price of a Product or Service',
-          'Physical Distribution: Channels of Distribution and Components of Physical Distribution',
-          'Promotion Mix: Advertising, Personal Selling, Sales Promotion, Public Relations',
-          'Consumer Protection Act 2019: Meaning of Consumer, Consumer Rights and Responsibilities',
-          'Three-Tier Redressal Machinery: District Commission, State Commission, National Commission'
+          'Advertising, Personal Selling, Sales Promotion and Public Relations',
+          'Consumer Protection Act 2019: Rights, Responsibilities and Redressal Machinery'
         ]
       }
     ]
   },
 
-  // 3. YOGA (CODE 841)
-  'Yoga (Code 841)': {
-    name: 'Yoga',
-    code: '841',
-    theoryMarks: 50,
-    practicalMarks: 50,
-    units: [
-      {
-        unitTitle: 'Unit 1: Introduction to Yoga and Yogic Practices – II',
-        subTopics: [
-          'Shatkarma: Meaning, Purpose and Significance in Hatha Yoga Sadhana',
-          'Dhauti, Basti, Neti, Trataka, Nauli and Kapalabhati Cleansing Principles',
-          'Yogasana: Principles, Physical Alignment, Counter-poses and Health Benefits',
-          'Standing Asanas: Tadasana, Vrikshasana, Pada-hastasana, Trikonasana',
-          'Sitting Asanas: Padmasana, Vajrasana, Paschimottanasana, Ardha Matsyendrasana',
-          'Prone-lying Asanas: Bhujangasana, Salabhasana, Dhanurasana, Makarasana',
-          'Supine-lying Asanas: Setubandhasana, Sarvangasana, Halasana, Shavasana',
-          'Pranayama Practices: Anulom-Vilom, Bhastrika, Sheetali, Sheetkari, Bhramari, Ujjayi',
-          'Dhyana & Meditation Techniques for Psychosomatic Stress Reduction',
-          'Surya Namaskara: 12 Steps Sequence, Mantras, and Breathing Coordination'
-        ],
-        experiments: [
-          {
-            expId: 'YOG-EXP-01',
-            title: 'Demonstration and assessment of 12-step Surya Namaskara with breathing synchronization',
-            unitRef: 'Unit 1',
-            vivaQueries: [
-              { q: 'Benefits of Bhujangasana?', a: 'Expands thoracic cavity, strengthens lumbar spine, and stimulates abdominal digestive organs.' }
-            ]
-          }
-        ]
-      },
-      {
-        unitTitle: 'Unit 2: Introduction to Yoga Texts & Mental Well-being',
-        subTopics: [
-          'Concepts of Mitahara (Diet) according to Hatha Yoga Pradipika',
-          'Patanjali Ashtanga Yoga: Yama (Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha)',
-          'Patanjali Ashtanga Yoga: Niyama (Saucha, Santosha, Tapas, Svadhyaya, Ishvara Pranidhana)',
-          'Bahiranga Yoga (Asana, Pranayama, Pratyahara) vs Antaranga Yoga (Dharana, Dhyana, Samadhi)',
-          'Yogic Stress Management Frameworks: Adhi-Vyadhi Concept',
-          'Role of Karma Yoga and Bhakti Yoga in Developing Balanced Personality'
-        ]
-      },
-      {
-        unitTitle: 'Unit 3: Yoga for Health Promotion – II',
-        subTopics: [
-          'First Aid Principles and Sports Safety in Yogic Training',
-          'Yogic Management of Chronic Lifestyle Disorders (Hypertension, Obesity, Diabetes, Asthma)',
-          'Therapeutic Asanas and Contraindications for Cervical Spondylosis and Lumbar Pain',
-          'Pancha Kosha Theory (Annamaya, Pranamaya, Manomaya, Vijnanamaya, Anandamaya)'
-        ]
-      }
-    ]
-  },
-
-  // 4. PHYSICAL EDUCATION (CODE 048)
-  'Physical Education (Code 048)': {
-    name: 'Physical Education',
-    code: '048',
-    theoryMarks: 70,
-    practicalMarks: 30,
-    units: [
-      {
-        unitTitle: 'Unit I: Management of Sporting Events',
-        subTopics: [
-          'Functions of Sports Event Management (Planning, Organizing, Staffing, Directing, Controlling)',
-          'Committees & their Responsibilities (Pre, During and Post Event Management)',
-          'Fixtures: Knock-Out Tournament Procedure (Calculation of Byes and Seedings)',
-          'Fixtures: League Tournament Procedure (Cyclic and Staircase Methods)',
-          'Intramural & Extramural Competitions: Meaning, Objectives and Significance',
-          'Community Sports Programs (Sports Day, Health Run, Run for Fun, Run for Unity)'
-        ],
-        experiments: [
-          {
-            expId: 'PE-EXP-01',
-            title: 'Draw a complete fixture of 21 teams on Knock-Out basis showing calculation of Byes and rounds',
-            unitRef: 'Unit I',
-            vivaQueries: [
-              { q: 'Formula to calculate total matches in knock-out tournament?', a: 'Total Matches = N - 1.' }
-            ]
-          }
-        ]
-      },
-      {
-        unitTitle: 'Unit II: Children & Women in Sports',
-        subTopics: [
-          'Common Postural Deformities: Knock Knees (Genu Valgum) and Flat Foot (Pes Planus)',
-          'Spinal Deformities: Kyphosis, Lordosis and Scoliosis (Causes and Corrective Exercises)',
-          'Corrective Yogic Exercises and Postural Rehabilitation',
-          'Special Considerations for Female Athletes: Menarche and Menstrual Disfunction',
-          'Female Athlete Triad: Osteoporosis, Amenorrhea, and Eating Disorders'
-        ]
-      },
-      {
-        unitTitle: 'Unit III: Yoga as Preventive Measure for Lifestyle Diseases',
-        subTopics: [
-          'Obesity Management: Procedure, Benefits & Contraindications for Tadasana, Katichakrasana, Matsyasana',
-          'Diabetes Management: Bhujangasana, Paschimottanasana, Pavanmuktasana, Ardha Matsyendrasana',
-          'Asthma Management: Sukhasana, Chakrasana, Gomukhasana, Parvatasana, Bhujangasana',
-          'Hypertension Management: Tadasana, Mandukasana, Gomukhasana, Vakrasana, Shavasana'
-        ]
-      },
-      {
-        unitTitle: 'Unit IV: Physical Education & Sports for CWSN (Divyang)',
-        subTopics: [
-          'Organizations Promoting Disability Sports: Special Olympics, Paralympics, Deaflympics',
-          'Concept of Classification and Divisioning in Disability Sports',
-          'Concept of Inclusion in Sports: Need, Importance and Implementation',
-          'Strategies to Make Physical Activities Accessible for Children with Special Needs'
-        ]
-      },
-      {
-        unitTitle: 'Unit V: Sports & Nutrition',
-        subTopics: [
-          'Concept of Balanced Diet and Nutrition: Macro and Micro Nutrients',
-          'Nutritive Components of Diet (Carbohydrates, Proteins, Fats, Vitamins, Minerals)',
-          'Non-Nutritive Components of Diet (Fiber/Roughage, Water, Colors, Flavors)',
-          'Eating for Weight Control: Healthy Weight, Pitfalls of Dieting, Food Intolerance, Food Myths'
-        ]
-      },
-      {
-        unitTitle: 'Unit VI: Test & Measurement in Sports',
-        subTopics: [
-          'SAI Khelo India Fitness Assessment Protocol (Age groups 5-8 yrs and 9-18+ yrs)',
-          'Harvard Step Test: Computing Physical Fitness Index (PFI) - Long Form & Short Form',
-          'Computing Basal Metabolic Rate (BMR) and Body Mass Index (BMI)',
-          'Rikli & Jones Senior Citizen Fitness Test: Chair Stand, Arm Curl, Chair Sit and Reach, Back Scratch, 8-Foot Up and Go'
-        ]
-      },
-      {
-        unitTitle: 'Unit VII: Physiology & Injuries in Sports',
-        subTopics: [
-          'Physiological Factors Determining Fitness Components (Strength, Speed, Endurance, Flexibility)',
-          'Effect of Exercise on Muscular System (Hypertrophy, Aerobic/Anaerobic changes)',
-          'Effect of Exercise on Cardiorespiratory System (Stroke Volume, Cardiac Output, VO2 Max)',
-          'Sports Injuries Classification: Soft Tissue and Bone/Joint Fractures',
-          'First Aid Management: P.R.I.C.E. and P.R.I.C.E.R. Procedure'
-        ]
-      },
-      {
-        unitTitle: 'Unit VIII: Biomechanics & Sports',
-        subTopics: [
-          'Newton’s Laws of Motion and their Application in Athletic Sports',
-          'Levers: Types (Class I, II, III) and their Mechanical Advantage in Sports Movements',
-          'Equilibrium: Dynamic & Static, and Center of Gravity with Sporting Applications',
-          'Friction & Sports and Projectile Trajectory in Athletic Throwing Events'
-        ]
-      },
-      {
-        unitTitle: 'Unit IX: Psychology & Sports',
-        subTopics: [
-          'Personality: Definition, Types (Carl Jung’s Classification & Big Five Theory)',
-          'Motivation: Meaning, Types (Intrinsic & Extrinsic) and Motivational Techniques',
-          'Exercise Adherence: Reasons, Benefits and Behavioral Strategies',
-          'Aggression in Sports: Hostile, Instrumental, and Assertive Behavior'
-        ]
-      },
-      {
-        unitTitle: 'Unit X: Training in Sports',
-        subTopics: [
-          'Sports Training Cycles: Micro Cycle (3-7 days), Meso Cycle (3-6 weeks), Macro Cycle',
-          'Methods for Developing Strength: Isometric, Isotonic, and Isokinetic Exercises',
-          'Methods for Developing Endurance: Continuous, Interval, and Fartlek Training',
-          'Methods for Developing Speed: Acceleration Runs and Pace Races',
-          'Circuit Training: Meaning, Characteristics and Designing Circuit Training Stations'
-        ]
-      }
-    ]
-  },
-
-  // 5. ECONOMICS (CODE 030)
+  // 4. ECONOMICS (CODE 030) - 80 MARKS
   'Economics (Code 030)': {
     name: 'Economics',
     code: '030',
@@ -397,202 +278,134 @@ export const DETAILED_SYLLABUS_2026_27: Record<string, SubjectCurriculum> = {
         unitTitle: 'Part A - Unit 1: National Income and Related Aggregates (10 Marks)',
         subTopics: [
           'Circular Flow of Income (Two-Sector Model)',
-          'Basic Concepts: Normal Residents, Domestic Territory, Final & Intermediate Goods',
-          'Gross & Net Investment, Depreciation (Consumption of Fixed Capital)',
-          'Net Indirect Taxes (NIT) and Net Factor Income from Abroad (NFIA)',
+          'Gross & Net Investment, Depreciation, Net Indirect Taxes, NFIA',
           'Aggregates: GDP, NDP, GNP, NNP at Market Price & Factor Cost',
-          'Measurement of National Income: Value Added Method',
-          'Measurement of National Income: Income Method & Factor Payments',
-          'Measurement of National Income: Expenditure Method',
-          'Real GDP vs Nominal GDP and GDP Deflator Index',
-          'GDP and Welfare: Limitations (Non-monetary transactions, Externalities, Distribution)'
+          'Measurement of National Income: Value Added, Income, and Expenditure Methods',
+          'Real GDP vs Nominal GDP and GDP Deflator Index'
         ]
       },
       {
         unitTitle: 'Part A - Unit 2: Money and Banking (06 Marks)',
         subTopics: [
-          'Money: Meaning and Supply of Money (Currency with public + Demand deposits)',
-          'Credit Creation / Money Multiplier Process by Commercial Banking System',
-          'Central Bank (RBI): Functions (Bank of Issue, Government Banker, Bankers’ Bank)',
-          'Quantitative Credit Control: Repo Rate, Reverse Repo Rate, Bank Rate, CRR, SLR',
-          'Qualitative Credit Control: Open Market Operations (OMO) and Margin Requirements'
+          'Money Supply: M1 Currency with Public and Demand Deposits',
+          'Credit Creation / Money Multiplier Process by Commercial Banks',
+          'Central Bank (RBI) Functions: Repo Rate, Reverse Repo, CRR, SLR, OMO'
         ]
       },
       {
         unitTitle: 'Part A - Unit 3: Determination of Income and Employment (12 Marks)',
         subTopics: [
-          'Aggregate Demand (AD) and its Components (C + I + G + X - M)',
-          'Propensity to Consume: Average (APC) and Marginal (MPC)',
-          'Propensity to Save: Average (APS) and Marginal (MPS)',
-          'Short-run Equilibrium Output: AD-AS Approach and S-I Approach',
-          'Investment Multiplier (k = 1/MPS = 1/(1-MPC)) and its Stepwise Working',
-          'Full Employment and Involuntary Unemployment Concept',
-          'Problems of Excess Demand (Inflationary Gap) and Deficient Demand (Deflationary Gap)',
-          'Fiscal Measures and Monetary Measures to Correct Excess & Deficient Demand'
+          'Aggregate Demand and Aggregate Supply Components',
+          'Propensity to Consume and Save (APC, MPC, APS, MPS)',
+          'Investment Multiplier (k = 1/MPS) and Mechanism',
+          'Excess Demand (Inflationary Gap) and Deficient Demand (Deflationary Gap)'
         ]
       },
       {
-        unitTitle: 'Part A - Unit 4: Government Budget and the Economy (06 Marks)',
+        unitTitle: 'Part A - Unit 4 & 5: Government Budget & BoP (12 Marks)',
         subTopics: [
-          'Government Budget: Meaning, Objectives, and Fiscal Allocation of Resources',
-          'Classification of Receipts: Revenue Receipts (Tax & Non-Tax) vs Capital Receipts',
-          'Classification of Expenditure: Revenue Expenditure vs Capital Expenditure',
-          'Budgetary Deficits: Revenue Deficit, Fiscal Deficit, Primary Deficit'
+          'Government Budget: Revenue vs Capital Receipts and Expenditures',
+          'Fiscal Deficit, Revenue Deficit, Primary Deficit Implications',
+          'Balance of Payments: Current vs Capital Account, Autonomous vs Accommodating'
         ]
       },
       {
-        unitTitle: 'Part A - Unit 5: Balance of Payments (06 Marks)',
+        unitTitle: 'Part B - Unit 6, 7 & 8: Indian Economic Development (40 Marks)',
         subTopics: [
-          'Balance of Payments (BoP) Account: Meaning and Components',
-          'Current Account (Visible & Invisible Trade, Unilateral Transfers)',
-          'Capital Account (FDI, FII, External Commercial Borrowings, NRI Deposits)',
-          'BoP Deficit, BoP Surplus, and Official Reserve Transactions',
-          'Foreign Exchange Rate: Fixed, Flexible, and Managed Floating Systems'
-        ]
-      },
-      {
-        unitTitle: 'Part B - Unit 6: Development Experience (1947-90) & Economic Reforms (12 Marks)',
-        subTopics: [
-          'State of Indian Economy on the Eve of Independence (Agriculture, Industry, Trade, Demography)',
-          'Common Goals of Five Year Plans: Growth, Modernisation, Self-reliance and Equity',
-          'Agrarian Reforms: Land Ceilings, Abolition of Intermediaries, and Green Revolution',
-          'Industrial Policy Resolution 1956 (IPR 1956) and Small-Scale Industries',
-          'Foreign Trade Strategy: Inward-Looking Trade Policy (Import Substitution)',
-          'Economic Crisis of 1991 and Origin of New Economic Policy (NEP)',
-          'Liberalisation, Privatisation (Disinvestment), and Globalisation (LPG)'
-        ]
-      },
-      {
-        unitTitle: 'Part B - Unit 7: Current Challenges Facing Indian Economy (20 Marks)',
-        subTopics: [
-          'Human Capital Formation: Sources (Education, Health, On-the-job Training, Migration)',
-          'Human Capital vs Physical Capital and Role in Economic Growth',
-          'Rural Development: Credit and Marketing Systems, Role of NABARD and Micro-Credit (SHGs)',
-          'Agricultural Diversification: Horticulture, Dairy, Fisheries, Animal Husbandry',
-          'Organic Farming: Benefits, Process, and Contemporary Limitations',
-          'Employment: Worker-Population Ratio, Formal vs Informal Sector Employment (Informalisation)',
-          'Sustainable Economic Development: Functions of Environment, Carrying Capacity, Renewable Energy'
-        ]
-      },
-      {
-        unitTitle: 'Part B - Unit 8: Development Experience of India: A Comparison with Neighbours (08 Marks)',
-        subTopics: [
-          'Historical Trajectory: India, Pakistan and China (Starting Points and Five Year Plans)',
-          'China’s Economic Path: Great Leap Forward (1958), Special Economic Zones (SEZs)',
-          'Demographic Indicators: Population Growth, Fertility Rate, Sex Ratio, Urbanisation',
-          'Sectoral GDP Contribution and Employment Share across Sectors',
-          'Human Development Indicators (HDI): Life Expectancy, Mean Years of Schooling, Ranks'
+          'Indian Economy (1947-90): Five Year Plans, Agrarian Reforms, Green Revolution',
+          'Economic Reforms 1991: Liberalisation, Privatisation, Globalisation (LPG)',
+          'Human Capital Formation, Rural Development (Credit & SHGs)',
+          'Employment & Sustainable Development',
+          'Comparative Development: India, Pakistan and China'
         ]
       }
     ]
   },
 
-  // 6. MATHEMATICS (CODE 041)
-  'Mathematics (Code 041)': {
-    name: 'Mathematics',
-    code: '041',
-    theoryMarks: 80,
-    practicalMarks: 20,
-    units: [
-      {
-        unitTitle: 'Unit I: Relations and Functions (08 Marks)',
-        subTopics: [
-          'Types of Relations: Reflexive, Symmetric, Transitive and Equivalence Relations',
-          'One-to-One (Injective) and Onto (Surjective) Functions',
-          'Inverse Trigonometric Functions: Definition, Range, Domain, Principal Value Branches',
-          'Graphs of Inverse Trigonometric Functions'
-        ]
-      },
-      {
-        unitTitle: 'Unit II: Algebra - Matrices and Determinants (10 Marks)',
-        subTopics: [
-          'Matrices: Concept, Notation, Order, Equality, Types of Matrices, Operations',
-          'Transpose of a Matrix, Symmetric and Skew-Symmetric Matrices',
-          'Determinants of a Square Matrix (up to 3x3), Minors, Cofactors',
-          'Adjoint and Inverse of a Square Matrix',
-          'Solving System of Linear Equations using Matrix Method'
-        ]
-      },
-      {
-        unitTitle: 'Unit III: Calculus (35 Marks)',
-        subTopics: [
-          'Continuity and Differentiability, Derivative of Composite Functions, Chain Rule',
-          'Derivatives of Inverse Trigonometric Functions, Implicit Functions',
-          'Logarithmic Differentiation and Parametric Forms',
-          'Second Order Derivatives',
-          'Applications of Derivatives: Increasing and Decreasing Functions',
-          'Maxima and Minima: First and Second Derivative Tests with Word Problems',
-          'Indefinite Integrals: Substitution, Partial Fractions, by Parts',
-          'Definite Integrals and Fundamental Theorem of Calculus',
-          'Applications of Integrals: Area bounded by simple curves',
-          'Differential Equations: Order and Degree, Variable Separable Method, Linear Differential Equations'
-        ]
-      },
-      {
-        unitTitle: 'Unit IV: Vectors and Three-Dimensional Geometry (14 Marks)',
-        subTopics: [
-          'Vectors: Dot (Scalar) Product and Cross (Vector) Product',
-          'Direction Cosines and Direction Ratios of a Line Joining Two Points',
-          'Cartesian and Vector Equation of a Line',
-          'Skew Lines and Shortest Distance Between Two Lines'
-        ]
-      },
-      {
-        unitTitle: 'Unit V: Linear Programming & Probability (13 Marks)',
-        subTopics: [
-          'Linear Programming: Graphical Method of Solving LPP in Two Variables',
-          'Conditional Probability and Multiplication Rule',
-          'Bayes’ Theorem and Probability Distributions'
-        ]
-      }
-    ]
-  },
-
-  // 7. COMPUTER SCIENCE (CODE 083)
-  'Computer Science (Code 083)': {
-    name: 'Computer Science',
-    code: '083',
+  // 5. PHYSICAL EDUCATION (CODE 048) - 70 MARKS
+  'Physical Education (Code 048)': {
+    name: 'Physical Education',
+    code: '048',
     theoryMarks: 70,
     practicalMarks: 30,
     units: [
       {
-        unitTitle: 'Unit I: Computational Thinking and Programming - 2',
+        unitTitle: 'Unit I & II: Event Management & Children in Sports',
         subTopics: [
-          'Revision of Python Basics (Tokens, Operators, Expressions)',
-          'Flow of Control (Conditional & Looping Constructs)',
-          'Strings: Slicing, Traversal and Built-in String Methods',
-          'Lists: Creation, Slicing, Mutability and List Operations',
-          'Tuples: Immutability, Operations and Tuple Slicing',
-          'Dictionary: Keys, Values, Mutability and Dictionary Methods',
-          'Functions: Scope (Local vs Global), Parameter Passing & Default Arguments',
-          'File Handling: Text File Read/Write Operations',
-          'Binary File Handling: pickle module, dump() and load() serialization',
-          'CSV File Handling: csv module, reader() and writer() functions',
-          'Data Structures: Implementation of Linear Stack using Python Lists'
+          'Sports Event Management: Planning, Organizing, Committees and Fixtures',
+          'Knock-Out Fixtures (Byes & Seeding) and League Fixtures',
+          'Common Postural Deformities: Knock Knees, Flat Foot, Kyphosis, Lordosis, Scoliosis',
+          'Female Athlete Triad: Osteoporosis, Amenorrhea, Eating Disorders'
         ]
       },
       {
-        unitTitle: 'Unit II: Computer Networks',
+        unitTitle: 'Unit III & IV: Yoga & CWSN Divyang Sports',
         subTopics: [
-          'Evolution of Networking: ARPANET, NSFNET, Internet Architecture',
-          'Data Communication Terminologies: Bandwidth, Baud, Data Transfer Rate',
-          'Transmission Media: Twisted Pair, Coaxial, Optical Fiber, Radio, Micro Waves',
-          'Network Devices: NIC, Repeater, Hub, Switch, Bridge, Gateway, Router',
-          'Network Topologies: Bus, Star, Tree, Mesh and Ring Topologies',
-          'Network Protocols: TCP/IP, FTP, PPP, HTTP, HTTPS, SMTP, POP3, VoIP',
-          'Network Security: Cyber Threats, Phishing, Firewalls, Cookies, Hackers'
+          'Asanas as Preventive Measures for Obesity, Diabetes, Asthma, Hypertension',
+          'Disability Sports: Special Olympics, Paralympics, Deaflympics',
+          'Inclusion in Sports: Implementation and Strategies'
         ]
       },
       {
-        unitTitle: 'Unit III: Database Management & SQL Integration',
+        unitTitle: 'Unit V & VI: Nutrition, Test & Measurement',
         subTopics: [
-          'Relational Data Model: Relation, Tuple, Attribute, Degree, Cardinality',
-          'Keys in Relational Database: Primary, Candidate, Alternate, Foreign Key',
-          'SQL DDL Commands: CREATE TABLE, ALTER TABLE, DROP TABLE',
-          'SQL DML Commands: INSERT INTO, UPDATE SET, DELETE FROM, SELECT',
-          'SQL Aggregate Functions: COUNT(), SUM(), AVG(), MIN(), MAX()',
-          'SQL Grouping & Joins: GROUP BY, HAVING, Equi-Join between Two Tables',
-          'Python-MySQL Connectivity: mysql.connector, connect(), cursor(), execute(), commit()'
+          'Balanced Diet, Nutritive & Non-Nutritive Components',
+          'Harvard Step Test: Computing Physical Fitness Index (PFI)',
+          'SAI Khelo India Fitness Test Protocol',
+          'Rikli & Jones Senior Citizen Fitness Test'
+        ]
+      },
+      {
+        unitTitle: 'Unit VII & VIII: Physiology, Injuries & Biomechanics',
+        subTopics: [
+          'Effect of Exercise on Muscular and Cardiorespiratory Systems',
+          'Sports Injuries: Sprain, Strain, Fractures and PRICER Procedure',
+          'Newton’s Laws of Motion in Sports, Types of Levers'
+        ]
+      },
+      {
+        unitTitle: 'Unit IX & X: Psychology & Training in Sports',
+        subTopics: [
+          'Personality Types (Jung and Big Five) and Motivation',
+          'Sports Training Cycles: Micro, Meso, Macro Cycles',
+          'Methods for Developing Strength, Endurance, Speed, Flexibility',
+          'Circuit Training Routine Design'
+        ]
+      }
+    ]
+  },
+
+  // 6. YOGA (CODE 841) - 50 MARKS
+  'Yoga (Code 841)': {
+    name: 'Yoga',
+    code: '841',
+    theoryMarks: 50,
+    practicalMarks: 50,
+    units: [
+      {
+        unitTitle: 'Unit 1: Introduction to Yoga and Yogic Practices – II',
+        subTopics: [
+          'Shatkarma: Dhauti, Basti, Neti, Trataka, Nauli and Kapalabhati Cleansing',
+          'Yogasana: Principles, Physical Alignment, Counter-poses and Benefits',
+          'Standing, Sitting, Prone-lying and Supine-lying Postures',
+          'Pranayama Practices: Anulom-Vilom, Bhastrika, Sheetali, Bhramari',
+          'Surya Namaskara: 12 Steps Sequence and Breathing Coordination'
+        ]
+      },
+      {
+        unitTitle: 'Unit 2: Introduction to Yoga Texts & Mental Well-being',
+        subTopics: [
+          'Concepts of Mitahara (Diet) in Hatha Yoga Pradipika',
+          'Patanjali Ashtanga Yoga: Yama, Niyama, Asana, Pranayama, Pratyahara, Dharana, Dhyana, Samadhi',
+          'Yogic Stress Management Frameworks: Adhi-Vyadhi Concept'
+        ]
+      },
+      {
+        unitTitle: 'Unit 3: Yoga for Health Promotion – II',
+        subTopics: [
+          'First Aid Principles and Sports Safety in Yogic Training',
+          'Yogic Management of Chronic Lifestyle Disorders (Hypertension, Diabetes)',
+          'Pancha Kosha Theory (Annamaya to Anandamaya)'
         ]
       }
     ]
