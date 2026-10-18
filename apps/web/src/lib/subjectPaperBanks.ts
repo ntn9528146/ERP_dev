@@ -16,10 +16,6 @@ function getRandomChoice<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function getRandomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function shuffleArray<T>(arr: T[]): T[] {
   const c = [...arr];
   for (let i = c.length - 1; i > 0; i--) {
@@ -37,27 +33,27 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   const cleanSub = subjectName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   // =========================================================================
-  // 1. ECONOMICS (CODE 030) - 80 MARKS (PART A: 40M + PART B: 40M) STRICT CBSE
+  // 1. ECONOMICS (CODE 030) - 100% DYNAMIC PROCEDURAL GENERATOR (CBSE 80M)
   // =========================================================================
   if (cleanSub.includes('030') || cleanSub.includes('economics')) {
     // Dynamic Numericals Parameters
     const mpcVal = getRandomChoice([0.5, 0.6, 0.75, 0.8]);
     const multiplierVal = (1 / (1 - mpcVal)).toFixed(1);
-    const primDeposit = getRandomChoice([1000, 2000, 4000, 5000, 10000]);
-    const lrrVal = getRandomChoice([10, 20, 25]);
+    const primDeposit = getRandomChoice([1000, 2000, 3000, 5000, 8000]);
+    const lrrVal = getRandomChoice([10, 12.5, 20, 25]);
     const moneyMult = (100 / lrrVal).toFixed(1);
-    const totalCredit = (primDeposit * (100 / lrrVal)).toLocaleString('en-IN');
+    const totalCredit = Math.round(primDeposit * (100 / lrrVal)).toLocaleString('en-IN');
 
-    const cBar = getRandomChoice([100, 150, 200, 250]);
+    const cBar = getRandomChoice([100, 150, 200, 250, 300]);
     const mpsVal = getRandomChoice([0.2, 0.25, 0.4]);
     const invI = getRandomChoice([200, 300, 400, 500]);
     const eqIncome = Math.round((cBar + invI) / mpsVal);
     const eqCons = Math.round(cBar + (1 - mpsVal) * eqIncome);
 
-    const gdpMp = getRandomChoice([7500, 8500, 9200, 10500]);
-    const nfiaVal = getRandomChoice([-150, -200, -250, 100]);
-    const nitVal = getRandomChoice([550, 650, 750, 800]);
-    const depNat = getRandomChoice([300, 400, 500]);
+    const gdpMp = getRandomChoice([7200, 8500, 9400, 10200, 11500]);
+    const nfiaVal = getRandomChoice([-250, -180, -120, 150, 200]);
+    const nitVal = getRandomChoice([520, 640, 720, 810]);
+    const depNat = getRandomChoice([320, 410, 490, 550]);
     const gnpFc = gdpMp + nfiaVal - nitVal;
 
     // Macroeconomics MCQs Bank (25 Items)
@@ -74,7 +70,9 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       { text: 'Fiscal Deficit measures:', opts: { optA: 'Total borrowing requirements of the government', optB: 'Interest payments of the government', optC: 'Trade deficit of the economy', optD: 'Revenue deficit only' }, ans: '(A) Total government borrowing needs.' },
       { text: 'Money Supply (M1) includes which of the following components?', opts: { optA: 'Currency with public + Demand deposits with banks + Other deposits with RBI', optB: 'Time deposits with commercial banks', optC: 'Post office recurring savings deposits', optD: 'Total national debt certificates' }, ans: '(A) M1 definition.' },
       { text: 'Primary Deficit is calculated as:', opts: { optA: 'Fiscal Deficit - Interest Payments', optB: 'Revenue Deficit - Capital Expenditure', optC: 'Fiscal Deficit + Borrowings', optD: 'Budget Deficit - Tax Revenue' }, ans: '(A) Fiscal Deficit - Interest Payments.' },
-      { text: 'Depreciation of domestic currency in foreign exchange market leads to:', opts: { optA: 'Increase in exports of domestic goods', optB: 'Increase in imports of foreign goods', optC: 'Fall in foreign tourism inside country', optD: 'Decrease in domestic output' }, ans: '(A) Boosts exports by making domestic goods cheaper for foreigners.' }
+      { text: 'Depreciation of domestic currency in foreign exchange market leads to:', opts: { optA: 'Increase in exports of domestic goods', optB: 'Increase in imports of foreign goods', optC: 'Fall in foreign tourism inside country', optD: 'Decrease in domestic output' }, ans: '(A) Boosts exports by making domestic goods cheaper for foreigners.' },
+      { text: 'Which of the following items is treated as an intermediate product?', opts: { optA: 'Milk purchased by a sweet maker for making sweets', optB: 'Refrigerator installed in a household', optC: 'Printing machine purchased by a publishing firm', optD: 'Car purchased by a consumer' }, ans: '(A) Raw material consumed in production.' },
+      { text: 'The value of Marginal Propensity to Save (MPS) is always:', opts: { optA: 'Between 0 and 1', optB: 'Greater than 1', optC: 'Negative', optD: 'Infinite' }, ans: '(A) 0 <= MPS <= 1.' }
     ];
 
     // Indian Economic Development MCQs Bank (25 Items)
@@ -90,7 +88,9 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       { text: 'Pakistan initiated its first Five Year Plan in which year?', opts: { optA: '1956', optB: '1951', optC: '1960', optD: '1947' }, ans: '(A) 1956.' },
       { text: 'Which agricultural pricing mechanism guarantees minimum remunerative returns to farmers before crop sowing?', opts: { optA: 'Minimum Support Price (MSP)', optB: 'Open Mandi Auction', optC: 'Futures Commodity Exchange', optD: 'Export Subsidy System' }, ans: '(A) Minimum Support Price.' },
       { text: 'Organic farming is eco-friendly because it promotes:', opts: { optA: 'Sustainable agriculture without synthetic fertilizers and chemical pesticides', optB: 'Heavy chemical weedicides', optC: 'Excessive groundwater drawal', optD: 'Deforestation for cattle feed' }, ans: '(A) Chemical-free sustainable farming.' },
-      { text: 'Informalisation of workforce in India refers to:', opts: { optA: 'Growth in proportion of informal sector workers without social security benefits', optB: 'Shift from agricultural to software sector', optC: 'Rise in regular salaried government jobs', optD: 'Compulsory trade union membership' }, ans: '(A) Increase in unorganized/informal employment.' }
+      { text: 'Informalisation of workforce in India refers to:', opts: { optA: 'Growth in proportion of informal sector workers without social security benefits', optB: 'Shift from agricultural to software sector', optC: 'Rise in regular salaried government jobs', optD: 'Compulsory trade union membership' }, ans: '(A) Increase in unorganized/informal employment.' },
+      { text: 'Which country introduced the "One Child Norm" policy in 1979 to control demographic growth?', opts: { optA: 'China', optB: 'India', optC: 'Pakistan', optD: 'Bangladesh' }, ans: '(A) China.' },
+      { text: 'Disguised unemployment in India is most prominently observed in:', opts: { optA: 'Agriculture and rural family farming', optB: 'Organized software IT sector', optC: 'Commercial civil aviation', optD: 'Heavy capital equipment manufacturing' }, ans: '(A) Agricultural sector.' }
     ];
 
     const questions: FullGeneratedQuestion[] = [];
@@ -112,68 +112,104 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       });
     });
 
-    // Q11 to Q12: 2 Questions x 3 Marks = 6 Marks
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `Explain the process of Money Creation / Credit Creation by commercial banks with an initial primary cash deposit of ₹${primDeposit.toLocaleString('en-IN')} and Legal Reserve Ratio (LRR) of ${lrrVal}%.`,
-      orOptionText: `Explain the "Lender of the Last Resort" and "Banker to the Government" functions of the Central Bank (Reserve Bank of India).`,
-      answerKey: `Money Multiplier = 1 / LRR = ${moneyMult}. Total credit created = ₹${primDeposit} x ${moneyMult} = ₹${totalCredit}. Show stepwise deposit schedule.`
+    // Q11 to Q12: 2 Questions x 3 Marks = 6 Marks (Rotated Pool)
+    const macro3MPool = [
+      {
+        text: `Explain the process of Money Creation / Credit Creation by commercial banks with an initial primary cash deposit of ₹${primDeposit.toLocaleString('en-IN')} and Legal Reserve Ratio (LRR) of ${lrrVal}%.`,
+        or: `Explain the "Lender of the Last Resort" and "Banker to the Government" functions of the Central Bank (Reserve Bank of India).`,
+        ans: `Money Multiplier = 1 / LRR = ${moneyMult}. Total credit created = ₹${primDeposit} x ${moneyMult} = ₹${totalCredit}. Show deposit schedule.`
+      },
+      {
+        text: 'Distinguish between Final Goods and Intermediate Goods with two suitable empirical examples of each.',
+        or: 'Explain the circular flow of income in a two-sector economy with the help of a labeled diagram.',
+        ans: 'Final goods: for consumption or investment. Intermediate goods: used as raw materials in same year.'
+      },
+      {
+        text: 'Explain how the Central Bank uses the Repo Rate and Reverse Repo Rate to stabilize liquidity in the commercial banking system.',
+        or: 'State any three precautions that must be taken while estimating National Income by the Value Added (Product) Method.',
+        ans: 'Repo rate controls lending cost; Reverse repo absorbs surplus liquidity.'
+      },
+      {
+        text: 'Distinguish between Real Gross Domestic Product (Real GDP) and Nominal Gross Domestic Product (Nominal GDP). Which of the two is a superior indicator of economic growth and why?',
+        or: 'Define Externalities. Differentiate between positive externalities and negative externalities with an illustrative example of each.',
+        ans: 'Real GDP evaluated at constant base year prices eliminates price inflation bias.'
+      }
+    ];
+
+    shuffleArray(macro3MPool).slice(0, 2).forEach(q => {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: q.text,
+        orOptionText: q.or,
+        answerKey: q.ans
+      });
     });
 
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Distinguish between Final Goods and Intermediate Goods with two suitable empirical examples of each.',
-      orOptionText: 'Explain the circular flow of income in a two-sector economy with the help of a labeled diagram.',
-      answerKey: 'Final goods: for consumption or investment. Intermediate goods: used as raw materials in same year.'
+    // Q13 to Q15: 3 Questions x 4 Marks = 12 Marks (Rotated Pool)
+    const macro4MPool = [
+      {
+        text: 'Distinguish between Revenue Receipts and Capital Receipts of the Central Government. Give two examples of each.',
+        or: 'Distinguish between Revenue Deficit and Fiscal Deficit. What are the economic implications of a high fiscal deficit on national debt?',
+        ans: 'Revenue receipts neither create liabilities nor reduce assets. Capital receipts create liabilities or reduce assets.'
+      },
+      {
+        text: `From the following data, calculate Gross National Product at Factor Cost (GNP_FC):\n- GDP at MP: ₹${gdpMp.toLocaleString('en-IN')} Crores\n- Net Factor Income from Abroad (NFIA): ${nfiaVal < 0 ? '(-)' : ''} ₹${Math.abs(nfiaVal).toLocaleString('en-IN')} Crores\n- Net Indirect Taxes (NIT): ₹${nitVal.toLocaleString('en-IN')} Crores\n- Consumption of Fixed Capital (Depreciation): ₹${depNat.toLocaleString('en-IN')} Crores.`,
+        or: `Explain the problem of "Double Counting" in calculating National Income. Describe the two methods to avoid it.`,
+        ans: `GNP_FC = GDP_MP + NFIA - NIT = ${gdpMp} + (${nfiaVal}) - ${nitVal} = ₹${gnpFc.toLocaleString('en-IN')} Crores.`
+      },
+      {
+        text: `CASE STUDY - MONETARY POLICY & INFLATION CONTROL IN INDIA:\nRead the following excerpt and answer the questions:\n"During the post-recovery phase, persistent global commodity price surges exerted pressure on domestic retail inflation. To anchor inflation expectations and suck out excess liquidity from the financial system, the Monetary Policy Committee (MPC) of the Reserve Bank of India sequentially raised the policy Repo Rate by 250 basis points."\n\n(i) Explain how an increase in Repo Rate curbs inflationary pressures in an economy. [2]\n(ii) Differentiate between Repo Rate and Reverse Repo Rate. [2]`,
+        or: undefined,
+        ans: '(i) Hike in Repo Rate raises borrowing cost for banks, contracting credit demand and checking inflation. (ii) Repo is lending rate by RBI; Reverse Repo is borrowing rate by RBI.'
+      },
+      {
+        text: `CASE STUDY - MANAGED FLOATING & FOREIGN EXCHANGE RESERVES:\n"The Reserve Bank of India intervenes actively in the spot foreign exchange market by selling US dollars from its official foreign currency assets whenever the domestic rupee undergoes acute speculative depreciation."\n\n(i) Identify and explain the foreign exchange rate system described above. [2]\n(ii) How does central bank sale of foreign currency in open market arrest rupee depreciation? [2]`,
+        or: undefined,
+        ans: '(i) Managed Floating Exchange Rate System (Dirty Floating). (ii) Selling foreign currency increases supply of foreign exchange in domestic market, checking depreciation.'
+      }
+    ];
+
+    shuffleArray(macro4MPool).slice(0, 3).forEach(q => {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '4 Marks Medium Answer',
+        marks: 4,
+        text: q.text,
+        orOptionText: q.or,
+        answerKey: q.ans
+      });
     });
 
-    // Q13 to Q15: 3 Questions x 4 Marks = 12 Marks
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '4 Marks Medium Answer',
-      marks: 4,
-      text: 'Distinguish between Revenue Receipts and Capital Receipts of the Central Government. Give two examples of each.',
-      answerKey: 'Revenue receipts neither create liabilities nor reduce assets. Capital receipts create liabilities or reduce assets.'
-    });
+    // Q16 to Q17: 2 Questions x 6 Marks = 12 Marks (Rotated Pool)
+    const macro6MPool = [
+      {
+        text: `In an economy, autonomous consumption C_bar = ₹${cBar} Crores, Marginal Propensity to Save (MPS) = ${mpsVal}, and planned autonomous investment I = ₹${invI} Crores:\n(i) Derive the Aggregate Consumption Function equation.\n(ii) Calculate the Equilibrium Level of National Income (Y).\n(iii) Calculate total consumption expenditure at equilibrium income.`,
+        or: `Explain the working of the Investment Multiplier with a diagrammatic illustration. What happens to the numerical value of multiplier if MPC increases?`,
+        ans: `MPC = 1 - ${mpsVal} = ${(1 - mpsVal).toFixed(2)}. Consumption equation C = ${cBar} + ${(1 - mpsVal).toFixed(2)}Y. Equilibrium Y = ₹${eqIncome.toLocaleString('en-IN')} Crores. C = ₹${eqCons.toLocaleString('en-IN')} Crores.`
+      },
+      {
+        text: 'Differentiate between Autonomous items and Accommodating items in the Balance of Payments (BoP). Explain the meaning of BoP Deficit and Surplus with reference to official reserve transactions.',
+        or: 'Explain the concept of Deflationary Gap (Deficient Demand) with a suitable diagram. State two monetary measures and two fiscal measures to correct it.',
+        ans: 'Autonomous items take place for economic profit; Accommodating items cover surplus/deficit in autonomous transactions.'
+      },
+      {
+        text: 'Explain the determination of Equilibrium National Income using Aggregate Demand (AD) and Aggregate Supply (AS) approach. What adjustments take place when planned AD exceeds planned AS?',
+        or: 'What is meant by Inflationary Gap? Explain how increasing the Cash Reserve Ratio (CRR) and reducing government public expenditure helps in restoring full employment equilibrium.',
+        ans: 'AD-AS equilibrium condition and inventory adjustment mechanism.'
+      }
+    ];
 
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '4 Marks Medium Answer',
-      marks: 4,
-      text: `From the following data, calculate Gross National Product at Factor Cost (GNP_FC):\n- GDP at MP: ₹${gdpMp.toLocaleString('en-IN')} Crores\n- Net Factor Income from Abroad (NFIA): ${nfiaVal < 0 ? '(-)' : ''} ₹${Math.abs(nfiaVal).toLocaleString('en-IN')} Crores\n- Net Indirect Taxes (NIT): ₹${nitVal.toLocaleString('en-IN')} Crores\n- Consumption of Fixed Capital (Depreciation): ₹${depNat.toLocaleString('en-IN')} Crores.`,
-      orOptionText: `Explain the problem of "Double Counting" in calculating National Income. Describe the two methods to avoid it.`,
-      answerKey: `GNP_FC = GDP_MP + NFIA - NIT = ${gdpMp} + (${nfiaVal}) - ${nitVal} = ₹${gnpFc.toLocaleString('en-IN')} Crores.`
-    });
-
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '4 Marks Case-Based / Data Analysis',
-      marks: 4,
-      text: `CASE STUDY - MONETARY POLICY & INFLATION CONTROL IN INDIA:\nRead the following excerpt and answer the questions:\n"During the post-recovery phase, persistent global commodity price surges exerted pressure on domestic retail inflation. To anchor inflation expectations and suck out excess liquidity from the financial system, the Monetary Policy Committee (MPC) of the Reserve Bank of India sequentially raised the policy Repo Rate by 250 basis points."\n\n(i) Explain how an increase in Repo Rate curbs inflationary pressures in an economy. [2]\n(ii) Differentiate between Repo Rate and Reverse Repo Rate. [2]`,
-      answerKey: '(i) Hike in Repo Rate raises borrowing cost for banks, contracting credit demand and checking inflation. (ii) Repo is lending rate by RBI; Reverse Repo is borrowing rate by RBI.'
-    });
-
-    // Q16 to Q17: 2 Questions x 6 Marks = 12 Marks
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: `In an economy, autonomous consumption C_bar = ₹${cBar} Crores, Marginal Propensity to Save (MPS) = ${mpsVal}, and planned autonomous investment I = ₹${invI} Crores:\n(i) Derive the Aggregate Consumption Function equation.\n(ii) Calculate the Equilibrium Level of National Income (Y).\n(iii) Calculate total consumption expenditure at equilibrium income.`,
-      orOptionText: `Explain the working of the Investment Multiplier with a diagrammatic illustration. What happens to the numerical value of multiplier if MPC increases?`,
-      answerKey: `MPC = 1 - ${mpsVal} = ${(1 - mpsVal).toFixed(2)}. Consumption equation C = ${cBar} + ${(1 - mpsVal).toFixed(2)}Y. Equilibrium Y = ₹${eqIncome.toLocaleString('en-IN')} Crores. C = ₹${eqCons.toLocaleString('en-IN')} Crores.`
-    });
-
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: 'Differentiate between Autonomous items and Accommodating items in the Balance of Payments (BoP). Explain the meaning of BoP Deficit and Surplus with reference to official reserve transactions.',
-      orOptionText: 'Explain the concept of Deflationary Gap (Deficient Demand) with a suitable diagram. State two monetary measures and two fiscal measures to correct it.',
-      answerKey: 'Autonomous items take place for economic profit; Accommodating items cover surplus/deficit in autonomous transactions.'
+    shuffleArray(macro6MPool).slice(0, 2).forEach(q => {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '6 Marks Long Answer',
+        marks: 6,
+        text: q.text,
+        orOptionText: q.or,
+        answerKey: q.ans
+      });
     });
 
     // -------------------------------------------------------------
@@ -192,67 +228,99 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       });
     });
 
-    // Q28 to Q29: 2 Questions x 3 Marks = 6 Marks
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Discuss any three positive contributions of the British Colonial Rule in India.',
-      orOptionText: `What were the main causes of stagnation in the agricultural sector during the colonial British rule in India?`,
-      answerKey: 'Contributions: Introduction of Railways, postal and telegraph networks, ports, and commercialization of agriculture.'
+    // Q28 to Q29: 2 Questions x 3 Marks = 6 Marks (Rotated Pool)
+    const ied3MPool = [
+      {
+        text: 'Discuss any three positive contributions of the British Colonial Rule in India.',
+        or: 'What were the main causes of stagnation in the agricultural sector during the colonial British rule in India?',
+        ans: 'Contributions: Introduction of Railways, postal and telegraph networks, ports, and commercialization of agriculture.'
+      },
+      {
+        text: 'Explain the role of Micro-Credit and Self-Help Groups (SHGs) in promoting rural finance and empowering rural women in India.',
+        or: 'Differentiate between Formal Sector and Informal Sector employment in India with reference to social security benefits and regulatory protection.',
+        ans: 'SHGs mobilize rural savings, provide collateral-free micro-credit, and reduce dependence on informal moneylenders.'
+      },
+      {
+        text: 'Explain any three major challenges confronting the agricultural marketing system in rural India.',
+        or: 'State the importance of diversification of agricultural activities into allied non-farm enterprises (such as animal husbandry, fisheries, and horticulture).',
+        ans: 'Lack of cold storage, presence of exploitative middlemen, and distress sales by small farmers.'
+      }
+    ];
+
+    shuffleArray(ied3MPool).slice(0, 2).forEach(q => {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: q.text,
+        orOptionText: q.or,
+        answerKey: q.ans
+      });
     });
 
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Explain the role of Micro-Credit and Self-Help Groups (SHGs) in promoting rural finance and empowering rural women in India.',
-      answerKey: 'SHGs mobilize rural savings, provide collateral-free micro-credit, and reduce dependence on informal moneylenders.'
+    // Q30 to Q32: 3 Questions x 4 Marks = 12 Marks (Rotated Pool)
+    const ied4MPool = [
+      {
+        text: 'Explain the "Outsourcing" boom during the post-1991 economic reforms. Why has India emerged as a leading global BPO/KPO destination?',
+        or: 'What were the prime objectives behind introducing the New Economic Policy (NEP) in 1991 in India? Discuss the key elements of Liberalisation.',
+        ans: 'Availability of skilled English-speaking workforce, low labor cost, and advanced IT infrastructure.'
+      },
+      {
+        text: `CASE STUDY - RURAL DIVERSIFICATION AND ORGANIC FARMING:\nRead the following case text and answer the questions:\n"Over-dependence on conventional chemical-intensive agriculture led to soil depletion, groundwater salinization, and debt traps for small farmers. In response, sustainable initiatives promoted organic farming and allied non-farm activities such as dairying, fisheries, and horticulture."\n\n(i) State two benefits and two challenges associated with adopting organic farming in India. [2]\n(ii) Why is occupational diversification into non-farm sectors necessary for rural livelihoods? [2]`,
+        or: `Compare the developmental strategies and structural economic shifts between India and China from 1980 to 2024.`,
+        ans: '(i) Benefits: Eco-friendly, chemical-free food, enhances soil fertility. Challenges: Lower initial yields, shorter shelf-life, marketing channels. (ii) Reduces agricultural disguised unemployment.'
+      },
+      {
+        text: 'Define Human Capital Formation. Explain how expenditure on education and preventive healthcare contributes to national economic growth.',
+        or: 'Discuss the concept of "Worker-Population Ratio". Why is the worker-population ratio higher in rural areas compared to urban areas in India?',
+        ans: 'Human capital formation builds productive capabilities. Education increases workforce productivity and health reduces absenteeism.'
+      },
+      {
+        text: `CASE STUDY - SUSTAINABLE DEVELOPMENT & ENVIRONMENTAL CRISIS:\n"The carrying capacity of the environment implies that the resource extraction is not above the rate of regeneration of the resource and the wastes generated are within the assimilating capacity of the environment. When this threshold is breached, environmental degradation ensues."\n\n(i) Differentiate between Renewable Resources and Non-Renewable Resources. [2]\n(ii) State any two corrective strategies adopted in India to achieve sustainable development. [2]`,
+        or: undefined,
+        ans: '(i) Renewable replenish naturally (solar, wind); Non-renewable exhaust over time (coal, petroleum). (ii) Promoting solar/wind power, bio-pest control, cleaner fuels like CNG/LPG.'
+      }
+    ];
+
+    shuffleArray(ied4MPool).slice(0, 3).forEach(q => {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '4 Marks Medium Answer',
+        marks: 4,
+        text: q.text,
+        orOptionText: q.or,
+        answerKey: q.ans
+      });
     });
 
-    // Q30 to Q32: 3 Questions x 4 Marks = 12 Marks
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '4 Marks Medium Answer',
-      marks: 4,
-      text: 'Explain the "Outsourcing" boom during the post-1991 economic reforms. Why has India emerged as a leading global BPO/KPO destination?',
-      answerKey: 'Availability of skilled English-speaking workforce, low labor cost, and advanced IT infrastructure.'
-    });
+    // Q33 to Q34: 2 Questions x 6 Marks = 12 Marks (Rotated Pool)
+    const ied6MPool = [
+      {
+        text: 'Compare and contrast the demographic indicators and human development performance of India, China, and Pakistan based on Fertility Rate, Sex Ratio, and HDI ranking.',
+        or: `Elaborate upon the inward-looking trade strategy (Import Substitution) adopted by India during 1950-1990. Evaluate its merits and critical limitations.`,
+        ans: 'China: low fertility rate and high HDI. India: replacement level fertility and intermediate HDI. Pakistan: higher fertility and low HDI.'
+      },
+      {
+        text: 'Critically appraise the Economic Reforms of 1991 in India (LPG Policy). Highlight three major achievements and three significant failures.',
+        or: 'What is Sustainable Economic Development? State any four environmental challenges confronting India and explain four strategies to achieve sustainable growth.',
+        ans: 'Achievements: Foreign exchange reserve surge, private sector expansion, GDP growth. Failures: Agricultural neglect, jobless growth, disinvestment undervaluation.'
+      },
+      {
+        text: 'Trace the developmental trajectory of China from 1958 to 2024. How did the Great Leap Forward (GLF) and Special Economic Zones (SEZs) catalyze rapid industrial transformation?',
+        or: 'Discuss the state of Indian Agriculture on the eve of Independence. Explain the land reforms and the Green Revolution implemented post-independence to attain food self-sufficiency.',
+        ans: 'China structural transformation through rural communes, state capitalism, and export-oriented SEZ corridors.'
+      }
+    ];
 
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '4 Marks Case-Based / Data Analysis',
-      marks: 4,
-      text: `CASE STUDY - RURAL DIVERSIFICATION AND ORGANIC FARMING:\nRead the following case text and answer the questions:\n"Over-dependence on conventional chemical-intensive agriculture led to soil depletion, groundwater salinization, and debt traps for small farmers. In response, sustainable initiatives promoted organic farming and allied non-farm activities such as dairying, fisheries, and horticulture."\n\n(i) State two benefits and two challenges associated with adopting organic farming in India. [2]\n(ii) Why is occupational diversification into non-farm sectors necessary for rural livelihoods? [2]`,
-      orOptionText: `Compare the developmental strategies and structural economic shifts between India and China from 1980 to 2024.`,
-      answerKey: '(i) Benefits: Eco-friendly, chemical-free food, enhances soil fertility. Challenges: Lower initial yields, shorter shelf-life, marketing channels. (ii) Reduces agricultural disguised unemployment.'
-    });
-
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '4 Marks Medium Answer',
-      marks: 4,
-      text: 'Define Human Capital Formation. Explain how expenditure on education and preventive healthcare contributes to national economic growth.',
-      answerKey: 'Human capital formation builds productive capabilities. Education increases workforce productivity and health reduces absenteeism.'
-    });
-
-    // Q33 to Q34: 2 Questions x 6 Marks = 12 Marks
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: 'Compare and contrast the demographic indicators and human development performance of India, China, and Pakistan based on Fertility Rate, Sex Ratio, and HDI ranking.',
-      orOptionText: `Elaborate upon the inward-looking trade strategy (Import Substitution) adopted by India during 1950-1990. Evaluate its merits and critical limitations.`,
-      answerKey: 'China: low fertility rate and high HDI. India: replacement level fertility and intermediate HDI. Pakistan: higher fertility and low HDI.'
-    });
-
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '6 Marks Long Answer',
-      marks: 6,
-      text: 'Critically appraise the Economic Reforms of 1991 in India (LPG Policy). Highlight three major achievements and three significant failures.',
-      orOptionText: 'What is Sustainable Economic Development? State any four environmental challenges confronting India and explain four strategies to achieve sustainable growth.',
-      answerKey: 'Achievements: Foreign exchange reserve surge, private sector expansion, GDP growth. Failures: Agricultural neglect, jobless growth, disinvestment undervaluation.'
+    shuffleArray(ied6MPool).slice(0, 2).forEach(q => {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '6 Marks Long Answer',
+        marks: 6,
+        text: q.text,
+        orOptionText: q.or,
+        answerKey: q.ans
+      });
     });
 
     return {
@@ -598,11 +666,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       { text: 'Calls in Arrears is deducted from which item in the Notes to Accounts of Balance Sheet?', opts: { optA: 'Subscribed but not fully paid-up capital', optB: 'Authorized Share Capital', optC: 'Issued Share Capital', optD: 'Securities Premium Reserve' }, ans: '(A) Subscribed but not fully paid-up capital.' },
       { text: 'At the time of forfeiture of shares, Share Capital Account is debited with:', opts: { optA: 'Called-up amount on forfeited shares', optB: 'Face value of forfeited shares', optC: 'Paid-up amount on forfeited shares', optD: 'Uncalled amount on forfeited shares' }, ans: '(A) Called-up amount.' },
       { text: `When partner ${partnerGroupA.p3} retires, his share of goodwill is credited to his capital account and debited to continuing partners in their:`, opts: { optA: 'Gaining Ratio', optB: 'Sacrificing Ratio', optC: 'Old Profit Sharing Ratio', optD: 'Capital Ratio' }, ans: '(A) Gaining Ratio.' },
-      { text: 'Sacrificing Ratio is used to distribute which of the following items at the time of admission of a partner?', opts: { optA: 'Premium for Goodwill brought by new partner', optB: 'Revaluation Profit', optC: 'General Reserve', optD: 'Accumulated Losses' }, ans: '(A) Premium for Goodwill.' },
-      { text: 'Discount on issue of debentures is written off within the tenure of debentures out of:', opts: { optA: 'Securities Premium Reserve / Statement of P&L', optB: 'General Reserve only', optC: 'Capital Redemption Reserve', optD: 'Debenture Redemption Reserve' }, ans: '(A) Securities Premium Reserve or Statement of P&L.' },
-      { text: 'Capital Reserve is created out of which of the following categories of profit?', opts: { optA: 'Capital Profits (Profit on reissue of forfeited shares / sale of fixed assets)', optB: 'Normal operating profits', optC: 'Gross Profit from operations', optD: 'Dividend Equalization Reserve' }, ans: '(A) Capital Profits.' },
-      { text: 'Assertion (A): Fixed Capital accounts of partners always show a credit balance.\nReason (R): All adjustments regarding drawings, interest, and share of profit are routed through Partners’ Current Accounts.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true.' },
-      { text: 'On dissolution of firm, unrecorded liability paid off by partner out of personal funds is credited to:', opts: { optA: 'Concerned Partner’s Capital Account', optB: 'Realisation Account', optC: 'Cash Account', optD: 'Revaluation Account' }, ans: '(A) Concerned Partner’s Capital Account.' }
+      { text: 'Sacrificing Ratio is used to distribute which of the following items at the time of admission of a partner?', opts: { optA: 'Premium for Goodwill brought by new partner', optB: 'Revaluation Profit', optC: 'General Reserve', optD: 'Accumulated Losses' }, ans: '(A) Premium for Goodwill.' }
     ];
 
     const partB_MCQ_Bank = [
@@ -615,7 +679,6 @@ export function generateExactSubjectPaper(subjectName: string, className: string
     const questions: FullGeneratedQuestion[] = [];
     let qCount = 1;
 
-    // PART A (Q1 to Q26 = 60 Marks)
     shuffleArray(partA_MCQ_Bank).slice(0, 16).forEach((q, idx) => {
       questions.push({
         qNum: qCount++,
@@ -846,358 +909,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   }
 
   // =========================================================================
-  // 4. PHYSICAL EDUCATION (CODE 048) - 70 MARKS DYNAMIC ENGINE
-  // =========================================================================
-  if (cleanSub.includes('048') || cleanSub.includes('physicaleducation')) {
-    const teamCount = getRandomChoice([13, 17, 19, 21, 23, 27]);
-    const nextPower = Math.pow(2, Math.ceil(Math.log2(teamCount)));
-    const totalByes = nextPower - teamCount;
-    const upperHalfTeams = Math.floor((teamCount + 1) / 2);
-    const lowerHalfTeams = Math.floor((teamCount - 1) / 2);
-
-    const stepDuration = getRandomChoice([300, 240, 180]);
-    const pulse1 = getRandomChoice([68, 72, 76, 80]);
-    const pulse2 = getRandomChoice([58, 62, 66, 70]);
-    const pulse3 = getRandomChoice([48, 52, 56, 60]);
-    const totalPulse = pulse1 + pulse2 + pulse3;
-    const pfiScore = ((stepDuration * 100) / (2 * totalPulse)).toFixed(1);
-
-    const peMCQs = [
-      { text: 'Which tournament format follows the formula (N - 1) to determine the total number of matches played for N teams?', opts: { optA: 'Knock-Out Tournament', optB: 'League Tournament', optC: 'Round Robin', optD: 'Combination Tournament' }, ans: '(A) Knock-Out Tournament.' },
-      { text: 'Identify the postural spinal deformity marked by an abnormal outward exaggeration of the thoracic curve (hunchback):', opts: { optA: 'Kyphosis', optB: 'Lordosis', optC: 'Scoliosis', optD: 'Knock Knees' }, ans: '(A) Kyphosis.' },
-      { text: 'Which Yogic posture is highly effective as a preventive measure against Type-2 Diabetes by stimulating the pancreas?', opts: { optA: 'Ardha Matsyendrasana', optB: 'Shavasana', optC: 'Tadasana', optD: 'Vrikshasana' }, ans: '(A) Ardha Matsyendrasana.' },
-      { text: 'What is the bench height used in the Harvard Step Test for boys?', opts: { optA: '20 inches (50.8 cm)', optB: '16 inches (40.6 cm)', optC: '14 inches', optD: '24 inches' }, ans: '(A) 20 inches.' },
-      { text: 'Newton’s Second Law of Motion is also formally termed in sports biomechanics as:', opts: { optA: 'Law of Acceleration', optB: 'Law of Inertia', optC: 'Law of Action and Reaction', optD: 'Law of Equilibrium' }, ans: '(A) Law of Acceleration.' },
-      { text: 'Which component of physical fitness is primarily measured by the 8-Foot Up and Go test in the Rikli & Jones battery?', opts: { optA: 'Agility and Dynamic Balance', optB: 'Muscular Strength', optC: 'Aerobic Endurance', optD: 'Lower Body Flexibility' }, ans: '(A) Agility and Dynamic Balance.' },
-      { text: 'Female Athlete Triad comprises which three interrelated clinical conditions?', opts: { optA: 'Osteoporosis, Amenorrhea, Eating Disorders', optB: 'Hypertension, Diabetes, Fatigue', optC: 'Kyphosis, Scoliosis, Lordosis', optD: 'Anemia, Asthma, Sprain' }, ans: '(A) Osteoporosis, Amenorrhea, Eating Disorders.' },
-      { text: 'What does the acronym P.R.I.C.E. stand for in initial sports injury management?', opts: { optA: 'Protect, Rest, Ice, Compression, Elevation', optB: 'Pressure, Relaxation, Inhale, Calm, Exercise', optC: 'Physical, Rapid, Inspection, Care, Energy', optD: 'Protect, Relief, Immobilize, Circulation, Exam' }, ans: '(A) Protect, Rest, Ice, Compression, Elevation.' },
-      { text: 'Which training cycle spans across a micro-cycle in periodization planning?', opts: { optA: '3 to 7 Days', optB: '3 to 6 Weeks', optC: '6 to 12 Months', optD: '4 Years' }, ans: '(A) 3 to 7 Days.' },
-      { text: 'Which nutrient yields approximately 9 kcal of energy per gram metabolized?', opts: { optA: 'Fats', optB: 'Proteins', optC: 'Carbohydrates', optD: 'Minerals' }, ans: '(A) Fats.' }
-    ];
-
-    const questions: FullGeneratedQuestion[] = [];
-
-    shuffleArray(peMCQs).forEach((q, idx) => {
-      questions.push({
-        qNum: idx + 1,
-        partTitle: idx === 0 ? 'SECTION - A: MULTIPLE CHOICE QUESTIONS (18 MARKS)' : undefined,
-        typeBadge: '1 Mark MCQ',
-        marks: 1,
-        text: q.text,
-        options: q.opts,
-        answerKey: q.ans
-      });
-    });
-
-    questions.push({
-      qNum: 19,
-      partTitle: 'SECTION - B: VERY SHORT ANSWER QUESTIONS (10 MARKS)',
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'Define Extramural tournaments. Mention any two key educational and athletic benefits of inter-school sports competitions.',
-      answerKey: 'Extramural tournaments are competitions between schools.'
-    });
-
-    questions.push({
-      qNum: 20,
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'Explain the physiological differences between Fast Twitch (White) and Slow Twitch (Red) muscle fibers.',
-      answerKey: 'Slow twitch for endurance; fast twitch for explosive power.'
-    });
-
-    questions.push({
-      qNum: 21,
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'State the difference between Intrinsic Motivation and Extrinsic Motivation with suitable sports examples.',
-      answerKey: 'Intrinsic from self-satisfaction; extrinsic from rewards/medals.'
-    });
-
-    questions.push({
-      qNum: 22,
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'Differentiate between Sprain and Strain in sports trauma.',
-      answerKey: 'Sprain is ligament tear; strain is muscle/tendon tear.'
-    });
-
-    questions.push({
-      qNum: 23,
-      typeBadge: '2 Marks VSA',
-      marks: 2,
-      text: 'What is Basal Metabolic Rate (BMR)? State two physiological factors that influence an athlete’s BMR.',
-      answerKey: 'Minimal energy at rest.'
-    });
-
-    questions.push({
-      qNum: 24,
-      partTitle: 'SECTION - C: SHORT ANSWER QUESTIONS (15 MARKS)',
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `Draw a neat tournament fixture for ${teamCount} teams on a Knock-Out basis. Show clearly:\n(i) Teams in Upper & Lower Half\n(ii) Byes calculation (${totalByes} Byes)\n(iii) Total rounds`,
-      orOptionText: `Explain the procedure and health benefits of Bhujangasana and Gomukhasana in asthma management.`,
-      answerKey: `Teams = ${teamCount}, Byes = ${totalByes}. Upper Half = ${upperHalfTeams}, Lower Half = ${lowerHalfTeams}.`
-    });
-
-    questions.push({
-      qNum: 25,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Describe the procedure, scoring, and clinical significance of the Chair Sit and Reach test for senior citizens.',
-      answerKey: 'Assesses lower body hamstring flexibility.'
-    });
-
-    questions.push({
-      qNum: 26,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Explain the concept of "Inclusion in Physical Education". How does unified sports participation benefit Children With Special Needs (Divyang)?',
-      answerKey: 'Integration into mainstream sports.'
-    });
-
-    questions.push({
-      qNum: 27,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'What are Macro Nutrients and Micro Nutrients? Detail the physiological functions of Carbohydrates and Proteins.',
-      answerKey: 'Carbs provide energy; proteins repair tissue.'
-    });
-
-    questions.push({
-      qNum: 28,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: 'Explain any three physiological factors that determine Speed in sprinting events.',
-      answerKey: 'Reaction time, fast twitch percentage, ATP-CP stores.'
-    });
-
-    questions.push({
-      qNum: 29,
-      partTitle: 'SECTION - D: CASE-BASED & DATA ANALYSIS QUESTIONS (12 MARKS)',
-      typeBadge: '4 Marks Case-Based',
-      marks: 4,
-      text: `CASE STUDY - HARVARD STEP TEST FITNESS EVALUATION:\nA physical education instructor conducted the Harvard Step Test on an 18-year-old athlete. The test duration was completed for ${stepDuration} seconds on a 20-inch gymnasium bench. The recovery heart rate pulse counts recorded were:\n- 1 to 1.5 min: ${pulse1} beats\n- 2 to 2.5 min: ${pulse2} beats\n- 3 to 3.5 min: ${pulse3} beats\n\n(i) Calculate the Physical Fitness Index (PFI) of the athlete using the Long Form formula. [2]\n(ii) Based on your calculated PFI in part (i), evaluate whether the athlete's rating falls into Poor, Low Average, High Average, Good, or Excellent. [2]`,
-      answerKey: `PFI = (${stepDuration} x 100) / (2 x ${totalPulse}) = ${pfiScore}. Evaluate rating.`
-    });
-
-    questions.push({
-      qNum: 30,
-      typeBadge: '4 Marks Case-Based',
-      marks: 4,
-      text: `CASE STUDY - POSTURAL DEFORMITIES & SCHOOL SCREENING:\nDuring an annual physical fitness screening, Student A walked with knees knocking against each other while running. Student B showed an exaggerated forward hollow curvature in the lumbar spine.\n\n(i) Identify the postural deformities of Student A and Student B. [2]\n(ii) Suggest two corrective exercises or Yogic Asanas for each deformity. [2]`,
-      orOptionText: `Read the 100m sprint biomechanical split-timing data and explain how Newton's Third Law of Motion governs propulsion off blocks.`,
-      answerKey: 'A: Knock Knees; B: Lordosis.'
-    });
-
-    questions.push({
-      qNum: 31,
-      typeBadge: '4 Marks Case-Based',
-      marks: 4,
-      text: `CASE STUDY - SPORTS INJURIES AND FIRST AID PROTOCOLS:\nDuring a match, player Rahul suffered an inversion ankle injury after landing awkwardly, resulting in acute swelling and severe pain.\n\n(i) Name the soft-tissue injury sustained by Rahul and state whether it is a Sprain or a Strain. [2]\n(ii) Elaborate on the P.R.I.C.E. rehabilitation protocol applied on the field. [2]`,
-      answerKey: 'Ankle sprain. Protect, Rest, Ice, Compress, Elevate.'
-    });
-
-    questions.push({
-      qNum: 32,
-      partTitle: 'SECTION - E: LONG ANSWER QUESTIONS (15 MARKS)',
-      typeBadge: '5 Marks Long Answer',
-      marks: 5,
-      text: 'Explain Newton’s three laws of motion with labeled biomechanical illustrations. Detail how each law applies to running, high jumping, and swimming events.',
-      orOptionText: `What is Circuit Training? Design an 8-station circuit training routine to enhance general muscular endurance and agility in high school athletes.`,
-      answerKey: 'Inertia, Acceleration, Action-Reaction.'
-    });
-
-    questions.push({
-      qNum: 33,
-      typeBadge: '5 Marks Long Answer',
-      marks: 5,
-      text: 'Explain the Rikli & Jones Senior Citizen Fitness Test battery. Detail the procedure, equipment required, and scoring for Chair Stand, Arm Curl, and Back Scratch tests.',
-      answerKey: 'Senior citizen tests.'
-    });
-
-    questions.push({
-      qNum: 34,
-      typeBadge: '5 Marks Long Answer',
-      marks: 5,
-      text: 'What is Sports Training Periodization? Explain the physiological characteristics and training objectives of Preparatory Phase, Competition Phase, and Transition Phase.',
-      answerKey: 'Periodization phases and training cycles.'
-    });
-
-    return {
-      questions,
-      totalMarks: 70,
-      instructions: [
-        'This question paper contains 34 questions divided into 5 Sections – A, B, C, D and E.',
-        'Section A comprises 18 Multiple Choice Questions of 1 mark each (Q1 to Q18).',
-        'Section B comprises 5 Very Short Answer Questions of 2 marks each (Q19 to Q23).',
-        'Section C comprises 5 Short Answer Questions of 3 marks each (Q24 to Q28).',
-        'Section D comprises 3 Case-Based / Data Analysis Questions of 4 marks each (Q29 to Q31).',
-        'Section E comprises 3 Long Answer Questions of 5 marks each (Q32 to Q34).',
-        'Internal choices have been provided in selective questions.'
-      ]
-    };
-  }
-
-  // =========================================================================
-  // 5. YOGA (CODE 841) - 50 MARKS (28 QUESTIONS)
-  // =========================================================================
-  if (cleanSub.includes('841') || cleanSub.includes('yoga')) {
-    const poolPartA = [
-      { text: 'Which of the following is an effective active stress-management technique in workplace psychology?', opts: { optA: 'Deep Breathing & Yoga Nidra', optB: 'Procrastination', optC: 'Social Isolation', optD: 'Excessive Caffeine Intake' }, ans: '(A) Deep Breathing & Yoga Nidra.' },
-      { text: 'In communication skills, which element confirms that the intended message has been understood correctly by the receiver?', opts: { optA: 'Feedback', optB: 'Decoding', optC: 'Channel Noise', optD: 'Encoding' }, ans: '(A) Feedback.' },
-      { text: 'Which shortcut key combination is standardly used to save an ongoing document in LibreOffice Writer / MS Word?', opts: { optA: 'Ctrl + S', optB: 'Ctrl + P', optC: 'Ctrl + Z', optD: 'Alt + F4' }, ans: '(A) Ctrl + S.' },
-      { text: 'An individual who establishes an innovative business enterprise taking calculated financial risks is called an:', opts: { optA: 'Entrepreneur', optB: 'Wage employee', optC: 'Apprentice', optD: 'Administrator' }, ans: '(A) Entrepreneur.' }
-    ];
-
-    const poolYogaMCQs = [
-      { text: 'According to Sage Patanjali in Yoga Sutra, the classical definition of Yoga is:', opts: { optA: 'Yogas Chitta Vritti Nirodha', optB: 'Samatvam Yoga Uchyate', optC: 'Yogah Karmasu Kaushalam', optD: 'Sharira Madhyam Khalu Dharma Sadhanam' }, ans: '(A) Yogas Chitta Vritti Nirodha.' },
-      { text: 'Which of the following is classified as one of the six classical purificatory techniques (Shatkarma) in Hatha Yoga?', opts: { optA: 'Trataka', optB: 'Padmasana', optC: 'Bhastrika', optD: 'Ujjayi' }, ans: '(A) Trataka.' },
-      { text: 'Identify the total number of sequential steps present in one complete classical cycle of Surya Namaskara:', opts: { optA: '12 Steps', optB: '10 Steps', optC: '8 Steps', optD: '16 Steps' }, ans: '(A) 12 Steps.' },
-      { text: 'According to Hatha Yoga Pradipika, the concept of "Mitahara" signifies:', opts: { optA: 'Nutritious, pleasant, and moderate food filling half the stomach', optB: 'Eating heavy spicy food once a day', optC: 'Complete prolonged fasting without liquids', optD: 'Consuming only raw bitter herbs' }, ans: '(A) Moderate and wholesome food.' },
-      { text: 'Which Pranayama practice produces a resonant sound imitating a humming female bee, soothing the nervous system?', opts: { optA: 'Bhramari Pranayama', optB: 'Sheetali Pranayama', optC: 'Surya Bhedana', optD: 'Ujjayi' }, ans: '(A) Bhramari.' },
-      { text: 'In Ashtanga Yoga, which limb deals specifically with withdrawal of the senses from external distractions?', opts: { optA: 'Pratyahara', optB: 'Dharana', optC: 'Niyama', optD: 'Dhyana' }, ans: '(A) Pratyahara.' },
-      { text: 'Which energetic nadi represents the cooling, lunar, parasympathetic energy flow in the human body?', opts: { optA: 'Ida Nadi', optB: 'Pingala Nadi', optC: 'Sushumna Nadi', optD: 'Gandhari Nadi' }, ans: '(A) Ida Nadi.' },
-      { text: 'Which Asana is traditionally safe and recommended to be performed immediately following meals to promote gastric digestion?', opts: { optA: 'Vajrasana', optB: 'Sarvangasana', optC: 'Halasana', optD: 'Chakrasana' }, ans: '(A) Vajrasana.' },
-      { text: 'The bandha that involves gentle contraction and pulling inward of the abdominal muscles toward the spine is:', opts: { optA: 'Uddiyana Bandha', optB: 'Jalandhara Bandha', optC: 'Mula Bandha', optD: 'Maha Bandha' }, ans: '(A) Uddiyana Bandha.' },
-      { text: 'Which classical author compiled the authoritative treatise "Hatha Yoga Pradipika"?', opts: { optA: 'Swami Svatmarama', optB: 'Sage Gheranda', optC: 'Maharishi Patanjali', optD: 'Gorakhnath' }, ans: '(A) Swami Svatmarama.' }
-    ];
-
-    const questions: FullGeneratedQuestion[] = [];
-    let qIndex = 1;
-
-    questions.push({
-      qNum: qIndex,
-      partTitle: 'SECTION - A: OBJECTIVE TYPE QUESTIONS (20 MARKS)',
-      typeBadge: '1 Mark MCQ',
-      marks: 1,
-      text: poolPartA[0].text,
-      options: poolPartA[0].opts,
-      answerKey: poolPartA[0].ans
-    });
-    qIndex++;
-
-    shuffleArray(poolPartA.slice(1)).slice(0, 3).forEach(q => {
-      questions.push({
-        qNum: qIndex++,
-        typeBadge: '1 Mark MCQ',
-        marks: 1,
-        text: q.text,
-        options: q.opts,
-        answerKey: q.ans
-      });
-    });
-
-    shuffleArray(poolYogaMCQs).slice(0, 16).forEach(q => {
-      questions.push({
-        qNum: qIndex++,
-        typeBadge: '1 Mark MCQ',
-        marks: 1,
-        text: q.text,
-        options: q.opts,
-        answerKey: q.ans
-      });
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      partTitle: 'SECTION - B: SHORT ANSWER QUESTIONS (10 MARKS)',
-      typeBadge: '2 Marks Short Answer',
-      marks: 2,
-      text: 'Define Shatkarma. Enumerate any four Shatkarmas described in classical Hatha Yogic texts.',
-      answerKey: 'Cleansing kriyas.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      typeBadge: '2 Marks Short Answer',
-      marks: 2,
-      text: 'State the health indications and contraindications of Paschimottanasana.',
-      orOptionText: 'State any two essential ergonomic safety precautions during inverted postures.',
-      answerKey: 'Stretches hamstrings; avoid in disc herniation.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      typeBadge: '2 Marks Short Answer',
-      marks: 2,
-      text: 'Explain the physiological importance of diaphragmatic breathing over shallow clavicular breathing.',
-      answerKey: 'Optimizes oxygenation and vagal tone.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      typeBadge: '2 Marks Short Answer',
-      marks: 2,
-      text: 'Differentiate between "Bahiranga Yoga" and "Antaranga Yoga" in Patanjali’s Ashtanga framework.',
-      answerKey: 'Bahiranga vs Antaranga.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      typeBadge: '2 Marks Short Answer',
-      marks: 2,
-      text: 'What is the role of Mitahara in maintaining digestive health and emotional equilibrium?',
-      answerKey: 'Moderate food.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      partTitle: 'SECTION - C: CASE-BASED & DESCRIPTIVE QUESTIONS (20 MARKS)',
-      typeBadge: '4 Marks Analytical',
-      marks: 4,
-      text: 'Elaborate upon the physiological mechanism of Anulom-Vilom in balancing autonomic nervous functions.',
-      orOptionText: 'Describe the alignment technique and benefits of Dhanurasana.',
-      answerKey: 'Balances sympathetic and parasympathetic flows.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      typeBadge: '4 Marks Case-Based',
-      marks: 4,
-      text: `CASE STUDY - WORKPLACE STRESS MANAGEMENT:\nEmployees complain of cervical stiffness and poor sleep due to desk work.\n\n(i) Recommend two Sukshma Vyayama for neck mobility. [2]\n(ii) Design a 15-minute evening breathwork sequence. [2]`,
-      answerKey: 'Griva Shakti Vikasaka, Bhramari, Sheetali.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      typeBadge: '4 Marks Analytical',
-      marks: 4,
-      text: 'Explain the Pancha Kosha theory (Five Sheaths of Existence) according to the Taittiriya Upanishad.',
-      answerKey: 'Annamaya to Anandamaya.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      typeBadge: '4 Marks Case-Based',
-      marks: 4,
-      text: `CASE STUDY - HYPERTENSION INTERVENTION:\nA patient with blood pressure 150/95 mmHg has been advised Yogic lifestyle modification.\n\n(i) Identify two Asanas that are strictly contra-indicated. [2]\n(ii) Suggest two therapeutic relaxing asanas and one cooling pranayama. [2]`,
-      answerKey: 'Avoid Sirshasana/Chakrasana; prescribe Shavasana/Sheetali.'
-    });
-
-    questions.push({
-      qNum: qIndex++,
-      typeBadge: '4 Marks Analytical',
-      marks: 4,
-      text: 'Outline the classical 12-step sequence of Surya Namaskara with breathing coordination and cardiovascular benefits.',
-      answerKey: '12 steps sequence.'
-    });
-
-    return {
-      questions,
-      totalMarks: 50,
-      instructions: [
-        'This question paper contains 29 questions divided into 3 Sections – A, B, and C.',
-        'Section A comprises 20 Objective Type Questions of 1 mark each (Q1 to Q20).',
-        'Section B comprises 5 Short Answer Questions of 2 marks each (Q21 to Q25).',
-        'Section C comprises 5 Case-Based / Analytical Questions of 4 marks each (Q26 to Q29).',
-        'Time Allowed: 2 Hours. Maximum Marks: 50.'
-      ]
-    };
-  }
-
-  // =========================================================================
-  // 6. GENERAL SUBJECT FALLBACK (NEVER BLANK)
+  // 4. FALLBACK FOR OTHER SUBJECTS
   // =========================================================================
   const subCode = cleanSub.match(/\d+/)?.[0] || '2026';
   const genericQuestions: FullGeneratedQuestion[] = [];
