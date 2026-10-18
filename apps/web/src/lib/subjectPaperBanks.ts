@@ -16,6 +16,10 @@ function getRandomChoice<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function getRandomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function shuffleArray<T>(arr: T[]): T[] {
   const c = [...arr];
   for (let i = c.length - 1; i > 0; i--) {
@@ -33,10 +37,242 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   const cleanSub = subjectName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   // =========================================================================
-  // 1. BUSINESS STUDIES (CODE 054) - 100% CBSE 2026-27 SQP STRICT ALIGNMENT
+  // 1. ECONOMICS (CODE 030) - 80 MARKS (PART A: 40M + PART B: 40M) STRICT CBSE
+  // =========================================================================
+  if (cleanSub.includes('030') || cleanSub.includes('economics')) {
+    // Dynamic Numericals Parameters
+    const mpcVal = getRandomChoice([0.5, 0.6, 0.75, 0.8]);
+    const multiplierVal = (1 / (1 - mpcVal)).toFixed(1);
+    const primDeposit = getRandomChoice([1000, 2000, 4000, 5000, 10000]);
+    const lrrVal = getRandomChoice([10, 20, 25]);
+    const moneyMult = (100 / lrrVal).toFixed(1);
+    const totalCredit = (primDeposit * (100 / lrrVal)).toLocaleString('en-IN');
+
+    const cBar = getRandomChoice([100, 150, 200, 250]);
+    const mpsVal = getRandomChoice([0.2, 0.25, 0.4]);
+    const invI = getRandomChoice([200, 300, 400, 500]);
+    const eqIncome = Math.round((cBar + invI) / mpsVal);
+    const eqCons = Math.round(cBar + (1 - mpsVal) * eqIncome);
+
+    const gdpMp = getRandomChoice([7500, 8500, 9200, 10500]);
+    const nfiaVal = getRandomChoice([-150, -200, -250, 100]);
+    const nitVal = getRandomChoice([550, 650, 750, 800]);
+    const depNat = getRandomChoice([300, 400, 500]);
+    const gnpFc = gdpMp + nfiaVal - nitVal;
+
+    // Macroeconomics MCQs Bank (25 Items)
+    const macroMCQPool = [
+      { text: 'Which of the following is NOT included in the estimation of Domestic Income?', opts: { optA: 'Old-age pension received by senior citizens', optB: 'Wages and salaries paid to resident workers', optC: 'Operating surplus of domestic enterprises', optD: 'Mixed income of self-employed traders' }, ans: '(A) Old-age pension is a unilateral transfer payment.' },
+      { text: `If Marginal Propensity to Consume (MPC) is ${mpcVal}, the numerical value of Investment Multiplier (k) will be:`, opts: { optA: `${multiplierVal}`, optB: `${(parseFloat(multiplierVal) + 1).toFixed(1)}`, optC: `${(parseFloat(multiplierVal) - 0.5).toFixed(1)}`, optD: '1.0' }, ans: `(A) k = 1 / (1 - MPC) = ${multiplierVal}.` },
+      { text: 'Which tool of RBI monetary policy involves buying and selling of government securities in open market?', opts: { optA: 'Open Market Operations (OMO)', optB: 'Cash Reserve Ratio (CRR)', optC: 'Statutory Liquidity Ratio (SLR)', optD: 'Margin Requirement' }, ans: '(A) Open Market Operations.' },
+      { text: 'When Aggregate Demand exceeds Aggregate Supply at full employment output, the economy experiences:', opts: { optA: 'Inflationary Gap (Excess Demand)', optB: 'Deflationary Gap', optC: 'Deficient Demand', optD: 'Under-employment Equilibrium' }, ans: '(A) Inflationary Gap.' },
+      { text: 'Which of the following constitutes a Capital Receipt for the Central Government?', opts: { optA: 'Disinvestment proceeds from sale of PSU shares', optB: 'Goods and Services Tax (GST) collected', optC: 'Court fines and penalties', optD: 'Dividends from public enterprises' }, ans: '(A) Disinvestment reduces government assets.' },
+      { text: 'Balance of Payments (BoP) on Current Account records transactions relating to:', opts: { optA: 'Exports & Imports of goods, services and transfer payments', optB: 'Foreign Direct Investment (FDI) inflows', optC: 'External Commercial Borrowings', optD: 'Gold transactions by RBI' }, ans: '(A) Current Account items.' },
+      { text: 'The relationship between Average Propensity to Consume (APC) and Average Propensity to Save (APS) is:', opts: { optA: 'APC + APS = 1', optB: 'APC - APS = 1', optC: 'APC x APS = 1', optD: 'APC / APS = 0' }, ans: '(A) APC + APS = 1.' },
+      { text: 'Assertion (A): GDP growth may not always indicate an improvement in public welfare.\nReason (R): GDP excludes non-monetary transactions and ignores negative externalities like environmental pollution.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true and (R) correctly explains (A).' },
+      { text: `In an economy, when autonomous consumption C_bar = ${cBar} and MPC = 0.8, consumption expenditure at income Y = 1000 is:`, opts: { optA: `${cBar + 800}`, optB: `${cBar + 600}`, optC: '1000', optD: '700' }, ans: `(A) C = ${cBar} + 0.8(1000) = ${cBar + 800}.` },
+      { text: 'Fiscal Deficit measures:', opts: { optA: 'Total borrowing requirements of the government', optB: 'Interest payments of the government', optC: 'Trade deficit of the economy', optD: 'Revenue deficit only' }, ans: '(A) Total government borrowing needs.' },
+      { text: 'Money Supply (M1) includes which of the following components?', opts: { optA: 'Currency with public + Demand deposits with banks + Other deposits with RBI', optB: 'Time deposits with commercial banks', optC: 'Post office recurring savings deposits', optD: 'Total national debt certificates' }, ans: '(A) M1 definition.' },
+      { text: 'Primary Deficit is calculated as:', opts: { optA: 'Fiscal Deficit - Interest Payments', optB: 'Revenue Deficit - Capital Expenditure', optC: 'Fiscal Deficit + Borrowings', optD: 'Budget Deficit - Tax Revenue' }, ans: '(A) Fiscal Deficit - Interest Payments.' },
+      { text: 'Depreciation of domestic currency in foreign exchange market leads to:', opts: { optA: 'Increase in exports of domestic goods', optB: 'Increase in imports of foreign goods', optC: 'Fall in foreign tourism inside country', optD: 'Decrease in domestic output' }, ans: '(A) Boosts exports by making domestic goods cheaper for foreigners.' }
+    ];
+
+    // Indian Economic Development MCQs Bank (25 Items)
+    const iedMCQPool = [
+      { text: 'In Indian Economic History, the "Green Revolution" initially targeted which major grain crops in Punjab and Haryana?', opts: { optA: 'High-Yielding Varieties of Wheat and Rice', optB: 'Cotton and Jute', optC: 'Tea and Coffee', optD: 'Sugarcane and Pulses' }, ans: '(A) Wheat and Rice.' },
+      { text: 'NABARD was set up in which year to supervise rural credit and agricultural financing in India?', opts: { optA: '1982', optB: '1991', optC: '1975', optD: '1969' }, ans: '(A) 1982.' },
+      { text: 'The Great Leap Forward (GLF) campaign was launched in China in 1958 with the prime objective of:', opts: { optA: 'Widespread rapid industrialization in backyards and rural communes', optB: 'Privatizing commercial banks', optC: 'Inviting foreign multinational firms', optD: 'Abolishing state farms' }, ans: '(A) Rapid industrialization and rural communes.' },
+      { text: 'Which of the following is considered a primary source of Human Capital Formation?', opts: { optA: 'Expenditure on Education, Healthcare, and On-the-job training', optB: 'Construction of commercial highways', optC: 'Importing finished consumer electronic items', optD: 'Purchase of automated mining drills' }, ans: '(A) Investment in human health and education.' },
+      { text: 'In India, the Micro, Small and Medium Enterprises Development (MSMED) Act was enacted in:', opts: { optA: '2006', optB: '1991', optC: '2014', optD: '1980' }, ans: '(A) 2006.' },
+      { text: 'What is the full form of NITI Aayog?', opts: { optA: 'National Institution for Transforming India', optB: 'National Institute for Technical Innovation', optC: 'National Industrial Trade Initiative', optD: 'New India Technical Institute' }, ans: '(A) National Institution for Transforming India.' },
+      { text: 'Which economic system was adopted by post-independence India under Jawaharlal Nehru and P.C. Mahalanobis?', opts: { optA: 'Mixed Economic System with leading role to public sector', optB: 'Pure Free-Market Capitalist Economy', optC: 'Command Socialist Soviet System', optD: 'Feudal Agricultural System' }, ans: '(A) Mixed Economic System.' },
+      { text: 'Which of the following is an informal source of rural credit in India associated with high interest exploitation?', opts: { optA: 'Village Moneylenders & Commission Agents', optB: 'Regional Rural Banks (RRBs)', optC: 'Commercial Banks', optD: 'Cooperative Credit Societies' }, ans: '(A) Village Moneylenders.' },
+      { text: 'Pakistan initiated its first Five Year Plan in which year?', opts: { optA: '1956', optB: '1951', optC: '1960', optD: '1947' }, ans: '(A) 1956.' },
+      { text: 'Which agricultural pricing mechanism guarantees minimum remunerative returns to farmers before crop sowing?', opts: { optA: 'Minimum Support Price (MSP)', optB: 'Open Mandi Auction', optC: 'Futures Commodity Exchange', optD: 'Export Subsidy System' }, ans: '(A) Minimum Support Price.' },
+      { text: 'Organic farming is eco-friendly because it promotes:', opts: { optA: 'Sustainable agriculture without synthetic fertilizers and chemical pesticides', optB: 'Heavy chemical weedicides', optC: 'Excessive groundwater drawal', optD: 'Deforestation for cattle feed' }, ans: '(A) Chemical-free sustainable farming.' },
+      { text: 'Informalisation of workforce in India refers to:', opts: { optA: 'Growth in proportion of informal sector workers without social security benefits', optB: 'Shift from agricultural to software sector', optC: 'Rise in regular salaried government jobs', optD: 'Compulsory trade union membership' }, ans: '(A) Increase in unorganized/informal employment.' }
+    ];
+
+    const questions: FullGeneratedQuestion[] = [];
+    let qCount = 1;
+
+    // -------------------------------------------------------------
+    // PART A: INTRODUCTORY MACROECONOMICS (Q1 TO Q17 = 40 MARKS)
+    // -------------------------------------------------------------
+    // Q1 to Q10: 10 MCQs x 1 Mark = 10 Marks
+    shuffleArray(macroMCQPool).slice(0, 10).forEach((q, idx) => {
+      questions.push({
+        qNum: qCount++,
+        partTitle: idx === 0 ? 'PART - A: INTRODUCTORY MACROECONOMICS (40 MARKS)' : undefined,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    // Q11 to Q12: 2 Questions x 3 Marks = 6 Marks
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Explain the process of Money Creation / Credit Creation by commercial banks with an initial primary cash deposit of ₹${primDeposit.toLocaleString('en-IN')} and Legal Reserve Ratio (LRR) of ${lrrVal}%.`,
+      orOptionText: `Explain the "Lender of the Last Resort" and "Banker to the Government" functions of the Central Bank (Reserve Bank of India).`,
+      answerKey: `Money Multiplier = 1 / LRR = ${moneyMult}. Total credit created = ₹${primDeposit} x ${moneyMult} = ₹${totalCredit}. Show stepwise deposit schedule.`
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Distinguish between Final Goods and Intermediate Goods with two suitable empirical examples of each.',
+      orOptionText: 'Explain the circular flow of income in a two-sector economy with the help of a labeled diagram.',
+      answerKey: 'Final goods: for consumption or investment. Intermediate goods: used as raw materials in same year.'
+    });
+
+    // Q13 to Q15: 3 Questions x 4 Marks = 12 Marks
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Medium Answer',
+      marks: 4,
+      text: 'Distinguish between Revenue Receipts and Capital Receipts of the Central Government. Give two examples of each.',
+      answerKey: 'Revenue receipts neither create liabilities nor reduce assets. Capital receipts create liabilities or reduce assets.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Medium Answer',
+      marks: 4,
+      text: `From the following data, calculate Gross National Product at Factor Cost (GNP_FC):\n- GDP at MP: ₹${gdpMp.toLocaleString('en-IN')} Crores\n- Net Factor Income from Abroad (NFIA): ${nfiaVal < 0 ? '(-)' : ''} ₹${Math.abs(nfiaVal).toLocaleString('en-IN')} Crores\n- Net Indirect Taxes (NIT): ₹${nitVal.toLocaleString('en-IN')} Crores\n- Consumption of Fixed Capital (Depreciation): ₹${depNat.toLocaleString('en-IN')} Crores.`,
+      orOptionText: `Explain the problem of "Double Counting" in calculating National Income. Describe the two methods to avoid it.`,
+      answerKey: `GNP_FC = GDP_MP + NFIA - NIT = ${gdpMp} + (${nfiaVal}) - ${nitVal} = ₹${gnpFc.toLocaleString('en-IN')} Crores.`
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Case-Based / Data Analysis',
+      marks: 4,
+      text: `CASE STUDY - MONETARY POLICY & INFLATION CONTROL IN INDIA:\nRead the following excerpt and answer the questions:\n"During the post-recovery phase, persistent global commodity price surges exerted pressure on domestic retail inflation. To anchor inflation expectations and suck out excess liquidity from the financial system, the Monetary Policy Committee (MPC) of the Reserve Bank of India sequentially raised the policy Repo Rate by 250 basis points."\n\n(i) Explain how an increase in Repo Rate curbs inflationary pressures in an economy. [2]\n(ii) Differentiate between Repo Rate and Reverse Repo Rate. [2]`,
+      answerKey: '(i) Hike in Repo Rate raises borrowing cost for banks, contracting credit demand and checking inflation. (ii) Repo is lending rate by RBI; Reverse Repo is borrowing rate by RBI.'
+    });
+
+    // Q16 to Q17: 2 Questions x 6 Marks = 12 Marks
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: `In an economy, autonomous consumption C_bar = ₹${cBar} Crores, Marginal Propensity to Save (MPS) = ${mpsVal}, and planned autonomous investment I = ₹${invI} Crores:\n(i) Derive the Aggregate Consumption Function equation.\n(ii) Calculate the Equilibrium Level of National Income (Y).\n(iii) Calculate total consumption expenditure at equilibrium income.`,
+      orOptionText: `Explain the working of the Investment Multiplier with a diagrammatic illustration. What happens to the numerical value of multiplier if MPC increases?`,
+      answerKey: `MPC = 1 - ${mpsVal} = ${(1 - mpsVal).toFixed(2)}. Consumption equation C = ${cBar} + ${(1 - mpsVal).toFixed(2)}Y. Equilibrium Y = ₹${eqIncome.toLocaleString('en-IN')} Crores. C = ₹${eqCons.toLocaleString('en-IN')} Crores.`
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: 'Differentiate between Autonomous items and Accommodating items in the Balance of Payments (BoP). Explain the meaning of BoP Deficit and Surplus with reference to official reserve transactions.',
+      orOptionText: 'Explain the concept of Deflationary Gap (Deficient Demand) with a suitable diagram. State two monetary measures and two fiscal measures to correct it.',
+      answerKey: 'Autonomous items take place for economic profit; Accommodating items cover surplus/deficit in autonomous transactions.'
+    });
+
+    // -------------------------------------------------------------
+    // PART B: INDIAN ECONOMIC DEVELOPMENT (Q18 TO Q34 = 40 MARKS)
+    // -------------------------------------------------------------
+    // Q18 to Q27: 10 MCQs x 1 Mark = 10 Marks
+    shuffleArray(iedMCQPool).slice(0, 10).forEach((q, idx) => {
+      questions.push({
+        qNum: qCount++,
+        partTitle: idx === 0 ? 'PART - B: INDIAN ECONOMIC DEVELOPMENT (40 MARKS)' : undefined,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    // Q28 to Q29: 2 Questions x 3 Marks = 6 Marks
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Discuss any three positive contributions of the British Colonial Rule in India.',
+      orOptionText: `What were the main causes of stagnation in the agricultural sector during the colonial British rule in India?`,
+      answerKey: 'Contributions: Introduction of Railways, postal and telegraph networks, ports, and commercialization of agriculture.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Explain the role of Micro-Credit and Self-Help Groups (SHGs) in promoting rural finance and empowering rural women in India.',
+      answerKey: 'SHGs mobilize rural savings, provide collateral-free micro-credit, and reduce dependence on informal moneylenders.'
+    });
+
+    // Q30 to Q32: 3 Questions x 4 Marks = 12 Marks
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Medium Answer',
+      marks: 4,
+      text: 'Explain the "Outsourcing" boom during the post-1991 economic reforms. Why has India emerged as a leading global BPO/KPO destination?',
+      answerKey: 'Availability of skilled English-speaking workforce, low labor cost, and advanced IT infrastructure.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Case-Based / Data Analysis',
+      marks: 4,
+      text: `CASE STUDY - RURAL DIVERSIFICATION AND ORGANIC FARMING:\nRead the following case text and answer the questions:\n"Over-dependence on conventional chemical-intensive agriculture led to soil depletion, groundwater salinization, and debt traps for small farmers. In response, sustainable initiatives promoted organic farming and allied non-farm activities such as dairying, fisheries, and horticulture."\n\n(i) State two benefits and two challenges associated with adopting organic farming in India. [2]\n(ii) Why is occupational diversification into non-farm sectors necessary for rural livelihoods? [2]`,
+      orOptionText: `Compare the developmental strategies and structural economic shifts between India and China from 1980 to 2024.`,
+      answerKey: '(i) Benefits: Eco-friendly, chemical-free food, enhances soil fertility. Challenges: Lower initial yields, shorter shelf-life, marketing channels. (ii) Reduces agricultural disguised unemployment.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Medium Answer',
+      marks: 4,
+      text: 'Define Human Capital Formation. Explain how expenditure on education and preventive healthcare contributes to national economic growth.',
+      answerKey: 'Human capital formation builds productive capabilities. Education increases workforce productivity and health reduces absenteeism.'
+    });
+
+    // Q33 to Q34: 2 Questions x 6 Marks = 12 Marks
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: 'Compare and contrast the demographic indicators and human development performance of India, China, and Pakistan based on Fertility Rate, Sex Ratio, and HDI ranking.',
+      orOptionText: `Elaborate upon the inward-looking trade strategy (Import Substitution) adopted by India during 1950-1990. Evaluate its merits and critical limitations.`,
+      answerKey: 'China: low fertility rate and high HDI. India: replacement level fertility and intermediate HDI. Pakistan: higher fertility and low HDI.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: 'Critically appraise the Economic Reforms of 1991 in India (LPG Policy). Highlight three major achievements and three significant failures.',
+      orOptionText: 'What is Sustainable Economic Development? State any four environmental challenges confronting India and explain four strategies to achieve sustainable growth.',
+      answerKey: 'Achievements: Foreign exchange reserve surge, private sector expansion, GDP growth. Failures: Agricultural neglect, jobless growth, disinvestment undervaluation.'
+    });
+
+    return {
+      questions,
+      totalMarks: 80,
+      instructions: [
+        'This question paper contains 34 questions divided into two Parts – Part A (Macroeconomics - 40 Marks) and Part B (Indian Economic Development - 40 Marks).',
+        'Questions 1 to 10 and 18 to 27 are 1-mark Multiple Choice Questions.',
+        'Questions 11 to 12 and 28 to 29 are 3-marks Short Answer Questions.',
+        'Questions 13 to 15 and 30 to 32 are 4-marks Medium Answer & Case-based Questions.',
+        'Questions 16 to 17 and 33 to 34 are 6-marks Long Answer Questions.',
+        'Internal choices have been provided in questions of 3, 4, and 6 marks. All working notes must be clearly shown.'
+      ]
+    };
+  }
+
+  // =========================================================================
+  // 2. BUSINESS STUDIES (CODE 054) - 80 MARKS (SINGLE CONTINUOUS SEQUENCE)
   // =========================================================================
   if (cleanSub.includes('054') || cleanSub.includes('businessstudies')) {
-    // Sector-Consistent Enterprise Profiles
     const techFirm = getRandomChoice([
       { name: 'EDT Smart Automations Ltd', product: 'inverter microwave oven', cost: '₹18,500', fault: 'developed an internal short-circuit catching fire during standard domestic use' },
       { name: 'Solaris Appliances India Ltd', product: 'commercial induction cooktop', cost: '₹14,200', fault: 'heating plate suffered a major insulation breakdown emitting electric shocks' },
@@ -52,9 +288,6 @@ export function generateExactSubjectPaper(subjectName: string, className: string
 
     const consumerName = getRandomChoice(['Rohan Verma', 'Pooja Aggarwal', 'Deepak Saxena', 'Karan Mehra', 'Sneha Kapoor', 'Manish Pandey']);
 
-    // -------------------------------------------------------------
-    // Competency-Based MCQs Pool (Rotated Dynamically)
-    // -------------------------------------------------------------
     const bstCompetencyMCQs = [
       {
         text: `The project managers at ${apparelFirm.name} set monthly operational targets and outline strategies to achieve them. Simultaneously, they allocate specific roles, motivate team members through regular recognition, and gather continuous feedback. Thus, various management functions are performed concurrently by all managers all the time. Identify the characteristic of management highlighted:`,
@@ -79,7 +312,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       {
         text: 'Read the following statements carefully:\nStatement I: Values are basic truths or guidelines for behaviour which are formed after research in work situations.\nStatement II: While practising Principles of Management, values cannot be neglected as business organisations have to fulfil ethical responsibility towards society.\nChoose the correct alternative:',
         opts: { optA: 'Statement II is true, Statement I is false', optB: 'Both statements are true', optC: 'Both statements are false', optD: 'Statement I is true, Statement II is false' },
-        ans: '(A) Statement II is true, Statement I is false (Principles are formed by research; values are ethical guidelines).'
+        ans: '(A) Statement II is true, Statement I is false.'
       },
       {
         text: `${apparelFirm.gm} is working as a Senior Functional Head at an annual compensation of ₹12 Lakh per annum and is also offered shares of the company at a set price which is significantly lower than the open market price. The compensation method deployed here is:`,
@@ -89,7 +322,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       {
         text: 'Which of the following constitute components of the Social Environment for an enterprise?\n(1) Rate of inflation increases by 2.5% leading to higher procurement cost.\n(2) Growth in demand for organic and health-focused grocery foods.\n(3) Improvement in life expectancy rate in India over the past two decades.\n(4) A company policy guaranteeing equal opportunities for differently-abled employees.',
         opts: { optA: '(2), (3) and (4)', optB: 'Only (2)', optC: '(1), (2) and (3)', optD: '(1) and (4)' },
-        ans: '(A) Statements (2), (3) and (4) represent social trends, demographics, and societal ethics.'
+        ans: '(A) Statements (2), (3) and (4) represent social trends.'
       },
       {
         text: 'Name the element of the Marketing Mix which involves deciding upon features, quality, packaging, labelling, and branding of goods offered to the target market:',
@@ -149,7 +382,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       {
         text: 'Read the following statements carefully:\nStatement I: The primary objective of Financial Management is to maximize the wealth of equity shareholders.\nStatement II: The financing decision of a corporate enterprise is completely unaffected by the extent of retained earnings available.\nChoose the correct alternative:',
         opts: { optA: 'Statement I is true, Statement II is false', optB: 'Both statements are true', optC: 'Both statements are false', optD: 'Statement II is true, Statement I is false' },
-        ans: '(A) Statement I is true, Statement II is false (Financing decision depends heavily on retained earnings).'
+        ans: '(A) Statement I is true, Statement II is false.'
       },
       {
         text: 'Under the Consumer Protection Act, 2019, if a consumer is dissatisfied with the verdict of the State Consumer Disputes Redressal Commission, within how many days can an appeal be filed before the National Commission?',
@@ -160,33 +393,12 @@ export function generateExactSubjectPaper(subjectName: string, className: string
         text: 'Which leadership style is characterized by a leader who consults subordinates, invites their suggestions, and encourages two-way participation in decision-making?',
         opts: { optA: 'Democratic / Participative Leadership', optB: 'Autocratic Leadership', optC: 'Laissez-faire Leadership', optD: 'Paternalistic Leadership' },
         ans: '(A) Democratic Leadership.'
-      },
-      {
-        text: 'Which principle of management states that an employee should receive orders from one and only one superior officer?',
-        opts: { optA: 'Unity of Command', optB: 'Unity of Direction', optC: 'Scalar Chain', optD: 'Espirit de Corps' },
-        ans: '(A) Unity of Command.'
-      },
-      {
-        text: 'Which money market instrument is issued by commercial banks to finance the working capital requirements of business firms?',
-        opts: { optA: 'Commercial Bill', optB: 'Treasury Bill', optC: 'Call Money', optD: 'Certificate of Deposit' },
-        ans: '(A) Commercial Bill.'
-      },
-      {
-        text: 'The concept of "Trading on Equity" is associated with which financial decision of an enterprise?',
-        opts: { optA: 'Financing Decision (Capital Structure)', optB: 'Investment Decision', optC: 'Dividend Decision', optD: 'Working Capital Decision' },
-        ans: '(A) Financing Decision.'
-      },
-      {
-        text: 'Which of the following is an internal source of recruitment?',
-        opts: { optA: 'Promotions and Transfers', optB: 'Campus Placement', optC: 'Direct Recruitment at Factory Gate', optD: 'Employment Exchanges' },
-        ans: '(A) Promotions and Transfers.'
       }
     ];
 
     const questions: FullGeneratedQuestion[] = [];
     let qCount = 1;
 
-    // QUESTIONS 1 TO 20: 20 Competency MCQs (No sub-headers)
     shuffleArray(bstCompetencyMCQs).slice(0, 20).forEach((q) => {
       questions.push({
         qNum: qCount++,
@@ -198,9 +410,6 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       });
     });
 
-    // -------------------------------------------------------------
-    // QUESTIONS 21 TO 24 (3 Marks Short Questions) - MULTI-POOL
-    // -------------------------------------------------------------
     const pool3M = [
       {
         text: `State any three points of significance of Decentralization for a fast-growing manufacturing enterprise like ${apparelFirm.name}.`,
@@ -245,9 +454,6 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       });
     });
 
-    // -------------------------------------------------------------
-    // QUESTIONS 25 TO 30 (4 Marks Medium Questions) - MULTI-POOL
-    // -------------------------------------------------------------
     const pool4M = [
       {
         text: `Explain the following two functions of Marketing with suitable business examples:\n(a) Customer Support Services [2]\n(b) Packaging and Labelling [2]`,
@@ -278,11 +484,6 @@ export function generateExactSubjectPaper(subjectName: string, className: string
         text: `CASE SCENARIO - SELECTION PROCESS:\n${apparelFirm.name} plans to recruit eight software engineers. The Human Resource Manager eliminated unfit applicants through preliminary screening, conducted written aptitude tests and employment interviews, and verified candidate references.\nIdentify and explain the remaining steps that the manager must undertake to finalize the appointment of the selected engineers.`,
         or: undefined,
         ans: 'Remaining steps: Selection decision, Medical examination, Job offer, and Contract of employment.'
-      },
-      {
-        text: `Explain any four barriers to effective managerial communication (Semantic, Psychological, Organizational, Personal) and outline how an enterprise can overcome them.`,
-        or: `What is Capital Structure? Explain how (i) Cash Flow Position and (ii) Interest Coverage Ratio (ICR) influence the financing mix of debt and equity in a corporate enterprise.`,
-        ans: 'Semantic, psychological, organizational barriers and corrective active listening.'
       }
     ];
 
@@ -297,9 +498,6 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       });
     });
 
-    // -------------------------------------------------------------
-    // QUESTIONS 31 TO 34 (6 Marks Long Questions) - LOGICALLY MATCHED
-    // -------------------------------------------------------------
     questions.push({
       qNum: qCount++,
       typeBadge: '6 Marks Long Answer / Case-Based',
@@ -324,7 +522,6 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       answerKey: '(a) Malini: Functional Structure; Shalini: Divisional Structure. (b) Comparison on basis of formation, specialization, responsibility, and managerial development.'
     });
 
-    // Q34: Strictly sector-consistent Consumer Protection Case
     questions.push({
       qNum: qCount++,
       typeBadge: '6 Marks Long Answer / Case-Based',
@@ -349,7 +546,659 @@ export function generateExactSubjectPaper(subjectName: string, className: string
     };
   }
 
-  // Fallback for remaining subjects
+  // =========================================================================
+  // 3. ACCOUNTANCY (CODE 055) - 80 MARKS (PART A 60M + PART B 20M)
+  // =========================================================================
+  if (cleanSub.includes('055') || cleanSub.includes('accountancy')) {
+    const comp1 = getRandomChoice(['Zenith Technologies Ltd', 'Vanguard Solar Power Ltd', 'Apex Infrastructure Ltd', 'Reliance Logistics Ltd', 'Tata Green Energy Ltd']);
+    const comp2 = getRandomChoice(['Crown Industries Ltd', 'Nova Pharma Ltd', 'Jupiter Textiles Ltd']);
+    const vendor1 = getRandomChoice(['Precision Engineering Works', 'Modern Machines Ltd', 'Sun Solar Systems']);
+
+    const sharesCount = getRandomChoice([50000, 60000, 80000, 100000]);
+    const appliedShares = Math.round(sharesCount * getRandomChoice([1.25, 1.4, 1.5]));
+    const allottedShares = Math.round(sharesCount * 1.2);
+    const premiumVal = getRandomChoice([2, 3, 4]);
+    const defaulterShares = getRandomChoice([400, 500, 600, 800]);
+    const reissuedShares = Math.round(defaulterShares * getRandomChoice([0.6, 0.75, 0.8]));
+    const reissuePrice = getRandomChoice([7, 8, 9]);
+
+    const partnerGroupA = getRandomChoice([
+      { p1: 'Aarav', p2: 'Bhavna', p3: 'Chetan', r1: 3, r2: 2, r3: 1, c1: 300000, c2: 200000, c3: 100000 },
+      { p1: 'Rohit', p2: 'Kavita', p3: 'Deepak', r1: 5, r2: 3, r3: 2, c1: 500000, c2: 300000, c3: 200000 },
+      { p1: 'Varun', p2: 'Tarun', p3: 'Karan', r1: 4, r2: 3, r3: 1, c1: 400000, c2: 300000, c3: 100000 },
+      { p1: 'Mohit', p2: 'Shobhit', p3: 'Ankit', r1: 2, r2: 2, r3: 1, c1: 250000, c2: 250000, c3: 150000 }
+    ]);
+
+    const partnerGroupB = getRandomChoice([
+      { p1: 'Madhav', p2: 'Raghav', newP: 'Keshav', r1: 3, r2: 2, share: '1/5', cap: 80000, gwill: 30000, bld: 140000, mch: 90000, deb: 70000, stk: 50000, crd: 40000, res: 30000 },
+      { p1: 'Sanjay', p2: 'Vijay', newP: 'Ajay', r1: 2, r2: 1, share: '1/4', cap: 100000, gwill: 40000, bld: 160000, mch: 110000, deb: 80000, stk: 60000, crd: 50000, res: 40000 },
+      { p1: 'Pradeep', p2: 'Kuldeep', newP: 'Sandeep', r1: 3, r2: 1, share: '1/5', cap: 75000, gwill: 25000, bld: 150000, mch: 95000, deb: 75000, stk: 55000, crd: 45000, res: 35000 }
+    ]);
+
+    const bankBalAdm = 35000;
+    const totAssetsAdm = partnerGroupB.bld + partnerGroupB.mch + (partnerGroupB.deb - 3000) + partnerGroupB.stk + bankBalAdm;
+    const capitalsSumAdm = totAssetsAdm - partnerGroupB.crd - partnerGroupB.res;
+    const p1CapAdm = Math.round(capitalsSumAdm * (partnerGroupB.r1 / (partnerGroupB.r1 + partnerGroupB.r2)));
+    const p2CapAdm = capitalsSumAdm - p1CapAdm;
+
+    const debRate = getRandomChoice([8, 9, 10, 12]);
+    const purchasePrice = getRandomChoice([330000, 440000, 550000, 660000]);
+    const debPremium = getRandomChoice([10, 20]);
+    const debCount = Math.round(purchasePrice / (100 * (1 + debPremium / 100)));
+
+    const partA_MCQ_Bank = [
+      { text: `In the absence of a Partnership Deed, interest on loan advanced by partner ${partnerGroupA.p1} to the firm is payable at:`, opts: { optA: '6% p.a.', optB: '10% p.a.', optC: '12% p.a.', optD: 'Zero / Nil' }, ans: '(A) 6% p.a.' },
+      { text: `At the time of admission of ${partnerGroupB.newP}, general reserve of ₹${partnerGroupB.res.toLocaleString('en-IN')} appearing in the balance sheet is transferred to:`, opts: { optA: 'Old Partners’ Capital Accounts in Old Ratio', optB: 'All Partners in New Ratio', optC: 'Revaluation Account', optD: 'Sacrificing Ratio' }, ans: '(A) Old Partners in Old Ratio.' },
+      { text: 'A company forfeited 100 shares of ₹10 each on which ₹7 was received. What is the maximum discount allowed on reissue of these shares?', opts: { optA: 'Amount received on forfeiture', optB: 'Face value of shares', optC: 'Uncalled amount', optD: 'Statutory 5% limit' }, ans: '(A) Maximum discount allowed equals the amount forfeited per share.' },
+      { text: 'Securities Premium Account can be utilized for which of the following purposes as per Section 52(2) of the Companies Act, 2013?', opts: { optA: 'Issuing fully paid bonus shares to members', optB: 'Distribution of dividends', optC: 'Paying trade creditors', optD: 'Writing off general reserve' }, ans: '(A) Issuing fully paid bonus shares.' },
+      { text: 'Gaining Ratio is computed by applying which formula?', opts: { optA: 'New Ratio - Old Ratio', optB: 'Old Ratio - New Ratio', optC: 'Old Ratio - Sacrificing Ratio', optD: 'New Ratio + Old Ratio' }, ans: '(A) New Ratio - Old Ratio.' },
+      { text: `If partner ${partnerGroupA.p2} withdraws ₹8,000 at the beginning of each calendar month, interest on drawings will be calculated for:`, opts: { optA: '6.5 Months', optB: '6.0 Months', optC: '5.5 Months', optD: '7.0 Months' }, ans: '(A) 6.5 Months.' },
+      { text: 'When debentures are issued as Collateral Security for a secured bank loan, the entry passed in books is:', opts: { optA: 'Debit Debenture Suspense A/c and Credit Debentures A/c', optB: 'Debit Bank A/c and Credit Debentures A/c', optC: 'Debit Bank Loan A/c and Credit Debenture Suspense A/c', optD: 'No entry required in journal' }, ans: '(A) Debenture Suspense A/c Dr. to Debentures A/c.' },
+      { text: 'Realisation Account prepared at the time of dissolution of a firm is in the nature of:', opts: { optA: 'Nominal Account', optB: 'Personal Account', optC: 'Real Account', optD: 'Representative Personal Account' }, ans: '(A) Nominal Account.' },
+      { text: 'Calls in Arrears is deducted from which item in the Notes to Accounts of Balance Sheet?', opts: { optA: 'Subscribed but not fully paid-up capital', optB: 'Authorized Share Capital', optC: 'Issued Share Capital', optD: 'Securities Premium Reserve' }, ans: '(A) Subscribed but not fully paid-up capital.' },
+      { text: 'At the time of forfeiture of shares, Share Capital Account is debited with:', opts: { optA: 'Called-up amount on forfeited shares', optB: 'Face value of forfeited shares', optC: 'Paid-up amount on forfeited shares', optD: 'Uncalled amount on forfeited shares' }, ans: '(A) Called-up amount.' },
+      { text: `When partner ${partnerGroupA.p3} retires, his share of goodwill is credited to his capital account and debited to continuing partners in their:`, opts: { optA: 'Gaining Ratio', optB: 'Sacrificing Ratio', optC: 'Old Profit Sharing Ratio', optD: 'Capital Ratio' }, ans: '(A) Gaining Ratio.' },
+      { text: 'Sacrificing Ratio is used to distribute which of the following items at the time of admission of a partner?', opts: { optA: 'Premium for Goodwill brought by new partner', optB: 'Revaluation Profit', optC: 'General Reserve', optD: 'Accumulated Losses' }, ans: '(A) Premium for Goodwill.' },
+      { text: 'Discount on issue of debentures is written off within the tenure of debentures out of:', opts: { optA: 'Securities Premium Reserve / Statement of P&L', optB: 'General Reserve only', optC: 'Capital Redemption Reserve', optD: 'Debenture Redemption Reserve' }, ans: '(A) Securities Premium Reserve or Statement of P&L.' },
+      { text: 'Capital Reserve is created out of which of the following categories of profit?', opts: { optA: 'Capital Profits (Profit on reissue of forfeited shares / sale of fixed assets)', optB: 'Normal operating profits', optC: 'Gross Profit from operations', optD: 'Dividend Equalization Reserve' }, ans: '(A) Capital Profits.' },
+      { text: 'Assertion (A): Fixed Capital accounts of partners always show a credit balance.\nReason (R): All adjustments regarding drawings, interest, and share of profit are routed through Partners’ Current Accounts.', opts: { optA: 'Both (A) and (R) are true and (R) is correct explanation for (A).', optB: 'Both (A) and (R) are true but (R) is not correct explanation.', optC: '(A) is true, but (R) is false.', optD: '(A) is false, but (R) is true.' }, ans: '(A) Both are true.' },
+      { text: 'On dissolution of firm, unrecorded liability paid off by partner out of personal funds is credited to:', opts: { optA: 'Concerned Partner’s Capital Account', optB: 'Realisation Account', optC: 'Cash Account', optD: 'Revaluation Account' }, ans: '(A) Concerned Partner’s Capital Account.' }
+    ];
+
+    const partB_MCQ_Bank = [
+      { text: `An enterprise has Current Assets ₹8,00,000 and Current Liabilities ₹4,00,000. Payment of ₹50,000 to trade payables will:`, opts: { optA: 'Improve Current Ratio', optB: 'Reduce Current Ratio', optC: 'Not change Current Ratio', optD: 'Make Current Ratio zero' }, ans: '(A) Improve Current Ratio.' },
+      { text: 'Which financial ratio measures the proportion of total assets funded through shareholders’ funds?', opts: { optA: 'Proprietary Ratio', optB: 'Debt to Equity Ratio', optC: 'Interest Coverage Ratio', optD: 'Total Assets to Debt Ratio' }, ans: '(A) Proprietary Ratio.' },
+      { text: 'Cash outflow on purchase of patent rights is categorized under which cash flow activity (AS-3)?', opts: { optA: 'Investing Activities', optB: 'Operating Activities', optC: 'Financing Activities', optD: 'Cash and Cash Equivalents' }, ans: '(A) Investing Activities.' },
+      { text: 'Dividend received on investments by a manufacturing company is shown in Cash Flow Statement as:', opts: { optA: 'Inflow under Investing Activities', optB: 'Inflow under Operating Activities', optC: 'Inflow under Financing Activities', optD: 'Deduction from net profit' }, ans: '(A) Inflow under Investing Activities.' }
+    ];
+
+    const questions: FullGeneratedQuestion[] = [];
+    let qCount = 1;
+
+    // PART A (Q1 to Q26 = 60 Marks)
+    shuffleArray(partA_MCQ_Bank).slice(0, 16).forEach((q, idx) => {
+      questions.push({
+        qNum: qCount++,
+        partTitle: idx === 0 ? 'PART - A: ACCOUNTING FOR PARTNERSHIP FIRMS AND COMPANIES (60 MARKS)' : undefined,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    const netProf = getRandomChoice([72000, 84000, 96000, 108000]);
+    const partnerSal = getRandomChoice([1500, 2000, 2500]);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `${partnerGroupA.p1}, ${partnerGroupA.p2} and ${partnerGroupA.p3} are partners sharing profits in ${partnerGroupA.r1}:${partnerGroupA.r2}:${partnerGroupA.r3} with capitals ₹${partnerGroupA.c1.toLocaleString('en-IN')}, ₹${partnerGroupA.c2.toLocaleString('en-IN')} and ₹${partnerGroupA.c3.toLocaleString('en-IN')} respectively. Their Partnership Deed provides interest on capital @ 6% p.a. and partner salary of ₹${partnerSal.toLocaleString('en-IN')} per month to ${partnerGroupA.p2}. During the year ended 31st March 2026, the firm earned a net profit of ₹${netProf.toLocaleString('en-IN')}. Prepare Profit and Loss Appropriation Account for the year.`,
+      orOptionText: `${partnerGroupA.p1} and ${partnerGroupA.p2} are partners sharing profits equally. On 31st March 2026, after closing books, it was discovered that interest on drawings @ 6% p.a. was omitted. Drawings during the year were: ${partnerGroupA.p1} ₹30,000 and ${partnerGroupA.p2} ₹20,000. Pass necessary single adjusting journal entry showing working notes clearly.`,
+      answerKey: 'P&L Appropriation A/c preparation OR Adjusting journal entry.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `${comp1} purchased running business of ${vendor1} for ₹${purchasePrice.toLocaleString('en-IN')} payable by issuing ${debRate}% Debentures of ₹100 each at a premium of ${debPremium}%. Pass necessary journal entries in the books of ${comp1}.`,
+      orOptionText: `Starline Ltd obtained a bank loan of ₹8,00,000 from State Bank of India and issued 10,000, 9% Debentures of ₹100 each as Collateral Security. Explain how this transaction will be shown in the Balance Sheet and Notes to Accounts under both methods.`,
+      answerKey: `Number of debentures = ₹${purchasePrice} / ₹${100 * (1 + debPremium / 100)} = ${debCount}. Entries for purchase and debenture allotment.`
+    });
+
+    const deceasedProf = getRandomChoice([120000, 150000, 180000]);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `${partnerGroupA.p1}, ${partnerGroupA.p2} and ${partnerGroupA.p3} are partners sharing profits in ${partnerGroupA.r1}:${partnerGroupA.r2}:${partnerGroupA.r3}. Partner ${partnerGroupA.p3} dies on 30th June 2026. Partnership deed provides that deceased partner’s share of profit till death be calculated on basis of last year’s profit of ₹${deceasedProf.toLocaleString('en-IN')}. Calculate ${partnerGroupA.p3}’s share of profit and pass necessary journal entry.`,
+      orOptionText: `A firm earned average profits of ₹90,000 during the last five years. Capital employed in the business is ₹7,50,000 and the normal rate of return on capital is 10%. Calculate the value of goodwill of the firm by:\n(i) Capitalization of Super Profit Method\n(ii) 3 Years' Purchase of Super Profit Method`,
+      answerKey: `Profit till death = ₹${deceasedProf} x 3/12 x ${partnerGroupA.r3}/${partnerGroupA.r1 + partnerGroupA.r2 + partnerGroupA.r3}. Journal entry: P&L Suspense A/c Dr. to Deceased Partner Capital A/c.`
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Differentiate between "Dissolution of Partnership" and "Dissolution of Partnership Firm" on the basis of:\n(i) Court intervention\n(ii) Continuation of economic business\n(iii) Closure of books of accounts`,
+      orOptionText: `Explain Section 48 of the Indian Partnership Act, 1932 regarding the settlement of accounts at the time of dissolution of a partnership firm.`,
+      answerKey: '(i) Court: Voluntary vs Court order. (ii) Business continues vs terminates. (iii) Books remain open vs closed permanently.'
+    });
+
+    const forfShares1 = getRandomChoice([200, 300, 400]);
+    const forfReissue1 = Math.round(forfShares1 * 0.75);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Medium Answer',
+      marks: 4,
+      text: `Pass necessary journal entries for forfeiture and reissue in the following independent cases:\n(a) Beta Ltd forfeited ${forfShares1} shares of ₹10 each (₹8 called up) for non-payment of first call of ₹2 per share. Out of these, ${forfReissue1} shares were reissued as ₹8 paid up for ₹7 per share.\n(b) Sigma Ltd forfeited 150 shares of ₹10 each issued at ₹2 premium for non-payment of allotment ₹5 (including premium). Reissued as fully paid for ₹9 per share.`,
+      answerKey: 'Entries for share forfeiture, reissue, and transfer of net forfeited balance to Capital Reserve.'
+    });
+
+    const crdReal = getRandomChoice([50000, 60000, 75000]);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Medium Answer',
+      marks: 4,
+      text: `Pass journal entries on dissolution of a partnership firm:\n(i) Creditors ₹${crdReal.toLocaleString('en-IN')} accepted stock of book value ₹${Math.round(crdReal * 0.8).toLocaleString('en-IN')} in full settlement of ₹${Math.round(crdReal * 0.75).toLocaleString('en-IN')} and remaining in cash.\n(ii) An unrecorded computer realized ₹7,000 in cash.\n(iii) Partner ${partnerGroupA.p1} agreed to pay realization expenses of ₹4,000 for an agreed remuneration of ₹6,000.`,
+      answerKey: 'Realisation journal entries for assets realization and settlement of liabilities.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: `${comp1} invited applications for issuing ${sharesCount.toLocaleString('en-IN')} Equity Shares of ₹10 each at a premium of ₹${premiumVal} per share payable: ₹3 on application, ₹${5 + premiumVal - 2} on allotment (including premium ₹${premiumVal}), and balance on call. Applications were received for ${appliedShares.toLocaleString('en-IN')} shares. Pro-rata allotment was made to applicants of ${allottedShares.toLocaleString('en-IN')} shares, remaining rejected. Excess application money was adjusted toward allotment.\nA shareholder holding ${defaulterShares} shares failed to pay allotment and call money. His shares were forfeited and ${reissuedShares} of these shares were reissued as fully paid-up for ₹${reissuePrice} per share. Pass necessary Journal Entries.`,
+      orOptionText: `${comp2} invited applications for ${Math.round(sharesCount * 0.8).toLocaleString('en-IN')} equity shares of ₹10 each at par payable: ₹3 on application, ₹4 on allotment, ₹3 on call. Applications were received for ${(sharesCount * 1.2).toLocaleString('en-IN')} shares. Allotment was made pro-rata in 3:2 ratio. Excess application money was adjusted toward allotment. A shareholder allotted 400 shares failed to pay call money. Her shares were forfeited and reissued at ₹8. Pass journal entries.`,
+      answerKey: 'Pro-rata allotment table calculations, calls in arrears computation, forfeiture entry, reissue and Capital Reserve transfer.'
+    });
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: `${partnerGroupB.p1} and ${partnerGroupB.p2} are partners sharing profits in ${partnerGroupB.r1}:${partnerGroupB.r2}. Their Balance Sheet as on 31st March 2026 was as follows:`,
+      tableData: `<table class="matrix-table">
+  <tr><th>Liabilities</th><th>Amount (₹)</th><th>Assets</th><th>Amount (₹)</th></tr>
+  <tr><td>Sundry Creditors</td><td>${partnerGroupB.crd.toLocaleString('en-IN')}</td><td>Cash at Bank</td><td>${bankBalAdm.toLocaleString('en-IN')}</td></tr>
+  <tr><td>General Reserve</td><td>${partnerGroupB.res.toLocaleString('en-IN')}</td><td>Sundry Debtors: ${partnerGroupB.deb.toLocaleString('en-IN')}<br/>Less: Provision: (3,000)</td><td>${(partnerGroupB.deb - 3000).toLocaleString('en-IN')}</td></tr>
+  <tr><td>Capitals:</td><td></td><td>Stock</td><td>${partnerGroupB.stk.toLocaleString('en-IN')}</td></tr>
+  <tr><td>${partnerGroupB.p1}: ${p1CapAdm.toLocaleString('en-IN')}</td><td></td><td>Plant & Machinery</td><td>${partnerGroupB.mch.toLocaleString('en-IN')}</td></tr>
+  <tr><td>${partnerGroupB.p2}: ${p2CapAdm.toLocaleString('en-IN')}</td><td>${capitalsSumAdm.toLocaleString('en-IN')}</td><td>Building</td><td>${partnerGroupB.bld.toLocaleString('en-IN')}</td></tr>
+  <tr><th>Total</th><th>${totAssetsAdm.toLocaleString('en-IN')}</th><th>Total</th><th>${totAssetsAdm.toLocaleString('en-IN')}</th></tr>
+</table>`,
+      orOptionText: `On 1st April 2026, they admit ${partnerGroupB.newP} into partnership for ${partnerGroupB.share} share on terms:\n(i) ${partnerGroupB.newP} brings ₹${partnerGroupB.cap.toLocaleString('en-IN')} as capital and ₹${partnerGroupB.gwill.toLocaleString('en-IN')} as premium for goodwill in cash.\n(ii) Building is appreciated by 20% and Machinery is depreciated by 10%.\n(iii) Provision for doubtful debts is increased to 5% on debtors.\nPrepare Revaluation Account and Partners’ Capital Accounts.`,
+      answerKey: 'Revaluation Account profit/loss distribution in old ratio, Goodwill distribution in sacrificing ratio, and closing capital balances.'
+    });
+
+    const retGoodwill = getRandomChoice([60000, 75000, 90000]);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: `${partnerGroupA.p1}, ${partnerGroupA.p2} and ${partnerGroupA.p3} were partners sharing in ${partnerGroupA.r1}:${partnerGroupA.r2}:${partnerGroupA.r3}. Partner ${partnerGroupA.p2} retires on 31st March 2026. Balance Sheet showed Capitals: ${partnerGroupA.p1} ₹${partnerGroupA.c1.toLocaleString('en-IN')}; ${partnerGroupA.p2} ₹${partnerGroupA.c2.toLocaleString('en-IN')}; ${partnerGroupA.p3} ₹${partnerGroupA.c3.toLocaleString('en-IN')}; General Reserve ₹40,000. Goodwill of the firm was valued at ₹${retGoodwill.toLocaleString('en-IN')}. Plant was revalued at ₹20,000 higher and Stock was reduced by ₹10,000. Partner ${partnerGroupA.p2} was paid ₹30,000 in cash and the balance transferred to his loan account. Prepare Revaluation Account and Partners’ Capital Accounts.`,
+      orOptionText: `A, B and C dissolve their partnership firm. Assets realized ₹4,20,000 (book value ₹4,60,000). Creditors of ₹80,000 settled at 5% discount. Realisation expenses of ₹5,000 paid by firm. Pass necessary realization and capital ledger entries.`,
+      answerKey: 'Revaluation Account, Goodwill adjustment in gaining ratio, and Retiring partner loan balance OR Realisation account entries.'
+    });
+
+    const debIssueCount = getRandomChoice([4000, 5000, 6000]);
+    const secPremBal = getRandomChoice([50000, 60000, 75000]);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: `Alpha Limited issued ${debIssueCount.toLocaleString('en-IN')}, 9% Debentures of ₹100 each on 1st April 2025. Pass journal entries for issue of debentures and writing off loss/discount in following independent cases:\n(i) Issued at par redeemable at 5% premium.\n(ii) Issued at 5% discount redeemable at 5% premium.\n(iii) Issued at 10% premium redeemable at 5% premium.\nCompany had a balance of ₹${secPremBal.toLocaleString('en-IN')} in Securities Premium Account.`,
+      answerKey: 'Record issue of debentures with Loss on Issue of Debentures and Premium on Redemption, followed by writing off loss.'
+    });
+
+    // PART B (Q27 to Q34 = 20 Marks)
+    shuffleArray(partB_MCQ_Bank).slice(0, 4).forEach((q, idx) => {
+      questions.push({
+        qNum: qCount++,
+        partTitle: idx === 0 ? 'PART - B: ANALYSIS OF FINANCIAL STATEMENTS (20 MARKS)' : undefined,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    const revOp = getRandomChoice([1200000, 1500000, 1800000]);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `From the following information, calculate Inventory Turnover Ratio and Trade Receivables Turnover Ratio:\n- Revenue from Operations: ₹${revOp.toLocaleString('en-IN')}\n- Gross Profit: 25% on Cost of Revenue from Operations\n- Opening Inventory: ₹1,60,000; Closing Inventory: ₹2,00,000\n- Net Credit Revenue from Operations: ₹${Math.round(revOp * 0.8).toLocaleString('en-IN')}\n- Opening Trade Receivables: ₹90,000; Closing Trade Receivables: ₹1,10,000`,
+      orOptionText: `Under what major headings and sub-headings will the following items appear in the Balance Sheet of a company as per Schedule III, Part I of the Companies Act, 2013:\n(i) Provision for Tax\n(ii) Capital Work-in-Progress\n(iii) Unpaid / Unclaimed Dividend\n(iv) Trademarks and Patents\n(v) Mining Rights\n(vi) Calls in Advance`,
+      answerKey: `Cost of Revenue = ₹${revOp} x 100/125. Average inventory = ₹1,80,000. Calculate ratios step by step.`
+    });
+
+    const equityCap = getRandomChoice([600000, 800000, 1000000]);
+    const debenturesAmt = getRandomChoice([300000, 400000, 500000]);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Calculate Debt to Equity Ratio and Proprietary Ratio from the following details:\n- Equity Share Capital: ₹${equityCap.toLocaleString('en-IN')}\n- Preference Share Capital: ₹2,00,000\n- Reserves and Surplus: ₹2,00,000\n- 10% Debentures: ₹${debenturesAmt.toLocaleString('en-IN')}\n- Long-term Bank Loan: ₹2,00,000\n- Current Liabilities: ₹2,00,000\n- Total Non-Current Assets: ₹14,00,000\n- Current Assets: ₹6,00,000`,
+      answerKey: `Debt = ₹${debenturesAmt + 200000}. Equity = ₹${equityCap + 400000}. Total Assets = ₹20,00,000. Calculate ratios.`
+    });
+
+    const operNetProf = getRandomChoice([360000, 420000, 480000]);
+    const operDep = getRandomChoice([35000, 45000, 55000]);
+    const operTax = getRandomChoice([60000, 75000, 85000]);
+    const operRecInc = getRandomChoice([20000, 30000, 40000]);
+    const operInvDec = getRandomChoice([25000, 35000, 45000]);
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '4 Marks Medium Answer',
+      marks: 4,
+      text: `Calculate Cash Flow from Operating Activities from the following Statement of Profit and Loss extracts:\n- Net Profit before Tax: ₹${operNetProf.toLocaleString('en-IN')}\n- Depreciation on Plant: ₹${operDep.toLocaleString('en-IN')}\n- Goodwill amortized: ₹20,000\n- Trade Receivables increased: ₹${operRecInc.toLocaleString('en-IN')}\n- Inventories decreased: ₹${operInvDec.toLocaleString('en-IN')}\n- Income Tax Paid: ₹${operTax.toLocaleString('en-IN')}`,
+      answerKey: 'Operating Profit before working capital changes -> Working capital adjustments -> Net cash from operations.'
+    });
+
+    const baseLiabOld = 1000000;
+    const baseLiabNew = 1400000;
+    const shareOld = 600000;
+    const shareNew = 750000;
+    const debOld = 150000;
+    const debNew = 250000;
+    const crdOld = 100000;
+    const crdNew = 150000;
+    const pnlOld = baseLiabOld - shareOld - debOld - crdOld;
+    const pnlNew = baseLiabNew - shareNew - debNew - crdNew;
+
+    const plantOld = 600000;
+    const plantNew = 800000;
+    const invOld = 120000;
+    const invNew = 160000;
+    const recOld = 90000;
+    const recNew = 130000;
+    const mktOld = 40000;
+    const mktNew = 60000;
+    const cashBalOld = baseLiabOld - plantOld - invOld - recOld - mktOld;
+    const cashBalNew = baseLiabNew - plantNew - invNew - recNew - mktNew;
+
+    questions.push({
+      qNum: qCount++,
+      typeBadge: '6 Marks Long Answer',
+      marks: 6,
+      text: `From the following Balance Sheet of ${comp1} as at 31st March 2025 and 31st March 2026, prepare a Cash Flow Statement as per AS-3 (Revised):`,
+      tableData: `<table class="matrix-table">
+  <tr><th>Particulars</th><th>31.03.2026 (₹)</th><th>31.03.2025 (₹)</th></tr>
+  <tr><th colspan="2" style="text-align:left;">I. EQUITY AND LIABILITIES</th></tr>
+  <tr><td>Share Capital</td><td>${shareNew.toLocaleString('en-IN')}</td><td>${shareOld.toLocaleString('en-IN')}</td></tr>
+  <tr><td>Surplus (Balance in Statement of P&L)</td><td>${pnlNew.toLocaleString('en-IN')}</td><td>${pnlOld.toLocaleString('en-IN')}</td></tr>
+  <tr><td>10% Debentures</td><td>${debNew.toLocaleString('en-IN')}</td><td>${debOld.toLocaleString('en-IN')}</td></tr>
+  <tr><td>Trade Payables</td><td>${crdNew.toLocaleString('en-IN')}</td><td>${crdOld.toLocaleString('en-IN')}</td></tr>
+  <tr><th>Total Liabilities</th><th>${baseLiabNew.toLocaleString('en-IN')}</th><th>${baseLiabOld.toLocaleString('en-IN')}</th></tr>
+  <tr><th colspan="2" style="text-align:left;">II. ASSETS</th></tr>
+  <tr><td>Plant & Machinery (Net)</td><td>${plantNew.toLocaleString('en-IN')}</td><td>${plantOld.toLocaleString('en-IN')}</td></tr>
+  <tr><td>Current Investments (Marketable)</td><td>${mktNew.toLocaleString('en-IN')}</td><td>${mktOld.toLocaleString('en-IN')}</td></tr>
+  <tr><td>Inventories</td><td>${invNew.toLocaleString('en-IN')}</td><td>${invOld.toLocaleString('en-IN')}</td></tr>
+  <tr><td>Trade Receivables</td><td>${recNew.toLocaleString('en-IN')}</td><td>${recOld.toLocaleString('en-IN')}</td></tr>
+  <tr><td>Cash & Cash Equivalents</td><td>${cashBalNew.toLocaleString('en-IN')}</td><td>${cashBalOld.toLocaleString('en-IN')}</td></tr>
+  <tr><th>Total Assets</th><th>${baseLiabNew.toLocaleString('en-IN')}</th><th>${baseLiabOld.toLocaleString('en-IN')}</th></tr>
+</table>
+<div style="font-size:10pt; margin-top:3pt;">
+<b>Additional Information:</b> Depreciation charged on Plant & Machinery was ₹50,000 during the year. Debentures were issued on 31st March 2026.
+</div>`,
+      answerKey: 'Preparation of Operating, Investing, and Financing cash flows.'
+    });
+
+    return {
+      questions,
+      totalMarks: 80,
+      instructions: [
+        'This question paper contains 34 questions divided into two Parts – Part A and Part B.',
+        'Part A: Accounting for Partnership Firms and Companies (Questions 1 to 26 - 60 Marks).',
+        'Part B: Analysis of Financial Statements (Questions 27 to 34 - 20 Marks).',
+        'Questions 1 to 16 and 27 to 30 carry 1 mark each.',
+        'Questions 17 to 20 and 31 to 32 carry 3 marks each.',
+        'Questions 21, 22 and 33 carry 4 marks each.',
+        'Questions 23 to 26 and 34 carry 6 marks each.',
+        'Internal choices have been provided in questions of 3 marks, 4 marks, and 6 marks.',
+        'All calculations must be accompanied by detailed working notes.'
+      ]
+    };
+  }
+
+  // =========================================================================
+  // 4. PHYSICAL EDUCATION (CODE 048) - 70 MARKS DYNAMIC ENGINE
+  // =========================================================================
+  if (cleanSub.includes('048') || cleanSub.includes('physicaleducation')) {
+    const teamCount = getRandomChoice([13, 17, 19, 21, 23, 27]);
+    const nextPower = Math.pow(2, Math.ceil(Math.log2(teamCount)));
+    const totalByes = nextPower - teamCount;
+    const upperHalfTeams = Math.floor((teamCount + 1) / 2);
+    const lowerHalfTeams = Math.floor((teamCount - 1) / 2);
+
+    const stepDuration = getRandomChoice([300, 240, 180]);
+    const pulse1 = getRandomChoice([68, 72, 76, 80]);
+    const pulse2 = getRandomChoice([58, 62, 66, 70]);
+    const pulse3 = getRandomChoice([48, 52, 56, 60]);
+    const totalPulse = pulse1 + pulse2 + pulse3;
+    const pfiScore = ((stepDuration * 100) / (2 * totalPulse)).toFixed(1);
+
+    const peMCQs = [
+      { text: 'Which tournament format follows the formula (N - 1) to determine the total number of matches played for N teams?', opts: { optA: 'Knock-Out Tournament', optB: 'League Tournament', optC: 'Round Robin', optD: 'Combination Tournament' }, ans: '(A) Knock-Out Tournament.' },
+      { text: 'Identify the postural spinal deformity marked by an abnormal outward exaggeration of the thoracic curve (hunchback):', opts: { optA: 'Kyphosis', optB: 'Lordosis', optC: 'Scoliosis', optD: 'Knock Knees' }, ans: '(A) Kyphosis.' },
+      { text: 'Which Yogic posture is highly effective as a preventive measure against Type-2 Diabetes by stimulating the pancreas?', opts: { optA: 'Ardha Matsyendrasana', optB: 'Shavasana', optC: 'Tadasana', optD: 'Vrikshasana' }, ans: '(A) Ardha Matsyendrasana.' },
+      { text: 'What is the bench height used in the Harvard Step Test for boys?', opts: { optA: '20 inches (50.8 cm)', optB: '16 inches (40.6 cm)', optC: '14 inches', optD: '24 inches' }, ans: '(A) 20 inches.' },
+      { text: 'Newton’s Second Law of Motion is also formally termed in sports biomechanics as:', opts: { optA: 'Law of Acceleration', optB: 'Law of Inertia', optC: 'Law of Action and Reaction', optD: 'Law of Equilibrium' }, ans: '(A) Law of Acceleration.' },
+      { text: 'Which component of physical fitness is primarily measured by the 8-Foot Up and Go test in the Rikli & Jones battery?', opts: { optA: 'Agility and Dynamic Balance', optB: 'Muscular Strength', optC: 'Aerobic Endurance', optD: 'Lower Body Flexibility' }, ans: '(A) Agility and Dynamic Balance.' },
+      { text: 'Female Athlete Triad comprises which three interrelated clinical conditions?', opts: { optA: 'Osteoporosis, Amenorrhea, Eating Disorders', optB: 'Hypertension, Diabetes, Fatigue', optC: 'Kyphosis, Scoliosis, Lordosis', optD: 'Anemia, Asthma, Sprain' }, ans: '(A) Osteoporosis, Amenorrhea, Eating Disorders.' },
+      { text: 'What does the acronym P.R.I.C.E. stand for in initial sports injury management?', opts: { optA: 'Protect, Rest, Ice, Compression, Elevation', optB: 'Pressure, Relaxation, Inhale, Calm, Exercise', optC: 'Physical, Rapid, Inspection, Care, Energy', optD: 'Protect, Relief, Immobilize, Circulation, Exam' }, ans: '(A) Protect, Rest, Ice, Compression, Elevation.' },
+      { text: 'Which training cycle spans across a micro-cycle in periodization planning?', opts: { optA: '3 to 7 Days', optB: '3 to 6 Weeks', optC: '6 to 12 Months', optD: '4 Years' }, ans: '(A) 3 to 7 Days.' },
+      { text: 'Which nutrient yields approximately 9 kcal of energy per gram metabolized?', opts: { optA: 'Fats', optB: 'Proteins', optC: 'Carbohydrates', optD: 'Minerals' }, ans: '(A) Fats.' }
+    ];
+
+    const questions: FullGeneratedQuestion[] = [];
+
+    shuffleArray(peMCQs).forEach((q, idx) => {
+      questions.push({
+        qNum: idx + 1,
+        partTitle: idx === 0 ? 'SECTION - A: MULTIPLE CHOICE QUESTIONS (18 MARKS)' : undefined,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    questions.push({
+      qNum: 19,
+      partTitle: 'SECTION - B: VERY SHORT ANSWER QUESTIONS (10 MARKS)',
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'Define Extramural tournaments. Mention any two key educational and athletic benefits of inter-school sports competitions.',
+      answerKey: 'Extramural tournaments are competitions between schools.'
+    });
+
+    questions.push({
+      qNum: 20,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'Explain the physiological differences between Fast Twitch (White) and Slow Twitch (Red) muscle fibers.',
+      answerKey: 'Slow twitch for endurance; fast twitch for explosive power.'
+    });
+
+    questions.push({
+      qNum: 21,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'State the difference between Intrinsic Motivation and Extrinsic Motivation with suitable sports examples.',
+      answerKey: 'Intrinsic from self-satisfaction; extrinsic from rewards/medals.'
+    });
+
+    questions.push({
+      qNum: 22,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'Differentiate between Sprain and Strain in sports trauma.',
+      answerKey: 'Sprain is ligament tear; strain is muscle/tendon tear.'
+    });
+
+    questions.push({
+      qNum: 23,
+      typeBadge: '2 Marks VSA',
+      marks: 2,
+      text: 'What is Basal Metabolic Rate (BMR)? State two physiological factors that influence an athlete’s BMR.',
+      answerKey: 'Minimal energy at rest.'
+    });
+
+    questions.push({
+      qNum: 24,
+      partTitle: 'SECTION - C: SHORT ANSWER QUESTIONS (15 MARKS)',
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: `Draw a neat tournament fixture for ${teamCount} teams on a Knock-Out basis. Show clearly:\n(i) Teams in Upper & Lower Half\n(ii) Byes calculation (${totalByes} Byes)\n(iii) Total rounds`,
+      orOptionText: `Explain the procedure and health benefits of Bhujangasana and Gomukhasana in asthma management.`,
+      answerKey: `Teams = ${teamCount}, Byes = ${totalByes}. Upper Half = ${upperHalfTeams}, Lower Half = ${lowerHalfTeams}.`
+    });
+
+    questions.push({
+      qNum: 25,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Describe the procedure, scoring, and clinical significance of the Chair Sit and Reach test for senior citizens.',
+      answerKey: 'Assesses lower body hamstring flexibility.'
+    });
+
+    questions.push({
+      qNum: 26,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Explain the concept of "Inclusion in Physical Education". How does unified sports participation benefit Children With Special Needs (Divyang)?',
+      answerKey: 'Integration into mainstream sports.'
+    });
+
+    questions.push({
+      qNum: 27,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'What are Macro Nutrients and Micro Nutrients? Detail the physiological functions of Carbohydrates and Proteins.',
+      answerKey: 'Carbs provide energy; proteins repair tissue.'
+    });
+
+    questions.push({
+      qNum: 28,
+      typeBadge: '3 Marks Short Answer',
+      marks: 3,
+      text: 'Explain any three physiological factors that determine Speed in sprinting events.',
+      answerKey: 'Reaction time, fast twitch percentage, ATP-CP stores.'
+    });
+
+    questions.push({
+      qNum: 29,
+      partTitle: 'SECTION - D: CASE-BASED & DATA ANALYSIS QUESTIONS (12 MARKS)',
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - HARVARD STEP TEST FITNESS EVALUATION:\nA physical education instructor conducted the Harvard Step Test on an 18-year-old athlete. The test duration was completed for ${stepDuration} seconds on a 20-inch gymnasium bench. The recovery heart rate pulse counts recorded were:\n- 1 to 1.5 min: ${pulse1} beats\n- 2 to 2.5 min: ${pulse2} beats\n- 3 to 3.5 min: ${pulse3} beats\n\n(i) Calculate the Physical Fitness Index (PFI) of the athlete using the Long Form formula. [2]\n(ii) Based on your calculated PFI in part (i), evaluate whether the athlete's rating falls into Poor, Low Average, High Average, Good, or Excellent. [2]`,
+      answerKey: `PFI = (${stepDuration} x 100) / (2 x ${totalPulse}) = ${pfiScore}. Evaluate rating.`
+    });
+
+    questions.push({
+      qNum: 30,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - POSTURAL DEFORMITIES & SCHOOL SCREENING:\nDuring an annual physical fitness screening, Student A walked with knees knocking against each other while running. Student B showed an exaggerated forward hollow curvature in the lumbar spine.\n\n(i) Identify the postural deformities of Student A and Student B. [2]\n(ii) Suggest two corrective exercises or Yogic Asanas for each deformity. [2]`,
+      orOptionText: `Read the 100m sprint biomechanical split-timing data and explain how Newton's Third Law of Motion governs propulsion off blocks.`,
+      answerKey: 'A: Knock Knees; B: Lordosis.'
+    });
+
+    questions.push({
+      qNum: 31,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - SPORTS INJURIES AND FIRST AID PROTOCOLS:\nDuring a match, player Rahul suffered an inversion ankle injury after landing awkwardly, resulting in acute swelling and severe pain.\n\n(i) Name the soft-tissue injury sustained by Rahul and state whether it is a Sprain or a Strain. [2]\n(ii) Elaborate on the P.R.I.C.E. rehabilitation protocol applied on the field. [2]`,
+      answerKey: 'Ankle sprain. Protect, Rest, Ice, Compress, Elevate.'
+    });
+
+    questions.push({
+      qNum: 32,
+      partTitle: 'SECTION - E: LONG ANSWER QUESTIONS (15 MARKS)',
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: 'Explain Newton’s three laws of motion with labeled biomechanical illustrations. Detail how each law applies to running, high jumping, and swimming events.',
+      orOptionText: `What is Circuit Training? Design an 8-station circuit training routine to enhance general muscular endurance and agility in high school athletes.`,
+      answerKey: 'Inertia, Acceleration, Action-Reaction.'
+    });
+
+    questions.push({
+      qNum: 33,
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: 'Explain the Rikli & Jones Senior Citizen Fitness Test battery. Detail the procedure, equipment required, and scoring for Chair Stand, Arm Curl, and Back Scratch tests.',
+      answerKey: 'Senior citizen tests.'
+    });
+
+    questions.push({
+      qNum: 34,
+      typeBadge: '5 Marks Long Answer',
+      marks: 5,
+      text: 'What is Sports Training Periodization? Explain the physiological characteristics and training objectives of Preparatory Phase, Competition Phase, and Transition Phase.',
+      answerKey: 'Periodization phases and training cycles.'
+    });
+
+    return {
+      questions,
+      totalMarks: 70,
+      instructions: [
+        'This question paper contains 34 questions divided into 5 Sections – A, B, C, D and E.',
+        'Section A comprises 18 Multiple Choice Questions of 1 mark each (Q1 to Q18).',
+        'Section B comprises 5 Very Short Answer Questions of 2 marks each (Q19 to Q23).',
+        'Section C comprises 5 Short Answer Questions of 3 marks each (Q24 to Q28).',
+        'Section D comprises 3 Case-Based / Data Analysis Questions of 4 marks each (Q29 to Q31).',
+        'Section E comprises 3 Long Answer Questions of 5 marks each (Q32 to Q34).',
+        'Internal choices have been provided in selective questions.'
+      ]
+    };
+  }
+
+  // =========================================================================
+  // 5. YOGA (CODE 841) - 50 MARKS (28 QUESTIONS)
+  // =========================================================================
+  if (cleanSub.includes('841') || cleanSub.includes('yoga')) {
+    const poolPartA = [
+      { text: 'Which of the following is an effective active stress-management technique in workplace psychology?', opts: { optA: 'Deep Breathing & Yoga Nidra', optB: 'Procrastination', optC: 'Social Isolation', optD: 'Excessive Caffeine Intake' }, ans: '(A) Deep Breathing & Yoga Nidra.' },
+      { text: 'In communication skills, which element confirms that the intended message has been understood correctly by the receiver?', opts: { optA: 'Feedback', optB: 'Decoding', optC: 'Channel Noise', optD: 'Encoding' }, ans: '(A) Feedback.' },
+      { text: 'Which shortcut key combination is standardly used to save an ongoing document in LibreOffice Writer / MS Word?', opts: { optA: 'Ctrl + S', optB: 'Ctrl + P', optC: 'Ctrl + Z', optD: 'Alt + F4' }, ans: '(A) Ctrl + S.' },
+      { text: 'An individual who establishes an innovative business enterprise taking calculated financial risks is called an:', opts: { optA: 'Entrepreneur', optB: 'Wage employee', optC: 'Apprentice', optD: 'Administrator' }, ans: '(A) Entrepreneur.' }
+    ];
+
+    const poolYogaMCQs = [
+      { text: 'According to Sage Patanjali in Yoga Sutra, the classical definition of Yoga is:', opts: { optA: 'Yogas Chitta Vritti Nirodha', optB: 'Samatvam Yoga Uchyate', optC: 'Yogah Karmasu Kaushalam', optD: 'Sharira Madhyam Khalu Dharma Sadhanam' }, ans: '(A) Yogas Chitta Vritti Nirodha.' },
+      { text: 'Which of the following is classified as one of the six classical purificatory techniques (Shatkarma) in Hatha Yoga?', opts: { optA: 'Trataka', optB: 'Padmasana', optC: 'Bhastrika', optD: 'Ujjayi' }, ans: '(A) Trataka.' },
+      { text: 'Identify the total number of sequential steps present in one complete classical cycle of Surya Namaskara:', opts: { optA: '12 Steps', optB: '10 Steps', optC: '8 Steps', optD: '16 Steps' }, ans: '(A) 12 Steps.' },
+      { text: 'According to Hatha Yoga Pradipika, the concept of "Mitahara" signifies:', opts: { optA: 'Nutritious, pleasant, and moderate food filling half the stomach', optB: 'Eating heavy spicy food once a day', optC: 'Complete prolonged fasting without liquids', optD: 'Consuming only raw bitter herbs' }, ans: '(A) Moderate and wholesome food.' },
+      { text: 'Which Pranayama practice produces a resonant sound imitating a humming female bee, soothing the nervous system?', opts: { optA: 'Bhramari Pranayama', optB: 'Sheetali Pranayama', optC: 'Surya Bhedana', optD: 'Ujjayi' }, ans: '(A) Bhramari.' },
+      { text: 'In Ashtanga Yoga, which limb deals specifically with withdrawal of the senses from external distractions?', opts: { optA: 'Pratyahara', optB: 'Dharana', optC: 'Niyama', optD: 'Dhyana' }, ans: '(A) Pratyahara.' },
+      { text: 'Which energetic nadi represents the cooling, lunar, parasympathetic energy flow in the human body?', opts: { optA: 'Ida Nadi', optB: 'Pingala Nadi', optC: 'Sushumna Nadi', optD: 'Gandhari Nadi' }, ans: '(A) Ida Nadi.' },
+      { text: 'Which Asana is traditionally safe and recommended to be performed immediately following meals to promote gastric digestion?', opts: { optA: 'Vajrasana', optB: 'Sarvangasana', optC: 'Halasana', optD: 'Chakrasana' }, ans: '(A) Vajrasana.' },
+      { text: 'The bandha that involves gentle contraction and pulling inward of the abdominal muscles toward the spine is:', opts: { optA: 'Uddiyana Bandha', optB: 'Jalandhara Bandha', optC: 'Mula Bandha', optD: 'Maha Bandha' }, ans: '(A) Uddiyana Bandha.' },
+      { text: 'Which classical author compiled the authoritative treatise "Hatha Yoga Pradipika"?', opts: { optA: 'Swami Svatmarama', optB: 'Sage Gheranda', optC: 'Maharishi Patanjali', optD: 'Gorakhnath' }, ans: '(A) Swami Svatmarama.' }
+    ];
+
+    const questions: FullGeneratedQuestion[] = [];
+    let qIndex = 1;
+
+    questions.push({
+      qNum: qIndex,
+      partTitle: 'SECTION - A: OBJECTIVE TYPE QUESTIONS (20 MARKS)',
+      typeBadge: '1 Mark MCQ',
+      marks: 1,
+      text: poolPartA[0].text,
+      options: poolPartA[0].opts,
+      answerKey: poolPartA[0].ans
+    });
+    qIndex++;
+
+    shuffleArray(poolPartA.slice(1)).slice(0, 3).forEach(q => {
+      questions.push({
+        qNum: qIndex++,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    shuffleArray(poolYogaMCQs).slice(0, 16).forEach(q => {
+      questions.push({
+        qNum: qIndex++,
+        typeBadge: '1 Mark MCQ',
+        marks: 1,
+        text: q.text,
+        options: q.opts,
+        answerKey: q.ans
+      });
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      partTitle: 'SECTION - B: SHORT ANSWER QUESTIONS (10 MARKS)',
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'Define Shatkarma. Enumerate any four Shatkarmas described in classical Hatha Yogic texts.',
+      answerKey: 'Cleansing kriyas.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'State the health indications and contraindications of Paschimottanasana.',
+      orOptionText: 'State any two essential ergonomic safety precautions during inverted postures.',
+      answerKey: 'Stretches hamstrings; avoid in disc herniation.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'Explain the physiological importance of diaphragmatic breathing over shallow clavicular breathing.',
+      answerKey: 'Optimizes oxygenation and vagal tone.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'Differentiate between "Bahiranga Yoga" and "Antaranga Yoga" in Patanjali’s Ashtanga framework.',
+      answerKey: 'Bahiranga vs Antaranga.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '2 Marks Short Answer',
+      marks: 2,
+      text: 'What is the role of Mitahara in maintaining digestive health and emotional equilibrium?',
+      answerKey: 'Moderate food.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      partTitle: 'SECTION - C: CASE-BASED & DESCRIPTIVE QUESTIONS (20 MARKS)',
+      typeBadge: '4 Marks Analytical',
+      marks: 4,
+      text: 'Elaborate upon the physiological mechanism of Anulom-Vilom in balancing autonomic nervous functions.',
+      orOptionText: 'Describe the alignment technique and benefits of Dhanurasana.',
+      answerKey: 'Balances sympathetic and parasympathetic flows.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - WORKPLACE STRESS MANAGEMENT:\nEmployees complain of cervical stiffness and poor sleep due to desk work.\n\n(i) Recommend two Sukshma Vyayama for neck mobility. [2]\n(ii) Design a 15-minute evening breathwork sequence. [2]`,
+      answerKey: 'Griva Shakti Vikasaka, Bhramari, Sheetali.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '4 Marks Analytical',
+      marks: 4,
+      text: 'Explain the Pancha Kosha theory (Five Sheaths of Existence) according to the Taittiriya Upanishad.',
+      answerKey: 'Annamaya to Anandamaya.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '4 Marks Case-Based',
+      marks: 4,
+      text: `CASE STUDY - HYPERTENSION INTERVENTION:\nA patient with blood pressure 150/95 mmHg has been advised Yogic lifestyle modification.\n\n(i) Identify two Asanas that are strictly contra-indicated. [2]\n(ii) Suggest two therapeutic relaxing asanas and one cooling pranayama. [2]`,
+      answerKey: 'Avoid Sirshasana/Chakrasana; prescribe Shavasana/Sheetali.'
+    });
+
+    questions.push({
+      qNum: qIndex++,
+      typeBadge: '4 Marks Analytical',
+      marks: 4,
+      text: 'Outline the classical 12-step sequence of Surya Namaskara with breathing coordination and cardiovascular benefits.',
+      answerKey: '12 steps sequence.'
+    });
+
+    return {
+      questions,
+      totalMarks: 50,
+      instructions: [
+        'This question paper contains 29 questions divided into 3 Sections – A, B, and C.',
+        'Section A comprises 20 Objective Type Questions of 1 mark each (Q1 to Q20).',
+        'Section B comprises 5 Short Answer Questions of 2 marks each (Q21 to Q25).',
+        'Section C comprises 5 Case-Based / Analytical Questions of 4 marks each (Q26 to Q29).',
+        'Time Allowed: 2 Hours. Maximum Marks: 50.'
+      ]
+    };
+  }
+
+  // =========================================================================
+  // 6. GENERAL SUBJECT FALLBACK (NEVER BLANK)
+  // =========================================================================
   const subCode = cleanSub.match(/\d+/)?.[0] || '2026';
   const genericQuestions: FullGeneratedQuestion[] = [];
   let cnt = 1;
