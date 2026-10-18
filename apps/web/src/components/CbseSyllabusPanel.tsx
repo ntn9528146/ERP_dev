@@ -21,7 +21,7 @@ export default function CbseSyllabusPanel({ subjectName }: Props) {
               <input type="checkbox" defaultChecked className="rounded bg-gray-900 border-gray-700 text-blue-600 focus:ring-0" />
               <span>{unit.title}</span>
             </label>
-            <span className="text-xs text-blue-400 font-medium">3/3 Active</span>
+            <span className="text-xs text-blue-400 font-medium">{unit.subTopics.length}/{unit.subTopics.length} Active</span>
           </div>
           <div className="pl-6 text-xs text-gray-400 mb-1">SUB-TOPICS IN THIS UNIT:</div>
           <div className="grid grid-cols-2 gap-3 pl-6 pt-1">
