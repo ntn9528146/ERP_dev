@@ -37,36 +37,26 @@ export function generateExactSubjectPaper(subjectName: string, className: string
   const cleanSub = subjectName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   // =========================================================================
-  // 1. BUSINESS STUDIES (CODE 054) - 100% CBSE 2026-27 OFFICIAL SQP ALIGNED
+  // 1. BUSINESS STUDIES (CODE 054) - 100% CBSE 2026-27 SQP STRICT ALIGNMENT
   // =========================================================================
   if (cleanSub.includes('054') || cleanSub.includes('businessstudies')) {
-    // Dynamic Enterprises & Characters
-    const company1 = getRandomChoice([
-      { name: 'Welworth Textiles Ltd', sector: 'Apparel & Garment Manufacturing', product: 'designer cotton clothing', mgr: 'Mr. Gun Amroha', hr: 'Mr. Akhilesh Banerjee' },
-      { name: 'EDT Smart Automations Ltd', sector: 'Consumer Electronics & IoT', product: 'smart inverter refrigerators', mgr: 'Ms. Manu Priya', hr: 'Mr. Pankaj Kumar' },
-      { name: 'Arth Nivesh Global Ltd', sector: 'Industrial Packaging Solutions', product: 'biodegradable packing containers', mgr: 'Mr. Ashish Manjrekar', hr: 'Ms. Anita Deshmukh' },
-      { name: 'Alankaar Fabrics Limited', sector: 'Textile Printing & Weaving', product: 'eco-friendly dyed fabrics', mgr: 'Mr. Muralidhar Parekh', hr: 'Mr. Rajesh Sharma' },
-      { name: 'Rapid Software Private Limited', sector: 'Cloud Software & Digital Services', product: 'enterprise web applications', mgr: 'Ms. Malini Sen', hr: 'Mr. Vikram Singhania' }
+    // Perfectly matched Enterprise + Sector + Product entities
+    const enterprise = getRandomChoice([
+      { name: 'EDT Smart Automations Ltd', sector: 'Smart Consumer Electronics', product: 'inverter microwave oven', cost: '₹18,500', fault: 'developed a severe internal electrical short-circuit catching fire during standard domestic use', gm: 'Mr. Gun Amroha', hr: 'Mr. Akhilesh Banerjee' },
+      { name: 'Solaris Appliances India Ltd', sector: 'Home Kitchen Appliances', product: 'commercial induction cooktop', cost: '₹14,200', fault: 'heating plate suffered a major insulation breakdown emitting electric shocks and smoke', gm: 'Ms. Manu Priya', hr: 'Mr. Pankaj Kumar' },
+      { name: 'AeroPure Environmental Tech Ltd', sector: 'Indoor Air Treatment Solutions', product: 'high-capacity HEPA air purifier', cost: '₹22,000', fault: 'motor blower assembly caught fire emitting toxic fumes inside the residence', gm: 'Mr. Ashish Manjrekar', hr: 'Ms. Anita Deshmukh' },
+      { name: 'Zentech Consumer Devices Ltd', sector: 'Smart IoT Home Hardware', product: 'digital smart water geyser', cost: '₹16,800', fault: 'heating thermostat failed bursting the inner tank and flooding the premises with boiling water', gm: 'Mr. Rajesh Sharma', hr: 'Mr. Vikram Singhania' }
     ]);
 
-    const company2 = getRandomChoice([
-      { name: 'Babylon Retail Group', division: 'Babylon Prime Cloud Services', head: 'Ms. Shalini Roy' },
-      { name: 'Manik Steel & Alloy Plant', division: 'Heavy Forging Division', head: 'Mr. Mussadi Lal' },
-      { name: 'PP Motors Manufacturing Ltd', division: 'Electric Vehicles Division', head: 'Mr. Satya Prakash' }
-    ]);
+    const consumerName = getRandomChoice(['Rohan Verma', 'Pooja Aggarwal', 'Deepak Saxena', 'Karan Mehra', 'Sneha Kapoor', 'Manish Pandey']);
 
-    const consumerCase = getRandomChoice([
-      { cust: 'Rohan Verma', item: 'smart inverter microwave oven', cost: '₹18,500', fault: 'sparked causing an electrical short-circuit within three days of installation' },
-      { cust: 'Pooja Aggarwal', item: 'commercial induction cooktop', cost: '₹14,200', fault: 'developed internal heating coil burn-out threatening physical safety' },
-      { cust: 'Deepak Saxena', item: 'high-capacity air purifier', cost: '₹22,000', fault: 'motor caught fire emitting toxic plastic fumes inside the residence' }
-    ]);
+    // Alternating Case Scenarios
+    const caseScenarioVariant = getRandomChoice(['A', 'B']);
 
-    // -------------------------------------------------------------
-    // Competency-Based MCQs Pool (Patterned Exactly after CBSE SQP)
-    // -------------------------------------------------------------
+    // Competency-based MCQs (Full official CBSE Question Bank)
     const bstCompetencyMCQs = [
       {
-        text: `The project managers at ${company1.name} set monthly operational targets and outline strategies to achieve them. Simultaneously, they allocate specific roles, motivate team members through regular recognition, and gather continuous feedback. Thus, various management functions are performed concurrently by all managers all the time. Identify the characteristic of management highlighted:`,
+        text: `The project managers at ${enterprise.name} set monthly operational targets and outline strategies to achieve them. Simultaneously, they allocate specific roles, motivate team members through regular recognition, and gather continuous feedback. Thus, various management functions are performed concurrently by all managers all the time. Identify the characteristic of management highlighted:`,
         opts: { optA: 'Management is a continuous process', optB: 'Management is a dynamic function', optC: 'Management is an intangible force', optD: 'Management is goal oriented' },
         ans: '(A) Management is a continuous process.'
       },
@@ -88,17 +78,17 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       {
         text: 'Read the following statements carefully:\nStatement I: Values are basic truths or guidelines for behaviour which are formed after research in work situations.\nStatement II: While practising Principles of Management, values cannot be neglected as business organisations have to fulfil ethical responsibility towards society.\nChoose the correct alternative:',
         opts: { optA: 'Statement II is true, Statement I is false', optB: 'Both statements are true', optC: 'Both statements are false', optD: 'Statement I is true, Statement II is false' },
-        ans: '(A) Statement II is true, Statement I is false (Principles, not values, are formed after research).'
+        ans: '(A) Statement II is true, Statement I is false (Principles are formed by research, values are ethical moral guidelines).'
       },
       {
-        text: `${company1.mgr} is working as a Senior Functional Head at an annual compensation of ₹12 Lakh per annum and is also offered shares of the company at a set price which is significantly lower than the open market price. The compensation method deployed here is:`,
+        text: `${enterprise.gm} is working as a Senior Functional Head at an annual compensation of ₹12 Lakh per annum and is also offered shares of the company at a set price which is significantly lower than the open market price. The compensation method deployed here is:`,
         opts: { optA: 'Time-based Pay plus Incentives (Co-partnership / Stock option)', optB: 'Indirect financial payment', optC: 'Time-based direct financial payment only', optD: 'Performance-based piecemeal wage' },
         ans: '(A) Stock option / Co-partnership incentive.'
       },
       {
         text: 'Which of the following constitute components of the Social Environment for an enterprise?\n(1) Rate of inflation increases by 2.5% leading to higher procurement cost.\n(2) Growth in demand for organic and health-focused grocery foods.\n(3) Improvement in life expectancy rate in India over the past two decades.\n(4) A company policy guaranteeing equal opportunities for differently-abled employees.',
         opts: { optA: '(2), (3) and (4)', optB: 'Only (2)', optC: '(1), (2) and (3)', optD: '(1) and (4)' },
-        ans: '(A) Statements (2), (3) and (4) represent social trends and values.'
+        ans: '(A) Statements (2), (3) and (4) represent social trends, demographics, and societal ethics.'
       },
       {
         text: 'Name the element of the Marketing Mix which involves deciding upon features, quality, packaging, labelling, and branding of goods offered to the target market:',
@@ -126,7 +116,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
         ans: '(A) Customer Value.'
       },
       {
-        text: `Mr. Gun Amroha, General Manager of ${company1.name}, continuously scans the business environment and adapts the organization to external shifts. Yet, turbulent unforeseen market changes disrupted quarterly targets. Which limitation of planning is highlighted here?`,
+        text: `${enterprise.gm}, General Manager of ${enterprise.name}, continuously scans the business environment and adapts the organization to external shifts. Yet, turbulent unforeseen market changes disrupted quarterly targets. Which limitation of planning is highlighted here?`,
         opts: { optA: 'Planning may not work in a dynamic environment', optB: 'Planning leads to rigidity', optC: 'Planning reduces creativity', optD: 'Planning involves huge costs' },
         ans: '(A) Planning may not work in a dynamic environment.'
       },
@@ -136,12 +126,12 @@ export function generateExactSubjectPaper(subjectName: string, className: string
         ans: '(A) Training and Development.'
       },
       {
-        text: `${company1.name} has decided to launch a multi-state advertising campaign hiring brand ambassadors involving an outlay of ₹120 Crores. Identify the financial decision involved:`,
+        text: `${enterprise.name} has decided to launch a nationwide advertising campaign hiring brand ambassadors involving an outlay of ₹120 Crores. Identify the financial decision involved:`,
         opts: { optA: 'Capital Budgeting / Long-term Investment Decision', optB: 'Financing Decision', optC: 'Working Capital Decision', optD: 'Dividend Decision' },
         ans: '(A) Capital Budgeting / Long-term Investment Decision.'
       },
       {
-        text: `${company1.name} has a high fixed operating cost (high operating leverage). If the finance manager decides to raise additional long-term funds through debt, the overall business risk will increase significantly. Which factor affecting capital structure is highlighted?`,
+        text: `${enterprise.name} has a high fixed operating cost (high operating leverage). If the finance manager decides to raise additional long-term funds through debt, the overall business risk will increase significantly. Which factor affecting capital structure is highlighted?`,
         opts: { optA: 'Risk Consideration', optB: 'Cost of Debt', optC: 'Floatation Costs', optD: 'Control' },
         ans: '(A) Risk Consideration.'
       },
@@ -176,7 +166,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
     let qCount = 1;
 
     // -------------------------------------------------------------
-    // QUESTIONS 1 TO 20: 20 MCQs (No Part Headers - Seamless CBSE SQP Layout)
+    // QUESTIONS 1 TO 20: 20 MCQs (No Part Headers - Single Continuous Sequence)
     // -------------------------------------------------------------
     shuffleArray(bstCompetencyMCQs).slice(0, 20).forEach((q) => {
       questions.push({
@@ -192,39 +182,75 @@ export function generateExactSubjectPaper(subjectName: string, className: string
     // -------------------------------------------------------------
     // QUESTIONS 21 TO 24: 4 Questions x 3 Marks = 12 Marks
     // -------------------------------------------------------------
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `State any three points of significance of Decentralization for a fast-growing enterprise like ${company1.name}.`,
-      orOptionText: `State any three limitations of a Formal Organization Structure in an enterprise.`,
-      answerKey: 'Significance: Develops initiative among subordinates, facilitates quick decision-making, relieves top management of operational routine.'
-    });
+    if (caseScenarioVariant === 'A') {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: `State any three points of significance of Decentralization for a fast-growing manufacturing enterprise like ${enterprise.name}.`,
+        orOptionText: `State any three limitations of a Formal Organization Structure in an enterprise.`,
+        answerKey: 'Significance: Develops initiative among subordinates, facilitates quick decision-making, relieves top management of operational routine.'
+      });
 
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `CASE SCENARIO:\nAnabel Apparel Creations accumulated an unsold stock of seasonal fashion garments across its retail outlets. In order to clear inventory, the management offered heavy clearance discounts and sponsored college cultural fests to aggressively push sales. However, customer response remained poor as garments did not match prevailing consumer preferences.\n(a) Identify and state the Marketing Management philosophy followed by Anabel Creations. [1.5]\n(b) Name and state any two other philosophies of marketing. [1.5]`,
-      answerKey: '(a) Selling Philosophy (focuses on pushing sales through aggressive promotion rather than customer satisfaction). (b) Product concept and Marketing concept.'
-    });
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: `CASE SCENARIO:\nAnabel Apparel Creations accumulated an unsold stock of seasonal fashion garments across its retail outlets. In order to clear inventory, the management offered heavy clearance discounts and sponsored college cultural fests to aggressively push sales. However, customer response remained poor as garments did not match prevailing consumer preferences.\n(a) Identify and state the Marketing Management philosophy followed by Anabel Creations. [1.5]\n(b) Name and state any two other philosophies of marketing. [1.5]`,
+        answerKey: '(a) Selling Philosophy (focuses on pushing sales through aggressive promotion rather than customer satisfaction). (b) Product concept and Marketing concept.'
+      });
 
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `Give any three points of distinction between the Money Market and Capital Market on the basis of: (i) Maturity period of instruments, (ii) Degree of liquidity, and (iii) Expected financial returns.`,
-      orOptionText: `State any three Protective Functions performed by the Securities and Exchange Board of India (SEBI) to safeguard investors.`,
-      answerKey: 'Distinction: Money market instruments are short term (< 1 year), highly liquid, lower returns; Capital market deals in medium/long term securities, relatively lower liquidity, higher potential returns.'
-    });
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: `Give any three points of distinction between the Money Market and Capital Market on the basis of: (i) Maturity period of instruments, (ii) Degree of liquidity, and (iii) Expected financial returns.`,
+        orOptionText: `State any three Protective Functions performed by the Securities and Exchange Board of India (SEBI) to safeguard investors.`,
+        answerKey: 'Distinction: Money market instruments are short term (< 1 year), highly liquid, lower returns; Capital market deals in medium/long term securities, relatively lower liquidity, higher potential returns.'
+      });
 
-    questions.push({
-      qNum: qCount++,
-      typeBadge: '3 Marks Short Answer',
-      marks: 3,
-      text: `CASE SCENARIO:\nMuralidhar Parekh established an eco-friendly textile printing unit in Gujarat. To expand market share, he set the organizational goal of achieving a 15% annual sales increase and framed corporate policies. Being overburdened, he appointed qualified managers to supervise daily production and execute plans.\n(a) Identify the level of management at which the workforce was appointed to implement strategies. [1]\n(b) State any two functions performed by managers at this level. [2]`,
-      answerKey: '(a) Middle Level Management. (b) Interpret top management policies, ensure subordinate department staffing, and assign duties.'
-    });
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: `CASE SCENARIO:\nMuralidhar Parekh established an eco-friendly textile printing unit in Gujarat. To expand market share, he set the organizational goal of achieving a 15% annual sales increase and framed corporate policies. Being overburdened, he appointed qualified managers to supervise daily production and execute plans.\n(a) Identify the level of management at which the workforce was appointed to implement strategies. [1]\n(b) State any two functions performed by managers at this level. [2]`,
+        answerKey: '(a) Middle Level Management. (b) Interpret top management policies, ensure subordinate department staffing, and assign duties.'
+      });
+    } else {
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: `Explain the Principle of Absoluteness of Accountability. Can a top executive delegate accountability along with authority and responsibility? Illustrate with a brief example.`,
+        orOptionText: `Explain any three features of Coordination as the essence of management.`,
+        answerKey: 'Accountability cannot be delegated. A manager remains answerable to superiors for the performance of tasks assigned to subordinates.'
+      });
+
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: `CASE SCENARIO:\nIn ${enterprise.name}, the production department noticed a delay in component delivery by 2 days, which was within acceptable tolerance limits. However, the rejection rate of finished products in quality checks increased from 1% to 8%, which was a Key Result Area.\n(a) Which technique of analyzing deviations in the controlling process should the manager deploy here? [1.5]\n(b) Differentiate between Critical Point Control (CPC) and Management by Exception (MBE). [1.5]`,
+        answerKey: '(a) Critical Point Control (focusing on Key Result Areas). (b) CPC focuses on critical target points; MBE states controlling everything controls nothing.'
+      });
+
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: `Explain any three non-financial incentives that can be deployed by the HR head to motivate technical professionals in ${enterprise.name}.`,
+        orOptionText: `State any three rights available to a consumer under the Consumer Protection Act, 2019.`,
+        answerKey: 'Non-financial incentives: Status, Organizational climate, Career advancement opportunity, Job enrichment, Employee recognition programs.'
+      });
+
+      questions.push({
+        qNum: qCount++,
+        typeBadge: '3 Marks Short Answer',
+        marks: 3,
+        text: `Differentiate between Primary Market and Secondary Market in the Indian financial system on the basis of: (i) Capital formation, (ii) Pricing of securities, and (iii) Geographic location.`,
+        answerKey: 'Primary market directly aids capital formation, prices fixed by company management. Secondary market provides liquidity, prices determined by demand and supply.'
+      });
+    }
 
     // -------------------------------------------------------------
     // QUESTIONS 25 TO 30: 6 Questions x 4 Marks = 24 Marks
@@ -235,7 +261,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       marks: 4,
       text: `Explain the following two functions of Marketing with suitable business examples:\n(a) Customer Support Services [2]\n(b) Packaging and Labelling [2]`,
       orOptionText: `Explain any two distinguishing features of each of the following promotional tools:\n(a) Personal Selling [2]\n(b) Advertising [2]`,
-      answerKey: '(a) Customer support develops brand loyalty. Packaging protects and acts as silent salesman; labelling provides statutory information.'
+      answerKey: '(a) Customer support builds brand loyalty. Packaging protects and acts as silent salesman; labelling provides statutory information.'
     });
 
     questions.push({
@@ -244,14 +270,14 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       marks: 4,
       text: `Explain why Planning is considered as:\n(a) A pervasive function of management [2]\n(b) A futuristic function of management [2]`,
       orOptionText: `Explain the following two types of plans used in business organizations:\n(a) Strategy [2]\n(b) Procedure [2]`,
-      answerKey: '(a) Pervasive: required at all levels and departments. Futuristic: anticipates future trends and coordinates actions.'
+      answerKey: '(a) Pervasive: required across all levels and functional departments. Futuristic: anticipates future events and coordinates actions.'
     });
 
     questions.push({
       qNum: qCount++,
       typeBadge: '4 Marks Medium Answer',
       marks: 4,
-      text: `CASE SCENARIO - BUSINESS ENVIRONMENT:\nThe market research manager of 'Trendy Textiles' analyzed the influence of Generation Z on apparel trends. He observed that growing awareness regarding eco-sustainability, preference for personalized clothing, and intensive social media usage have generated massive demand for Do-It-Yourself (DIY) fashion and organic cotton apparel.\n(a) In context of the above case, identify and explain the feature of the business environment highlighted. [2]\n(b) Explain any two other features of the business environment. [2]`,
+      text: `CASE SCENARIO - BUSINESS ENVIRONMENT:\nThe market research team at ${enterprise.name} analyzed recent lifestyle shifts among urban professionals. They observed that rising health consciousness, environmental sensitivity towards e-waste, and extensive smartphone usage have generated high demand for eco-certified smart appliances.\n(a) In context of the above case, identify and explain the feature of the business environment highlighted. [2]\n(b) Explain any two other features of the business environment. [2]`,
       answerKey: '(a) Dynamic nature / Inter-relatedness of business environment forces. (b) Uncertainty and Complexity.'
     });
 
@@ -267,7 +293,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       qNum: qCount++,
       typeBadge: '4 Marks Medium Answer',
       marks: 4,
-      text: `CASE SCENARIO - SCIENTIFIC MANAGEMENT:\nThe factory manager of ${company2.name}, ${company2.head}, was in dilemma over workers shirking duty and faking illness, leading to underutilization of expensive machinery. The job of the workers was complex and technical. A management expert advised deploying eight specialist supervisors to guide and oversee workers during operations.\nIdentify and explain the technique of scientific management discussed above with its two planning and execution functional heads.`,
+      text: `CASE SCENARIO - SCIENTIFIC MANAGEMENT:\nThe factory manager of Manik Steel Plant, Mr. Mussadi Lal, was in dilemma over workers shirking duty and faking illness, leading to underutilization of expensive machinery. The job of the workers was complex and technical. A management expert advised deploying eight specialist supervisors to guide and oversee workers during operations.\nIdentify and explain the technique of scientific management discussed above with its two planning and execution functional heads.`,
       answerKey: 'Functional Foremanship. Planning in-charge (Route clerk, Instruction card clerk, Time & cost clerk, Disciplinarian); Production in-charge (Speed boss, Gang boss, Repair boss, Inspector).'
     });
 
@@ -275,7 +301,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       qNum: qCount++,
       typeBadge: '4 Marks Medium Answer',
       marks: 4,
-      text: `CASE SCENARIO - SELECTION PROCESS:\n${company1.name} plans to recruit eight software engineers. The Human Resource Manager eliminated unfit applicants through preliminary screening, conducted written aptitude tests and employment interviews, and verified candidate references.\nIdentify and explain the remaining steps that the manager must undertake to finalize the appointment of the selected engineers.`,
+      text: `CASE SCENARIO - SELECTION PROCESS:\n${enterprise.name} plans to recruit eight software engineers. The Human Resource Manager eliminated unfit applicants through preliminary screening, conducted written aptitude tests and employment interviews, and verified candidate references.\nIdentify and explain the remaining steps that the manager must undertake to finalize the appointment of the selected engineers.`,
       answerKey: 'Remaining steps: Selection decision, Medical examination, Job offer, and Contract of employment.'
     });
 
@@ -294,7 +320,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       qNum: qCount++,
       typeBadge: '6 Marks Long Answer / Case-Based',
       marks: 6,
-      text: `CASE SCENARIO - DIRECTING & LEADERSHIP:\nMr. Pankaj Kumar is working as the Human Resource Manager in ${company1.name} heading a team of fifteen executives. He has played a key role in organizational success by maintaining warm interpersonal relations, actively listening to subordinate concerns, and inspiring them to willingly cooperate to achieve excellence.\n(a) Identify and explain the element of the directing function of management discussed in the case. [2]\n(b) State any four features of the element identified in part (a). [4]`,
+      text: `CASE SCENARIO - DIRECTING & LEADERSHIP:\nMr. Pankaj Kumar is working as the Human Resource Manager in ${enterprise.name} heading a team of fifteen executives. He has played a key role in organizational success by maintaining warm interpersonal relations, actively listening to subordinate concerns, and inspiring them to willingly cooperate to achieve excellence.\n(a) Identify and explain the element of the directing function of management discussed in the case. [2]\n(b) State any four features of the element identified in part (a). [4]`,
       answerKey: '(a) Leadership. (b) Features: Indicates ability of an individual to influence others, continuous process, exercised to achieve common goals, interpersonal relationship between leader and followers.'
     });
 
@@ -310,7 +336,7 @@ export function generateExactSubjectPaper(subjectName: string, className: string
       qNum: qCount++,
       typeBadge: '6 Marks Long Answer / Case-Based',
       marks: 6,
-      text: `CASE SCENARIO - CONSUMER PROTECTION ACT, 2019:\nConsumer ${consumerCase.cust} purchased a ${consumerCase.item} for ${consumerCase.cost} manufactured by ${company1.name} from an authorized retail dealer. Within three days of usage, the ${consumerCase.fault}. The dealer and company refused to provide a refund or repair, claiming goods once sold cannot be returned.\n(a) Identify and state two Consumer Rights of ${consumerCase.cust} that have been violated in this situation. [2]\n(b) In which consumer dispute redressal forum should ${consumerCase.cust} file the formal complaint? Explain the three-tier judicial machinery under the Act. [2]\n(c) State any two reliefs available to ${consumerCase.cust} from the consumer commission. [2]`,
+      text: `CASE SCENARIO - CONSUMER PROTECTION ACT, 2019:\nConsumer ${consumerName} purchased a ${enterprise.product} for ${enterprise.cost} manufactured by ${enterprise.name} from an authorized retail dealer. Within three days of usage, the ${enterprise.fault}. The dealer and company refused to provide a refund or repair, claiming goods once sold cannot be returned under company policy.\n(a) Identify and state two Consumer Rights of ${consumerName} that have been violated in this situation. [2]\n(b) In which consumer dispute redressal forum should ${consumerName} file the formal complaint? Explain the three-tier judicial machinery under the Act. [2]\n(c) State any two reliefs available to ${consumerName} from the consumer commission. [2]`,
       orOptionText: `(a) State any three rights available to a consumer under the Consumer Protection Act, 2019 for the protection and promotion of consumer interests. [3]\n(b) Explain any three consumer responsibilities that a buyer should keep in mind while purchasing goods or services. [3]`,
       answerKey: '(a) Right to Safety and Right to Seek Redressal. (b) District Consumer Commission (claim up to ₹50 Lakh). Three-tier machinery: District, State, National Commissions. (c) Reliefs: Removal of defect, replacement of product, refund of price paid, compensation for damages.'
     });
